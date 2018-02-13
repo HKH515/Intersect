@@ -4,9 +4,20 @@ import ChatBox from './components/ChatBox';
 import ServerList from './components/ServerList';
 import SideNav from './components/SideNav';
 import logo from './logo.svg';
-import './App.css';
+import './css/App.css';
 
 class App extends Component {
+    constructor() {
+        super();
+        this.state = {
+            name: "Undefined"
+        }
+    }
+
+    nameHandler(name) {
+        this.setState({name});
+        console.log(this.state.name);
+    }
     render() {
         return (
             <div className="App">
@@ -14,10 +25,10 @@ class App extends Component {
                 <SideNav />
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo"/>
-                    <h1 className="App-title">Welcome to React</h1>
+                    <h1 className="App-title">Intersect</h1>
                 </header>
                 <p className="App-intro">
-                    <ChatBox/>
+                    <ChatBox nameHandler={this.nameHandler.bind(this)}/>
                 </p>
                 </MuiThemeProvider>
             </div>

@@ -1,10 +1,15 @@
 import React, {Component} from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import ChatBox from './components/ChatBox';
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
     render() {
         return (
+            
+                //<ServerList/>
+            
             <div className="App">
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo"/>
@@ -14,18 +19,12 @@ class App extends Component {
                     <ChatBox/>
                 </p>
             </div>
+            
         );
     }
 }
 
-class ChatBox extends Component {
-    constructor(props) {
-        super(props);
-        this.placeholder = "Enter text here...";
-    }
-    render() {
-        return <input placeholder={this.placeholder}></input>;
-    }
-}
+
+
 
 export default App;

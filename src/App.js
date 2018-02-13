@@ -24,7 +24,7 @@ class ChatBox extends Component {
         this.placeholder = "Enter text here...";
     }
     render() {
-        return <input placeholder={this.props.placeholder}></input>;
+        return <input placeholder={this.placeholder}></input>;
     }
 }
 

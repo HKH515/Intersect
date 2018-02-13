@@ -1,9 +1,10 @@
 import React from 'react';
 import CSSModules from 'react-css-modules';
 
-
-const ServerList = () => (
-    <div class="sidenav"></div>
-);
+class ServerList extends React.Component {
+    render() {
+        return <div><p>adsf</p></div>
+    }
+}
 
 export default ServerList;

@@ -5,15 +5,15 @@ class Room extends React.Component {
     constructor(props) {
         super(props);
         this.name = props.name;
-        this.chatbox = ChatBox();
     }
 
     render() {
-        return <input placeholder={this.placeholder}></input>
-    }
-
-    handleClick() {
-        alert("afds");
+        return (
+            <div>
+                <Chat chatId={this.id} />
+                <ChatBox chatId={this.id}/>
+            </div>
+        );
     }
 }
 

@@ -13,7 +13,7 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            name: "Undefined"
+            name: ""
         }
     }
 
@@ -29,7 +29,6 @@ class App extends Component {
 
     nameHandler(name) {
         this.setState({name});
-        console.log(this.state.name);
     }
     render() {
         return (

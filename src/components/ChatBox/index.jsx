@@ -19,18 +19,21 @@ class ChatBox extends React.Component {
     //    this.props.nameHandler(name);
     //}
 
-    sendMessage() {
-        //const { socket } = this.context;
-        this.context.socket.emit('sendmsg', {roomName : 'default', msg : this.state.msg});
-        this.setState({msg: ''});
+    sendMessage(e) {
+        if(e.keyCode == "13"){
+            var message = e.target.value;
+            //const { socket } = this.context;
+            console.log(message);
+            this.context.socket.emit('msg', message);
+            this.setState({msg: ''});
+        }
     }
 
     render() {
         return (
             <div className="input-box">
-                <input value={this.state.msg} placeholder={this.placeholder} onInput={(e) => this.setState({ msg : e.target.value})}></input>
+                <input placeholder={this.placeholder} onKeyDown={this.sendMessage.bind(this)}></input>
                 
-                <button type="button" className="btn pull-right" onClick={() => this.sendMessage()}>Send</button>
             </div>
         );
     }

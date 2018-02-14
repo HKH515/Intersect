@@ -1,23 +1,43 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 import CSSModules from 'react-css-modules';
+import { PropTypes } from 'prop-types';
 
 class ChatBox extends React.Component {
     constructor(props) {
         super(props);
         this.placeholder = "Enter text here";
+        this.state = {
+            msg : ''
+        };
     }
+
+    //component
     
-    handleChange(e){
-        const name = e.target.value;
-        this.props.nameHandler(name);
+    //handleChange(e) {
+    //    const name = e.target.value;
+    //    this.props.nameHandler(name);
+    //}
+
+    sendMessage() {
+        //const { socket } = this.context;
+        this.context.socket.emit('msg', this.state.msg);
+        this.setState({msg: ''});
     }
 
     render(){
         return (
-    <input placeholder={"Enter Desired Username"} onChange={this.handleChange.bind(this)}></input>
+            <div className="input-box">
+                <input placeholder={this.placeholder} onInput={(e) => this.setState({ msg : e.target.value})}></input>
+                
+                <button type="button" className="btn pull-right" onClick={() => this.sendMessage()}>Send</button>
+            </div>
         );
     }
-}
+};
 
+ChatBox.contextTypes = {
+    socket: PropTypes.object.isRequired
+};
 
 export default ChatBox;

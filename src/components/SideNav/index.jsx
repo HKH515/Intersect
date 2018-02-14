@@ -29,6 +29,6 @@ class SideNav extends React.Component {
             </div>
         );
     }
-}
+};
 
 export default SideNav;

@@ -5,6 +5,8 @@ import ServerList from './components/ServerList';
 import SideNav from './components/SideNav';
 import logo from './logo.svg';
 import './css/App.css';
+import socketClient from 'socket.io-client';
+import { PropTypes } from 'prop-types';
 
 class App extends Component {
     constructor() {
@@ -12,6 +14,16 @@ class App extends Component {
         this.state = {
             name: "Undefined"
         }
+    }
+
+    componentDidCatch(error, info) {
+        console.log(error);
+    }
+
+    getChildContext() {
+        return {
+            socket: socketClient('http://localhost:8080')            
+        };
     }
 
     nameHandler(name) {
@@ -37,7 +49,9 @@ class App extends Component {
     }
 }
 
-
+App.childContextTypes = {
+    socket: PropTypes.object.isRequired
+};
 
 
 export default App;

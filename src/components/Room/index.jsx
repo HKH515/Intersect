@@ -15,6 +15,6 @@ class Room extends React.Component {
             </div>
         );
     }
-}
+};
 
 export default ChatBox;

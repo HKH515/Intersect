@@ -1,7 +1,7 @@
 import React from 'react';
 import CSSModules from 'react-css-modules';
 
-class ServerList extends React.Component {
+class UserList extends React.Component {
     render() {
         return ( 
         <div><p></p></div>
@@ -9,4 +9,4 @@ class ServerList extends React.Component {
     }
 }
 
-export default ServerList;
+export default UserList;

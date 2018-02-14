@@ -9,20 +9,17 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            name: "Undefined"
+            name: ""
         }
     }
 
     nameHandler(name) {
         this.setState({name});
-        console.log(this.state.name);
     }
     render() {
         return (
-            
-            
             <div className="App">
-                <ServerList/>
+                <ServerList name={this.state.name}/>
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo"/>
                     <h1 className="App-title">Intersect</h1>

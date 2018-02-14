@@ -5,16 +5,16 @@ class Room extends React.Component {
     constructor(props) {
         super(props);
         this.name = props.name;
-        this.chatbox = ChatBox();
     }
 
     render() {
-        return <input placeholder={this.placeholder}></input>
+        return (
+            <div>
+                <Chat chatId={this.id} />
+                <ChatBox chatId={this.id}/>
+            </div>
+        );
     }
-
-    handleClick() {
-        alert("afds");
-    }
-}
+};
 
 export default ChatBox;

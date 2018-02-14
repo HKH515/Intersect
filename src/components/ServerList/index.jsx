@@ -1,6 +1,11 @@
 import React from 'react';
 import CSSModules from 'react-css-modules';
 import { PropTypes } from 'prop-types';
+import FontIcon from 'material-ui/FontIcon';
+
+// UI
+import {List, ListItem} from 'material-ui/List';
+
 
 class ServerList extends React.Component {
     constructor(props) {
@@ -30,9 +35,10 @@ class ServerList extends React.Component {
         console.log("objects.keys(servers) : " + Object.keys(this.state.servers));
         return (
             <div>
-                <ul>
-                    {this.state.servers.map(item => (<li key={item}>{item}</li>))}
-                </ul>
+                <List>
+                    {this.state.servers.map(item => (<ListItem key={item}>{item}</ListItem>))}
+                    <ListItem className="addRoom"><FontIcon className="material-icons">add</FontIcon></ListItem>
+                </List>
             </div>
         );
     }

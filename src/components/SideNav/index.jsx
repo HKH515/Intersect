@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
 import ServerList from '../ServerList';
 
+
 class SideNav extends React.Component {
     constructor(props) {
         super(props);

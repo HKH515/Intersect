@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ChatBox from './components/ChatBox';
+import Chat from './components/Chat';
 import ServerList from './components/ServerList';
 import SideNav from './components/SideNav';
 import logo from './logo.svg';
@@ -32,18 +33,18 @@ class App extends Component {
     }
     render() {
         return (
+            <MuiThemeProvider>
+            
             <div className="App">
-                <MuiThemeProvider>
-                <SideNav />
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                    <h1 className="App-title">Intersect</h1>
-                </header>
-                <p className="App-intro">
-                    <ChatBox nameHandler={this.nameHandler.bind(this)}/>
-                </p>
-                </MuiThemeProvider>
+                    <SideNav />
+                    <header className="App-header">
+                        <img src={logo} className="App-logo" alt="logo"/>
+                        <h1 className="App-title">Intersect</h1>
+                    </header>
+                    <Chat />
+                    <ChatBox />
             </div>
+            </MuiThemeProvider>
             
         );
     }

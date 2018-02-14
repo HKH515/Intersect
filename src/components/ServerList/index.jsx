@@ -5,19 +5,41 @@ import { PropTypes } from 'prop-types';
 class ServerList extends React.Component {
     constructor(props) {
         super(props);
-        this.servers;
+        this.state = {
+            servers : []
+        };
+    }
+
+    componentDidMount() {
+        this.context.socket.emit('rooms');
+        this.context.socket.on('roomlist', (rooms) => {
+            //let servers = Object.assign([], this.state.servers);
+            this.state.servers = [];
+            for (var room in rooms) {
+                this.state.servers.push(room);
+                console.log("printing name of room: " + room);  
+            }
+            //console.log("rooms: " + servers);
+            //this.setState({servers});
+        });
     }
 
 
+
     render() {
+        console.log("objects.keys(servers) : " + Object.keys(this.state.servers));
         return (
             <div>
                 <ul>
-                {React.Children.map(this.props.children, (child, i) => {return <li>child</li>;})}
+                    {this.state.servers.map(item => (<li key={item}>{item}</li>))}
                 </ul>
             </div>
         );
     }
+};
+
+ServerList.contextTypes = {
+    socket: PropTypes.object.isRequired
 };
 
 export default ServerList;

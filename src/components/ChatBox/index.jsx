@@ -12,7 +12,7 @@ class ChatBox extends React.Component {
         };
     }
 
-    //component
+    
     
     //handleChange(e) {
     //    const name = e.target.value;
@@ -21,14 +21,14 @@ class ChatBox extends React.Component {
 
     sendMessage() {
         //const { socket } = this.context;
-        this.context.socket.emit('msg', this.state.msg);
+        this.context.socket.emit('sendmsg', {roomName : 'default', msg : this.state.msg});
         this.setState({msg: ''});
     }
 
-    render(){
+    render() {
         return (
             <div className="input-box">
-                <input placeholder={this.placeholder} onInput={(e) => this.setState({ msg : e.target.value})}></input>
+                <input value={this.state.msg} placeholder={this.placeholder} onInput={(e) => this.setState({ msg : e.target.value})}></input>
                 
                 <button type="button" className="btn pull-right" onClick={() => this.sendMessage()}>Send</button>
             </div>

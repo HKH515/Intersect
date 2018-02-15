@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "jest": "^22.3.0",
+    "less": "^3.0.1",
     "material-design-icons": "^3.0.1",
     "material-icons": "^0.1.0",
     "material-ui": "^0.20.0",

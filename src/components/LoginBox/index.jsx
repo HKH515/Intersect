@@ -2,14 +2,13 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import CSSModules from 'react-css-modules';
 import {PropTypes} from 'prop-types';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
 
 // UI
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-
 
 class LoginBox extends React.Component {
     constructor(props) {
@@ -50,8 +49,8 @@ class LoginBox extends React.Component {
                 if (available) {
                     console.log("username is available!");
                     this.context.username = this.state.tmpUsername;
-                    this.setState({tmpUsername : '', hidden: false});
-                    return <Redirect to='/rooms/:roomID' />   
+                    this.setState({tmpUsername: '', hidden: true});
+                    //return <Redirect to='/rooms/:roomID' />
                 } else {
                     console.log("username is taken!");
                 }
@@ -82,16 +81,12 @@ class LoginBox extends React.Component {
                         actions={actions}
                         modal={false}
                         open={!this.hidden}>
-                        <TextField
-                            hintText={this.placeholder}
-                            errorText={this.errorText}
-                            onChange={this.handleChange}></TextField>
+                        <TextField hintText={this.placeholder} onChange={this.handleChange}></TextField>
                     </Dialog>
                 </div>
             );
-        }
-        else {
-            return null;
+        } else {
+            return <div></div>;
         }
 
     }

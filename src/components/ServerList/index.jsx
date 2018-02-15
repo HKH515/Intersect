@@ -45,7 +45,8 @@ class ServerList extends React.Component {
 };
 
 ServerList.contextTypes = {
-    socket: PropTypes.object.isRequired
+    socket: PropTypes.object.isRequired,
+    
 };
 
 export default ServerList;

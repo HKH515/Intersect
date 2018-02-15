@@ -5,7 +5,6 @@ import {PropTypes} from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Popup from 'react-popup';
 
 class ChatBox extends React.Component {
     constructor(props) {
@@ -36,25 +35,19 @@ class ChatBox extends React.Component {
         console.log(this.state.msg);
         if (this.context.registeredForRoom) {
             socket
-            .emit('sendmsg', {roomName: this.context.currentRoom, msg: this.state.msg});
+            .emit('sendmsg', {roomName: this.context.roromName, msg: this.state.msg});
             this.setState({msg: ''});
         }
-        else {
-            Popup.alert('You do not have authorization for that');
-        }
-
     }
 
     render() {
         return (
             <div className="input-box">
-                <Popup />
                 <TextField
                     hintText={this.placeholder}
                     onChange={this.handleChange}
                     value={this.state.msg}></TextField>
-                <FlatButton onClick={this.sendMessage}>send</FlatButton>
-
+                <FlatButton onClick={this.sendMessage}>send</FlatButton>    
             </div>
         );
     }

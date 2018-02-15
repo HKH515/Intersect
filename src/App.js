@@ -51,7 +51,4 @@ App.childContextTypes = {
     registeredForRoom: PropTypes.bool
 };
 
-//ReactDOM.render(
-//    <Router><App/></Router>, document.getElementById('app'));
-
 export default App;

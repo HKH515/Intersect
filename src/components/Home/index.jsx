@@ -25,7 +25,7 @@ class Home extends React.Component {
                     </h1>
                 </header >
                 <LoginBox/>
-                < Chat/>
+                <Chat/>
                 <ChatBox/>
             </div>
         );

@@ -17,7 +17,7 @@ class ServerList extends React.Component {
 
     componentDidMount() {
         this.context.socket.emit('rooms');
-        this.context.socket.on('roomlist', (rooms) => {
+        this.context.socket.on('roomlist', function(rooms) {
             //let servers = Object.assign([], this.state.servers);
             this.state.servers = [];
             for (var room in rooms) {
@@ -26,7 +26,7 @@ class ServerList extends React.Component {
             }
             //console.log("rooms: " + servers);
             //this.setState({servers});
-        });
+        }.bind(this));
     }
 
 

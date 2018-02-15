@@ -6,6 +6,7 @@ import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
 import ServerList from '../ServerList';
+import {PropTypes} from 'prop-types';
 
 
 class SideNav extends React.Component {
@@ -23,6 +24,7 @@ class SideNav extends React.Component {
     render() {
         return (
             <div>
+                <p>Welcome {this.context.username}!</p>
                 <RaisedButton label="Toggle Drawer" onClick={this.handleToggle}/>
                 <Drawer open={this.state.open}>
                     <ServerList />
@@ -30,6 +32,10 @@ class SideNav extends React.Component {
             </div>
         );
     }
+};
+
+SideNav.contextTypes = {
+    username: PropTypes.string
 };
 
 export default SideNav;

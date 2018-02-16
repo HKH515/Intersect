@@ -32,35 +32,15 @@ class LoginBox extends React.Component {
         }
     }*/
 
-    loginUser() {
-        console.log("trying to login with username '" + this.state.tmpUsername + "'");
-        this
-            .props
-            .socket
-            .emit('adduser', this.state.tmpUsername, function (available) {
-                console.log("inside addUser callback...");
-                if (available) {
-                    console.log("username is available!");
-                    this.props.username = "testing";//this.state.tmpUsername;
-                    this.props.loggedIn = true;                    
-                    this.setState({tmpUsername: '', hidden: true});
-                    //return <Redirect to='/rooms/:roomID' />
-                } else {
-                    console.log("username is taken!");
-                }
-            }.bind(this));
-    }
-
     render() {
         if (!this.props.loggedIn) {
             return (
                 <div className="login-box popup">
-                    <Dialog
-                        title="Select a username"
-                        modal={false}
-                        open={!this.props.loggedIn}>
-                        <TextField hintText={this.placeholder} onChange={this.props.handleChange}></TextField>
-                        <FlatButton label="Submit" onClick={this.props.loginUser} />
+                    <Dialog title="Select a username" modal={false} open={!this.props.loggedIn}>
+                        <TextField
+                            hintText={this.placeholder}
+                            onChange={this.props.handleChangeUsername}></TextField>
+                        <FlatButton label="Submit" onClick={this.props.loginUser}/>
                     </Dialog>
                 </div>
             );
@@ -70,12 +50,13 @@ class LoginBox extends React.Component {
 
     }
 };
+
 LoginBox.propTypes = {
     socket: PropTypes.object.isRequired,
     username: PropTypes.string,
     roomName: PropTypes.string,
     loggedIn: PropTypes.bool,
     loginUser: PropTypes.func,
-    handleChange: PropTypes.func
+    handleChangeUsername: PropTypes.func
 }
 export default LoginBox;

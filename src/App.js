@@ -83,7 +83,8 @@ class App extends Component {
                         roomName={this.roomName}
                         loggedIn={this.loggedIn}
                         registeredForRoom={this.registeredForRoom}
-                        handleChange={this.handleChange}
+                        handleChangeUsername={this.handleChangeUserame}
+                        handleChangeMessage={this.handleChangeMessage}
                         messages={this.messages}
                         sendMessage={this.sendMessage}
                         loginUser={this.loginUser}
@@ -101,7 +102,8 @@ App.propTypes = {
     registeredForRoom: PropTypes.bool,
     loggedIn: PropTypes.bool,
     messages: PropTypes.array,
-    handleChange: PropTypes.func,
+    handleChangeUsername: PropTypes.func,
+    handleChangeMessage: PropTypes.func,
     sendMessage: PropTypes.func,
     loginUser: PropTypes.func
 };

@@ -59,16 +59,12 @@ class Chat extends React.Component {
         return (
             <div>
                 {this.props.registeredForRoom
-                    ? <Dialog title="Not authorized" modal={false} open={!this.hidden}>
-                            <TextField
-                                hintText={this.placeholder}
-                                errorText={this.errorText}
-                                onChange={this.props.handleChange}></TextField>
+                    ? <Dialog title="Not authorized" modal={false}>
                         </Dialog>
                     : <List>
-
                         {this
-                            .props.messages
+                            .props
+                            .messages
                             .map(item => (
                                 <ListItem key={item}>{item}</ListItem>
                             ))}
@@ -87,7 +83,8 @@ Chat.propTypes = {
     roomName: PropTypes.string,
     username: PropTypes.string,
     loggedIn: PropTypes.bool,
-    messages: PropTypes.array
+    messages: PropTypes.array,
+    handleChangeMessage: PropTypes.func
 };
 
 export default Chat;

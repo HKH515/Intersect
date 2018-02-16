@@ -20,7 +20,7 @@ class ChatBox extends React.Component {
             <div className="input-box">
                 <TextField
                     hintText={this.placeholder}
-                    onChange={this.props.handleChange}
+                    onChange={this.props.handleChangeMessage}
                     value={this.props.msg}></TextField>
                 <FlatButton onClick={this.props.sendMessage}>send</FlatButton>
             </div>
@@ -30,12 +30,7 @@ class ChatBox extends React.Component {
 
 ChatBox.propTypes = {
     socket: PropTypes.object.isRequired,
-    roomName: PropTypes.string,
-    username: PropTypes.string,
-    registeredForRoom: PropTypes.bool,
-    msg: PropTypes.string,
-    sendMessage: PropTypes.func,
-    handleChange: PropTypes.func 
+    handleChangeMessage: PropTypes.func
 };
 
 export default ChatBox;

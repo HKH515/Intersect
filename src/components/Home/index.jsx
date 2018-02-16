@@ -46,7 +46,7 @@ class Home extends React.Component {
                     username={this.props.username}
                     roomName={this.props.roomName}
                     loggedIn={this.props.loggedIn}
-                    handleChange={this.props.handleChange}
+                    handleChangeUsername={this.props.handleChangeUsername}
                     loginUser={this.props.loginUser}/>
                 <Chat
                     socket={this.props.socket}
@@ -61,7 +61,8 @@ class Home extends React.Component {
                     roomName={this.props.roomName}
                     loggedIn={this.props.loggedIn}
                     registeredForRoom={this.props.registeredForRoom}
-                    messages={this.props.messages}/>
+                    messages={this.props.messages}
+                    handleChangeM/>
             </div>
         );
     }
@@ -74,7 +75,8 @@ Home.propTypes = {
     registeredForRoom: PropTypes.bool,
     loggedIn: PropTypes.bool,
     messages: PropTypes.array,
-    handleChange: PropTypes.func,
+    handleChangeUsername: PropTypes.func,
+    handleChangeMessage: PropTypes.func,
     sendMessage: PropTypes.func,
     loginUser: PropTypes.func
 };

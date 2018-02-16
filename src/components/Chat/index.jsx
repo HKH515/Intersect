@@ -17,32 +17,42 @@ class Chat extends React.Component {
         };
     }
 
-    componentDidMount() {
+    componentDidUpdate() {
         // If we are not in a room, we join the current room selected (lobby by default)
-        if (!this.context.registeredForRoom) {
+        if (this.context.loggedIn) {
+            console.log("trying to join room");
             this
                 .context
                 .socket
                 .emit('joinroom', {
-                    room: this.context.currentRoom,
+                    room: this.context.roomName,
                     pass: ""
                 }, function (success, reason) {
+                    console.log(reason);
                     if (success) {
                         this.context.registeredForRoom = true;
-                    };
+                        console.log("successfully joined room '" + this.context.roomName + "'");
+                    } else {
+                        console.log("failed to join room: " + reason);
+                    }
+
                 }.bind(this));
         }
 
-        this
-            .context
-            .socket
-            .on('updatechat', (room, msg) => {
-                let messages = Object.assign({}, this.state.messages);
-                messages.push(msg);
-                //messages.push('${(new Date()).toLocaleTimeString()} - ${msg}');
-                this.setState({messages});
-                console.log("Messages: " + this.state.messages);
-            });
+        if (this.context.registeredForRoom) {
+            this
+                .context
+                .socket
+                .on('updatechat', (room, msgs) => {
+                    console.log("updating chat...");
+                    this.setState({messages: msgs});
+                    // let messagesTmp = Object.assign({}, this.state.messages);
+                    // messagesTmp.push(msg); messagesTmp.push('${(new Date()).toLocaleTimeString()}
+                    // - ${msg}'); this.setState({messages: messagesTmp}); console.log("Messages: "
+                    // + this.state.messagesTmp);
+                });
+        }
+
     }
 
     render() {
@@ -63,6 +73,7 @@ class Chat extends React.Component {
                             .map(item => (
                                 <ListItem key={item}>{item}</ListItem>
                             ))}
+
                     </List>
 }
             </div>
@@ -74,7 +85,9 @@ class Chat extends React.Component {
 Chat.contextTypes = {
     socket: PropTypes.object.isRequired,
     registeredForRoom: PropTypes.bool,
-    currentRoom: PropTypes.string
+    roomName: PropTypes.string,
+    username: PropTypes.string,
+    loggedIn: PropTypes.bool
 };
 
 export default Chat;

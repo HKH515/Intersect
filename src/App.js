@@ -17,9 +17,6 @@ class App extends Component {
 
     constructor() {
         super();
-        this.state = {
-            name: ""
-        }
     }
 
     componentDidCatch(error, info) {
@@ -27,7 +24,7 @@ class App extends Component {
     }
 
     getChildContext() {
-        return {socket: socketClient('http://localhost:8080'), username: "", currentRoom: "lobby", registeredForRoom: false};
+        return {socket: socketClient('http://localhost:8080'), username: "", loggedIn: false, roomName: "lobby", registeredForRoom: false};
     }
 
     render() {
@@ -47,8 +44,9 @@ class App extends Component {
 App.childContextTypes = {
     socket: PropTypes.object.isRequired,
     username: PropTypes.string,
-    currentRoom: PropTypes.string,
-    registeredForRoom: PropTypes.bool
+    roomName: PropTypes.string,
+    registeredForRoom: PropTypes.bool,
+    loggedIn: PropTypes.bool
 };
 
 export default App;

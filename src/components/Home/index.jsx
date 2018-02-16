@@ -15,9 +15,23 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
     }
+
+    componentDidMount() {
+        /*this.context.socket.emit('adduser', this.context.username, function(avail) {
+
+        });
+        this.context.socket.emit('users');
+        this.context.socket.on('userlist', function(userIDs) {
+            for (var i in userIDs) {
+                console.log("username: " + i);
+            }
+        });*/
+    }
+
     render() {
         return (
             <div>
+                
                 <SideNav/>
                 < header className="App-header">
                     < h1 className="App-title">
@@ -27,6 +41,7 @@ class Home extends React.Component {
                 <LoginBox/>
                 <Chat/>
                 <ChatBox/>
+                
             </div>
         );
     }

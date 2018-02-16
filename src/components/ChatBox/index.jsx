@@ -32,10 +32,11 @@ class ChatBox extends React.Component {
 
     sendMessage() {
         const { socket } = this.context;
-        console.log(this.state.msg);
+        console.log("inside sendMessage");
         if (this.context.registeredForRoom) {
+            console.log("inside inner sendMessage");            
             socket
-            .emit('sendmsg', {roomName: this.context.roromName, msg: this.state.msg});
+            .emit('sendmsg', {roomName: this.context.roomName, msg: this.state.msg});
             this.setState({msg: ''});
         }
     }
@@ -56,7 +57,8 @@ class ChatBox extends React.Component {
 ChatBox.contextTypes = {
     socket: PropTypes.object.isRequired,
     roomName: PropTypes.string,
-    username: PropTypes.string
+    username: PropTypes.string,
+    registeredForRoom: PropTypes.bool
 };
 
 export default ChatBox;

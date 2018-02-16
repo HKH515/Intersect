@@ -18,19 +18,13 @@ class LoginBox extends React.Component {
         this.state = {
             tmpUsername: ""
         };
-        this.loginUser = this
-            .loginUser
-            .bind(this);
-        this.handleChange = this
-            .handleChange
-            .bind(this);
     }
 
     // handleChange(e) {    const name = e.target.value;
     // this.props.nameHandler(name); }
 
     /*componentWillUpdate() {
-        if (this.context.username === '') {
+        if (this.props.username === '') {
             this.setState({hidden : false});
         }
         else {
@@ -41,14 +35,14 @@ class LoginBox extends React.Component {
     loginUser() {
         console.log("trying to login with username '" + this.state.tmpUsername + "'");
         this
-            .context
+            .props
             .socket
             .emit('adduser', this.state.tmpUsername, function (available) {
                 console.log("inside addUser callback...");
                 if (available) {
                     console.log("username is available!");
-                    this.context.username = "testing";//this.state.tmpUsername;
-                    this.context.loggedIn = true;                    
+                    this.props.username = "testing";//this.state.tmpUsername;
+                    this.props.loggedIn = true;                    
                     this.setState({tmpUsername: '', hidden: true});
                     //return <Redirect to='/rooms/:roomID' />
                 } else {
@@ -57,21 +51,16 @@ class LoginBox extends React.Component {
             }.bind(this));
     }
 
-    handleChange = (e) => {
-        console.log(this.state.tmpUsername);
-        this.setState({tmpUsername: e.target.value});
-    }
-
     render() {
-        if (!this.context.loggedIn) {
+        if (!this.props.loggedIn) {
             return (
                 <div className="login-box popup">
                     <Dialog
                         title="Select a username"
                         modal={false}
-                        open={!this.context.loggedIn}>
-                        <TextField hintText={this.placeholder} onChange={this.handleChange}></TextField>
-                        <FlatButton label="Submit" onClick={this.loginUser} />
+                        open={!this.props.loggedIn}>
+                        <TextField hintText={this.placeholder} onChange={this.props.handleChange}></TextField>
+                        <FlatButton label="Submit" onClick={this.props.loginUser} />
                     </Dialog>
                 </div>
             );
@@ -81,10 +70,12 @@ class LoginBox extends React.Component {
 
     }
 };
-LoginBox.contextTypes = {
+LoginBox.propTypes = {
     socket: PropTypes.object.isRequired,
     username: PropTypes.string,
     roomName: PropTypes.string,
-    loggedIn: PropTypes.bool    
+    loggedIn: PropTypes.bool,
+    loginUser: PropTypes.func,
+    handleChange: PropTypes.func
 }
 export default LoginBox;

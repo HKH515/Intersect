@@ -16,8 +16,8 @@ class ServerList extends React.Component {
     }
 
     componentDidMount() {
-        this.context.socket.emit('rooms');
-        this.context.socket.on('roomlist', function(rooms) {
+        this.props.socket.emit('rooms');
+        this.props.socket.on('roomlist', function(rooms) {
             //let servers = Object.assign([], this.state.servers);
             this.state.servers = [];
             for (var room in rooms) {
@@ -44,7 +44,7 @@ class ServerList extends React.Component {
     }
 };
 
-ServerList.contextTypes = {
+ServerList.propsTypes = {
     socket: PropTypes.object.isRequired,
     
 };

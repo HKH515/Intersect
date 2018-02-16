@@ -8,7 +8,6 @@ import MenuItem from 'material-ui/MenuItem';
 import ServerList from '../ServerList';
 import {PropTypes} from 'prop-types';
 
-
 class SideNav extends React.Component {
     constructor(props) {
         super(props);
@@ -19,7 +18,7 @@ class SideNav extends React.Component {
 
     componentDidMount() {
         this.forceUpdate();
-    }    
+    }
 
     handleToggle = () => this.setState({
         open: !this.state.open
@@ -28,17 +27,18 @@ class SideNav extends React.Component {
     render() {
         return (
             <div>
-                <p>Welcome {this.context.username}!</p>
+                <p>Welcome {this.props.username}!</p>
                 <RaisedButton label="Toggle Drawer" onClick={this.handleToggle}/>
                 <Drawer open={this.state.open}>
-                    <ServerList />
+                    <ServerList socket={this.props.socket}/>
                 </Drawer>
             </div>
         );
     }
 };
 
-SideNav.contextTypes = {
+SideNav.propsTypes = {
+    socket: PropTypes.object.isRequired,
     username: PropTypes.string
 };
 

@@ -17,36 +17,93 @@ class App extends Component {
 
     constructor() {
         super();
+        this.socket = socketClient('http://localhost:8080');
+        this.username = "";
+        this.loggedIn = false;
+        this.roomName = "lobby";
+        this.registeredForRoom = false;
+        this.messages = [];
+        this.msg = '';
+        this.handleChangeUsername = this.handleChangeUsername.bind(this);
+        this.loginUser = this.loginUser.bind(this);
+        this.sendMessage = this.sendMessage.bind(this);
     }
 
     componentDidCatch(error, info) {
         console.log(error);
     }
 
-    getChildContext() {
-        return {socket: socketClient('http://localhost:8080'), username: "", loggedIn: false, roomName: "lobby", registeredForRoom: false};
+    handleChangeUsername= (e) => {
+        this.username = e.target.value;
+        console.log(this.username);
     }
+    
+    loginUser() {
+        console.log("trying to login with username '" + this.username + "'");
+        this
+            .socket
+            .emit('adduser', this.username, function (available) {
+                console.log("inside addUser callback...");
+                if (available) {
+                    console.log("username is available!");
+                    this.username = this.username; //this.state.tmpUsername;
+                    this.loggedIn = true;
+                    //return <Redirect to='/rooms/:roomID' />
+                } else {
+                    console.log("username is taken!");
+                }
+            }.bind(this));
+    }
+
+    sendMessage() {
+        console.log("inside sendMessage");
+        if (this.registeredForRoom) {
+            console.log("inside inner sendMessage");
+            this
+                .socket
+                .emit('sendmsg', {
+                    roomName: this.roomName,
+                    msg: this.msg
+                });
+            this.msg = '';
+        }
+    }
+
+    /*getChildContext() {
+        return {socket: socketClient('http://localhost:8080'), username: "", loggedIn: false, roomName: "lobby", registeredForRoom: false};
+    }*/
 
     render() {
         return (
             <div className="App">
                 <MuiThemeProvider>
-                    <Switch>
-                        <Route path='/' component={Home}/>
-                        <Route path='/rooms/:roomID' component={Chat}/>
-                    </Switch>
+                    <Home
+                        socket={this.socket}
+                        username={this.username}
+                        roomName={this.roomName}
+                        loggedIn={this.loggedIn}
+                        registeredForRoom={this.registeredForRoom}
+                        handleChange={this.handleChange}
+                        messages={this.messages}
+                        sendMessage={this.sendMessage}
+                        loginUser={this.loginUser}
+/>
                 </MuiThemeProvider>
             </div>
         );
     }
 }
 
-App.childContextTypes = {
-    socket: PropTypes.object.isRequired,
+App.propTypes = {
+    //socket: PropTypes.object.isRequired,
     username: PropTypes.string,
     roomName: PropTypes.string,
     registeredForRoom: PropTypes.bool,
-    loggedIn: PropTypes.bool
+    loggedIn: PropTypes.bool,
+    messages: PropTypes.array,
+    handleChange: PropTypes.func,
+    sendMessage: PropTypes.func,
+    loginUser: PropTypes.func
 };
 
 export default App;

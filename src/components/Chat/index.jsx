@@ -19,19 +19,19 @@ class Chat extends React.Component {
 
     componentDidUpdate() {
         // If we are not in a room, we join the current room selected (lobby by default)
-        if (this.context.loggedIn) {
+        if (this.props.loggedIn) {
             console.log("trying to join room");
             this
-                .context
+                .props
                 .socket
                 .emit('joinroom', {
-                    room: this.context.roomName,
+                    room: this.props.roomName,
                     pass: ""
                 }, function (success, reason) {
                     console.log(reason);
                     if (success) {
-                        this.context.registeredForRoom = true;
-                        console.log("successfully joined room '" + this.context.roomName + "'");
+                        this.props.registeredForRoom = true;
+                        console.log("successfully joined room '" + this.props.roomName + "'");
                     } else {
                         console.log("failed to join room: " + reason);
                     }
@@ -39,9 +39,9 @@ class Chat extends React.Component {
                 }.bind(this));
         }
 
-        if (this.context.registeredForRoom) {
+        if (this.props.registeredForRoom) {
             this
-                .context
+                .props
                 .socket
                 .on('updatechat', (room, msgs) => {
                     console.log("updating chat...");
@@ -58,18 +58,17 @@ class Chat extends React.Component {
     render() {
         return (
             <div>
-                {this.context.registeredForRoom
+                {this.props.registeredForRoom
                     ? <Dialog title="Not authorized" modal={false} open={!this.hidden}>
                             <TextField
                                 hintText={this.placeholder}
                                 errorText={this.errorText}
-                                onChange={this.handleChange}></TextField>
+                                onChange={this.props.handleChange}></TextField>
                         </Dialog>
                     : <List>
 
                         {this
-                            .state
-                            .messages
+                            .props.messages
                             .map(item => (
                                 <ListItem key={item}>{item}</ListItem>
                             ))}
@@ -82,12 +81,13 @@ class Chat extends React.Component {
     }
 };
 
-Chat.contextTypes = {
+Chat.propTypes = {
     socket: PropTypes.object.isRequired,
     registeredForRoom: PropTypes.bool,
     roomName: PropTypes.string,
     username: PropTypes.string,
-    loggedIn: PropTypes.bool
+    loggedIn: PropTypes.bool,
+    messages: PropTypes.array
 };
 
 export default Chat;

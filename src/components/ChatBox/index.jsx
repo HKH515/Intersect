@@ -13,32 +13,6 @@ class ChatBox extends React.Component {
         this.state = {
             msg: ''
         };
-        this.handleChange = this
-            .handleChange
-            .bind(this);
-        this.sendMessage = this
-            .sendMessage
-            .bind(this);
-    }
-
-    handleChange(e) {
-        // If user hit enter, does not work
-        if (e.keyCode == '13') {
-            this.sendMessage();
-        } else {
-            this.setState({msg: e.target.value});
-        }
-    }
-
-    sendMessage() {
-        const { socket } = this.context;
-        console.log("inside sendMessage");
-        if (this.context.registeredForRoom) {
-            console.log("inside inner sendMessage");            
-            socket
-            .emit('sendmsg', {roomName: this.context.roomName, msg: this.state.msg});
-            this.setState({msg: ''});
-        }
     }
 
     render() {
@@ -46,19 +20,22 @@ class ChatBox extends React.Component {
             <div className="input-box">
                 <TextField
                     hintText={this.placeholder}
-                    onChange={this.handleChange}
-                    value={this.state.msg}></TextField>
-                <FlatButton onClick={this.sendMessage}>send</FlatButton>    
+                    onChange={this.props.handleChange}
+                    value={this.props.msg}></TextField>
+                <FlatButton onClick={this.props.sendMessage}>send</FlatButton>
             </div>
         );
     }
 };
 
-ChatBox.contextTypes = {
+ChatBox.propTypes = {
     socket: PropTypes.object.isRequired,
     roomName: PropTypes.string,
     username: PropTypes.string,
-    registeredForRoom: PropTypes.bool
+    registeredForRoom: PropTypes.bool,
+    msg: PropTypes.string,
+    sendMessage: PropTypes.func,
+    handleChange: PropTypes.func 
 };
 
 export default ChatBox;

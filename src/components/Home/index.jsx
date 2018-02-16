@@ -17,11 +17,11 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        /*this.context.socket.emit('adduser', this.context.username, function(avail) {
+        /*this.props.socket.emit('adduser', this.props.username, function(avail) {
 
         });
-        this.context.socket.emit('users');
-        this.context.socket.on('userlist', function(userIDs) {
+        this.props.socket.emit('users');
+        this.props.socket.on('userlist', function(userIDs) {
             for (var i in userIDs) {
                 console.log("username: " + i);
             }
@@ -31,26 +31,52 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-                
-                <SideNav/>
-                < header className="App-header">
-                    < h1 className="App-title">
+
+                <SideNav
+                    username={this.props.username}
+                    socket={this.props.socket}
+                    loggedIn={this.props.loggedIn}/>
+                <header className="App-header">
+                    <h1 className="App-title">
                         Intersect
                     </h1>
                 </header >
-                <LoginBox/>
-                <Chat/>
-                <ChatBox/>
-                
+                <LoginBox
+                    socket={this.props.socket}
+                    username={this.props.username}
+                    roomName={this.props.roomName}
+                    loggedIn={this.props.loggedIn}
+                    handleChange={this.props.handleChange}
+                    loginUser={this.props.loginUser}/>
+                <Chat
+                    socket={this.props.socket}
+                    username={this.props.username}
+                    roomName={this.props.roomName}
+                    loggedIn={this.props.loggedIn}
+                    registeredForRoom={this.props.registeredForRoom}
+                    messages={this.props.messages}/>
+                <ChatBox
+                    socket={this.props.socket}
+                    username={this.props.username}
+                    roomName={this.props.roomName}
+                    loggedIn={this.props.loggedIn}
+                    registeredForRoom={this.props.registeredForRoom}
+                    messages={this.props.messages}/>
             </div>
         );
     }
 };
 
-Home.contextTypes = {
+Home.propTypes = {
     socket: PropTypes.object.isRequired,
+    username: PropTypes.string,
     roomName: PropTypes.string,
-    username: PropTypes.string
+    registeredForRoom: PropTypes.bool,
+    loggedIn: PropTypes.bool,
+    messages: PropTypes.array,
+    handleChange: PropTypes.func,
+    sendMessage: PropTypes.func,
+    loginUser: PropTypes.func
 };
 
 export default Home;

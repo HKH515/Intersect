@@ -46,7 +46,6 @@ class App extends Component {
                 console.log("inside addUser callback...");
                 if (available) {
                     console.log("username is available!");
-                    this.username = this.username; //this.state.tmpUsername;
                     this.loggedIn = true;
                     //return <Redirect to='/rooms/:roomID' />
                 } else {
@@ -83,7 +82,7 @@ class App extends Component {
                         roomName={this.roomName}
                         loggedIn={this.loggedIn}
                         registeredForRoom={this.registeredForRoom}
-                        handleChangeUsername={this.handleChangeUserame}
+                        handleChangeUsername={this.handleChangeUsername}
                         handleChangeMessage={this.handleChangeMessage}
                         messages={this.messages}
                         sendMessage={this.sendMessage}

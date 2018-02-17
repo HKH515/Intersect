@@ -16,20 +16,39 @@ class LoginBox extends React.Component {
         this.placeholder = "Enter username...";
         this.errorText = "A username is required";
         this.state = {
+            username: props.username,
+            loggedIn: props.loggedIn,
             open: true
         };
-        this.handleClose = this
-            .handleClose
-            .bind(this)
+        this.loginUser = this.loginUser.bind(this);
+        this.handleChangeUsername = this.handleChangeUsername.bind(this);
     }
 
-    handleClose() {
-        this.setState({open: false});        
-        this.props.loginUser()
-    }
+    loginUser() {
+        console.log("trying to login with username '" + this.state.username + "'");
+        this
+            .props
+            .socket
+            .emit('adduser', this.state.username, function (available) {
+                console.log("inside addUser callback...");
+                if (available) {
+                    console.log("username is available!");
+                    this.setState({open: false, loggedIn: true});
+                    //return <Redirect to='/rooms/:roomID' />
+                } else {
+                    console.log("username is taken!");
+                }
+            }.bind(this));
+        this.state.loggedIn = true;
+        console.log(this.props.loggedIn);
 
-    // handleChange(e) {    const name = e.target.value;
-    // this.props.nameHandler(name); }
+        this
+            .props
+            .propagateToParent(this.state);
+    }
+    handleChangeUsername = (e) => {
+        this.state.username = e.target.value;
+    }
 
     render() {
         const actions = [< FlatButton label = "Submit" primary = {
@@ -39,7 +58,7 @@ class LoginBox extends React.Component {
                 true
             }
             onClick = {
-                this.handleClose
+                this.loginUser
             } />];
         return (
             <Dialog
@@ -47,12 +66,11 @@ class LoginBox extends React.Component {
                 modal={false}
                 open={this.state.open}
                 actions={actions}
-                onRequestClose={this.handleClose}>
+                onRequestClose={this.loginUser}>
                 <p>User login status: {this.state.open}</p>
                 <TextField
                     hintText={this.placeholder}
-                    onChange={this.props.handleChangeUsername}
-                    />
+                    onChange={this.handleChangeUsername}/>
             </Dialog>
         );
     }
@@ -64,6 +82,8 @@ LoginBox.propTypes = {
     roomName: PropTypes.string,
     loggedIn: PropTypes.bool,
     loginUser: PropTypes.func,
-    handleChangeUsername: PropTypes.func
-}
+    handleChangeUsername: PropTypes.func,
+    propagateToParent: PropTypes.func
+};
+
 export default LoginBox;

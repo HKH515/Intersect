@@ -13,16 +13,36 @@ class ChatBox extends React.Component {
         this.state = {
             msg: ''
         };
+        this.handleChangeMessage = this.handleChangeMessage.bind(this);
+        this.sendMessage = this.sendMessage.bind(this);
     }
 
+    handleChangeMessage(e) {
+        this.setState({msg: e.target.value});
+    }
+    
+    sendMessage() {
+        console.log("inside sendMessage");
+        if (this.props.registeredForRoom) {
+            console.log("inside inner sendMessage");
+            this.props
+                .socket
+                .emit('sendmsg', {
+                    roomName: this.props.roomName,
+                    msg: this.state.msg
+                });
+            this.state.msg = '';
+        }
+    }
+    
     render() {
         return (
             <div className="input-box">
                 <TextField
                     hintText={this.placeholder}
-                    onChange={this.props.handleChangeMessage}
-                    value={this.props.msg}></TextField>
-                <FlatButton onClick={this.props.sendMessage}>send</FlatButton>
+                    onChange={this.handleChangeMessage}
+                    value={this.state.msg}></TextField>
+                <FlatButton onClick={this.sendMessage}>send</FlatButton>
             </div>
         );
     }
@@ -30,7 +50,9 @@ class ChatBox extends React.Component {
 
 ChatBox.propTypes = {
     socket: PropTypes.object.isRequired,
-    handleChangeMessage: PropTypes.func
+    handleChangeMessage: PropTypes.func,
+    propagateToParent: PropTypes.func,
+    roomName: PropTypes.string
 };
 
 export default ChatBox;

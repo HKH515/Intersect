@@ -17,70 +17,25 @@ class App extends Component {
 
     constructor() {
         super();
+        
         this.socket = socketClient('http://localhost:8080');
-        this.username = "";
-        this.loggedIn = false;
-        this.roomName = "lobby";
-        this.registeredForRoom = false;
-        this.messages = [];
-        this.msg = '';
-        this.handleChangeMessage = this
-            .handleChangeMessage
-            .bind(this);
-        this.handleChangeUsername = this
-            .handleChangeUsername
-            .bind(this);
-        this.loginUser = this
-            .loginUser
-            .bind(this);
-        this.sendMessage = this
-            .sendMessage
-            .bind(this);
+        this.state = {
+            username: "",
+            loggedIn: false,
+            roomName: "lobby",
+            registeredForRoom: false,
+            messages: [],
+            servers: []
+        };
+        this.propagateToParent = this.propagateToParent.bind(this);
+    }
+
+    propagateToParent(changedProps) {
+        this.setState(changedProps);
     }
 
     componentDidCatch(error, info) {
         console.log(error);
-    }
-
-    handleChangeUsername = (e) => {
-        this.username = e.target.value;
-        console.log(this.username);
-    }
-
-    handleChangeMessage = (e) => {
-        this.msg = e.target.value;
-    }
-
-    loginUser() {
-        console.log("trying to login with username '" + this.username + "'");
-        this
-            .socket
-            .emit('adduser', this.username, function (available) {
-                console.log("inside addUser callback...");
-                if (available) {
-                    console.log("username is available!");
-                    this.loggedIn = true;
-                    //return <Redirect to='/rooms/:roomID' />
-                } else {
-                    console.log("username is taken!");
-                }
-            }.bind(this));
-        this.loggedIn = true;
-        console.log(this.loggedIn);
-    }
-
-    sendMessage() {
-        console.log("inside sendMessage");
-        if (this.registeredForRoom) {
-            console.log("inside inner sendMessage");
-            this
-                .socket
-                .emit('sendmsg', {
-                    roomName: this.roomName,
-                    msg: this.msg
-                });
-            this.msg = '';
-        }
     }
 
     /*getChildContext() {
@@ -93,15 +48,17 @@ class App extends Component {
                 <MuiThemeProvider>
                     <Home
                         socket={this.socket}
-                        username={this.username}
-                        roomName={this.roomName}
-                        loggedIn={this.loggedIn}
-                        registeredForRoom={this.registeredForRoom}
+                        username={this.state.username}
+                        roomName={this.state.roomName}
+                        loggedIn={this.state.loggedIn}
+                        registeredForRoom={this.state.registeredForRoom}
                         handleChangeUsername={this.handleChangeUsername}
                         handleChangeMessage={this.handleChangeMessage}
-                        messages={this.messages}
+                        messages={this.state.messages}
                         sendMessage={this.sendMessage}
-                        loginUser={this.loginUser}/>
+                        servers={this.state.servers}
+                        loadServers={this.loadServers}
+                        propagateToParent={this.propagateToParent}/>
                 </MuiThemeProvider>
             </div>
         );
@@ -115,10 +72,8 @@ App.propTypes = {
     registeredForRoom: PropTypes.bool,
     loggedIn: PropTypes.bool,
     messages: PropTypes.array,
-    handleChangeUsername: PropTypes.func,
-    handleChangeMessage: PropTypes.func,
-    sendMessage: PropTypes.func,
-    loginUser: PropTypes.func
+    propagateToParent: PropTypes.func,
+    servers: PropTypes.array
 };
 
 export default App;

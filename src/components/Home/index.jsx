@@ -35,7 +35,9 @@ class Home extends React.Component {
                 <SideNav
                     username={this.props.username}
                     socket={this.props.socket}
-                    loggedIn={this.props.loggedIn}/>
+                    loggedIn={this.props.loggedIn}
+                    servers={this.props.servers}
+                    propagateToParent={this.props.propagateToParent}/>
                 <header className="App-header">
                     <h1 className="App-title">
                         Intersect
@@ -46,15 +48,16 @@ class Home extends React.Component {
                     username={this.props.username}
                     roomName={this.props.roomName}
                     loggedIn={this.props.loggedIn}
-                    handleChangeUsername={this.props.handleChangeUsername}
-                    loginUser={this.props.loginUser}/>
+                    loginUser={this.props.loginUser}
+                    propagateToParent={this.props.propagateToParent}/>
                 <Chat
                     socket={this.props.socket}
                     username={this.props.username}
                     roomName={this.props.roomName}
                     loggedIn={this.props.loggedIn}
                     registeredForRoom={this.props.registeredForRoom}
-                    messages={this.props.messages}/>
+                    messages={this.props.messages}
+                    propagateToParent={this.props.propagateToParent}/>
                 <ChatBox
                     socket={this.props.socket}
                     username={this.props.username}
@@ -62,7 +65,7 @@ class Home extends React.Component {
                     loggedIn={this.props.loggedIn}
                     registeredForRoom={this.props.registeredForRoom}
                     messages={this.props.messages}
-                    handleChangeM/>
+                    propagateToParent={this.props.propagateToParent}/>
             </div>
         );
     }
@@ -75,10 +78,8 @@ Home.propTypes = {
     registeredForRoom: PropTypes.bool,
     loggedIn: PropTypes.bool,
     messages: PropTypes.array,
-    handleChangeUsername: PropTypes.func,
-    handleChangeMessage: PropTypes.func,
-    sendMessage: PropTypes.func,
-    loginUser: PropTypes.func
+    servers: PropTypes.array,
+    propagateToParent: PropTypes.func
 };
 
 export default Home;

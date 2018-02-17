@@ -26,16 +26,20 @@ class SideNav extends React.Component {
                 <p>Welcome {this.props.username}!</p>
                 <RaisedButton label="Toggle Drawer" onClick={this.handleToggle}/>
                 <Drawer open={this.state.open}>
-                    <ServerList socket={this.props.socket}/>
+                    <ServerList socket={this.props.socket}
+                    servers={this.props.servers}
+                    propagateToParent={this.props.propagateToParent}/>
                 </Drawer>
             </div>
         );
     }
 };
 
-SideNav.propsTypes = {
+SideNav.propTypes = {
     socket: PropTypes.object.isRequired,
-    username: PropTypes.string
+    username: PropTypes.string,
+    servers: PropTypes.array,
+    propagateToParent: PropTypes.func
 };
 
 export default SideNav;

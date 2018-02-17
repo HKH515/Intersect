@@ -17,7 +17,7 @@ class Chat extends React.Component {
         };
     }
 
-    componentDidUpdate() {
+    /*componentDidUpdate() {
         // If we are not in a room, we join the current room selected (lobby by default)
         if (this.props.loggedIn) {
             console.log("trying to join room");
@@ -53,7 +53,7 @@ class Chat extends React.Component {
                 });
         }
 
-    }
+    }*/
 
     render() {
         return (
@@ -84,7 +84,8 @@ Chat.propTypes = {
     username: PropTypes.string,
     loggedIn: PropTypes.bool,
     messages: PropTypes.array,
-    handleChangeMessage: PropTypes.func
+    handleChangeMessage: PropTypes.func,
+    propagateToParent: PropTypes.func
 };
 
 export default Chat;

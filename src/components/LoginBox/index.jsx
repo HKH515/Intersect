@@ -20,8 +20,12 @@ class LoginBox extends React.Component {
             loggedIn: props.loggedIn,
             open: true
         };
-        this.loginUser = this.loginUser.bind(this);
-        this.handleChangeUsername = this.handleChangeUsername.bind(this);
+        this.loginUser = this
+            .loginUser
+            .bind(this);
+        this.handleChangeUsername = this
+            .handleChangeUsername
+            .bind(this);
     }
 
     loginUser() {
@@ -34,17 +38,16 @@ class LoginBox extends React.Component {
                 if (available) {
                     console.log("username is available!");
                     this.setState({open: false, loggedIn: true});
+                    console.log("loggedIn : " + this.state.loggedIn);
+
+                    this
+                        .props
+                        .propagateToParent({username: this.state.username, loggedIn: this.state.loggedIn});
                     //return <Redirect to='/rooms/:roomID' />
                 } else {
                     console.log("username is taken!");
                 }
             }.bind(this));
-        this.state.loggedIn = true;
-        console.log(this.props.loggedIn);
-
-        this
-            .props
-            .propagateToParent(this.state);
     }
     handleChangeUsername = (e) => {
         this.state.username = e.target.value;
@@ -67,10 +70,8 @@ class LoginBox extends React.Component {
                 open={this.state.open}
                 actions={actions}
                 onRequestClose={this.loginUser}>
-                <p>User login status: {this.state.open}</p>
-                <TextField
-                    hintText={this.placeholder}
-                    onChange={this.handleChangeUsername}/>
+                <p>User login status: {this.state.loggedIn}</p>
+                <TextField hintText={this.placeholder} onChange={this.handleChangeUsername}/>
             </Dialog>
         );
     }

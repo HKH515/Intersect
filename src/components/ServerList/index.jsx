@@ -5,6 +5,11 @@ import FontIcon from 'material-ui/FontIcon';
 
 // UI
 import {List, ListItem} from 'material-ui/List';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+
 
 class ServerList extends React.Component {
     constructor(props) {
@@ -12,7 +17,6 @@ class ServerList extends React.Component {
         this.state = {
             roomName: this.props.roomName,
             registeredForRoom: this.props.registeredForRoom,
-            loggedIn: this.props.loggedIn,
             servers: this.props.servers
         };
         this.loadServers = this.loadServers.bind(this);
@@ -23,26 +27,28 @@ class ServerList extends React.Component {
         this.loadServers();
     }
 
-    joinServer() {
+    joinServer(item) {
+        console.log("inside joinServer");
+        var roomToJoin = item.target.innerHTML;
+        console.log("login status: " + this.props.loggedIn);
         if (this.props.loggedIn) {
             console.log("trying to join room");
-            this
+            this.props
                 .socket
                 .emit('joinroom', {
-                    room: this.props.roomName,
-                    pass: ""
+                    room: roomToJoin,
                 }, function (success, reason) {
                     console.log(reason);
                     if (success) {
-                        this.state.registeredForRoom = true;
-                        console.log("successfully joined room '" + this.props.roomName + "'");
+                        this.setState({registeredForRoom: true, roomName: item});
+                        this.props.propagateToParent({registeredForRoom: this.state.registeredForRoom, roomName: this.state.roomName});
+                        console.log("successfully joined room '" + this.state.roomName + "'");
                     } else {
                         console.log("failed to join room: " + reason);
                     }
 
                 }.bind(this));
         }
-        this.props.propagateToParent(this.state);
     }
 
 
@@ -66,7 +72,7 @@ class ServerList extends React.Component {
                 }
                 //console.log("rooms: " + servers); this.setState({servers});
             }.bind(this));
-            this.props.propagateToParent(this.state);
+            this.props.propagateToParent({servers: this.state.servers});
         }
     render() {
         console.log("objects.keys(servers) : " + Object.keys(this.state.servers));
@@ -77,11 +83,12 @@ class ServerList extends React.Component {
                         .state
                         .servers
                         .map(item => (
-                            <ListItem key={item}>{item}</ListItem>
+                            <ListItem onClick={this.joinServer} key={item}>{item}</ListItem>
                         ))}
-                    <ListItem className="addRoom">
+                        <ListItem>
+                    <FlatButton className="addRoom">
                         <FontIcon className="material-icons">add</FontIcon>
-                    </ListItem>
+                    </FlatButton></ListItem>
                 </List>
             </div>
         );
@@ -94,7 +101,8 @@ ServerList.propTypes = {
     roomName: PropTypes.string,
     servers: PropTypes.array,
     loadServers: PropTypes.func,
-    propagateToParent: PropTypes.func
+    propagateToParent: PropTypes.func,
+    registeredForRoom: PropTypes.bool
 };
 
 export default ServerList;

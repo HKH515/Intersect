@@ -22,7 +22,7 @@ class App extends Component {
         this.state = {
             username: "",
             loggedIn: false,
-            roomName: "lobby",
+            roomName: "",
             registeredForRoom: false,
             messages: [],
             servers: []
@@ -30,6 +30,9 @@ class App extends Component {
         this.propagateToParent = this.propagateToParent.bind(this);
     }
 
+    /*
+     * This function is responsible for setting props changed by children global
+     */
     propagateToParent(changedProps) {
         this.setState(changedProps);
     }
@@ -51,14 +54,12 @@ class App extends Component {
                         username={this.state.username}
                         roomName={this.state.roomName}
                         loggedIn={this.state.loggedIn}
-                        registeredForRoom={this.state.registeredForRoom}
-                        handleChangeUsername={this.handleChangeUsername}
-                        handleChangeMessage={this.handleChangeMessage}
+                        registeredForRoom={true}
                         messages={this.state.messages}
-                        sendMessage={this.sendMessage}
                         servers={this.state.servers}
                         loadServers={this.loadServers}
                         propagateToParent={this.propagateToParent}/>
+ 
                 </MuiThemeProvider>
             </div>
         );

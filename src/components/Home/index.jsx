@@ -37,7 +37,9 @@ class Home extends React.Component {
                     socket={this.props.socket}
                     loggedIn={this.props.loggedIn}
                     servers={this.props.servers}
-                    propagateToParent={this.props.propagateToParent}/>
+                    propagateToParent={this.props.propagateToParent}
+                    roomName={this.props.roomName}
+                    registeredForRoom={this.props.registeredForRoom}/>
                 <header className="App-header">
                     <h1 className="App-title">
                         Intersect
@@ -66,6 +68,12 @@ class Home extends React.Component {
                     registeredForRoom={this.props.registeredForRoom}
                     messages={this.props.messages}
                     propagateToParent={this.props.propagateToParent}/>
+                                       <p>username: {this.props.username}</p> 
+                       <p>roomName: {this.props.roomName}</p> 
+                       <p>loggedIn: {this.props.loggedIn}</p> 
+                       <p>registeredForRoom: {this.props.registeredForRoom}</p> 
+                       <p>messages: {this.props.messages}</p> 
+                       <p>servers: {this.props.servers}</p>
             </div>
         );
     }

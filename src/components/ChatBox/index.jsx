@@ -42,7 +42,8 @@ class ChatBox extends React.Component {
                     hintText={this.placeholder}
                     onChange={this.handleChangeMessage}
                     value={this.state.msg}></TextField>
-                <FlatButton onClick={this.sendMessage}>send</FlatButton>
+                <RaisedButton onClick={this.sendMessage} disabled={!this.props.registeredForRoom}>send</RaisedButton>
+                <p>registeredForRoom: {this.props.registeredForRoom}</p>
             </div>
         );
     }
@@ -52,7 +53,8 @@ ChatBox.propTypes = {
     socket: PropTypes.object.isRequired,
     handleChangeMessage: PropTypes.func,
     propagateToParent: PropTypes.func,
-    roomName: PropTypes.string
+    roomName: PropTypes.string,
+    registeredForRoom: PropTypes.bool
 };
 
 export default ChatBox;

@@ -13,6 +13,7 @@ class Chat extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            errorOpen: false,
             messages: []
         };
     }
@@ -58,10 +59,9 @@ class Chat extends React.Component {
     render() {
         return (
             <div>
-                {this.props.registeredForRoom
-                    ? <Dialog title="Not authorized" modal={false}>
-                        </Dialog>
-                    : <List>
+                    <Dialog title="Not authorized" modal={false} open={!this.props.registeredForRoom} onRequestClose={() => (this.setState({errorOpen: false}))}>
+                    </Dialog>
+                    <List>
                         {this
                             .props
                             .messages
@@ -70,10 +70,8 @@ class Chat extends React.Component {
                             ))}
 
                     </List>
-}
             </div>
         );
-        return null;
     }
 };
 

@@ -24,20 +24,33 @@ class App extends Component {
         this.registeredForRoom = false;
         this.messages = [];
         this.msg = '';
-        this.handleChangeUsername = this.handleChangeUsername.bind(this);
-        this.loginUser = this.loginUser.bind(this);
-        this.sendMessage = this.sendMessage.bind(this);
+        this.handleChangeMessage = this
+            .handleChangeMessage
+            .bind(this);
+        this.handleChangeUsername = this
+            .handleChangeUsername
+            .bind(this);
+        this.loginUser = this
+            .loginUser
+            .bind(this);
+        this.sendMessage = this
+            .sendMessage
+            .bind(this);
     }
 
     componentDidCatch(error, info) {
         console.log(error);
     }
 
-    handleChangeUsername= (e) => {
+    handleChangeUsername = (e) => {
         this.username = e.target.value;
         console.log(this.username);
     }
-    
+
+    handleChangeMessage = (e) => {
+        this.msg = e.target.value;
+    }
+
     loginUser() {
         console.log("trying to login with username '" + this.username + "'");
         this
@@ -52,6 +65,8 @@ class App extends Component {
                     console.log("username is taken!");
                 }
             }.bind(this));
+        this.loggedIn = true;
+        console.log(this.loggedIn);
     }
 
     sendMessage() {
@@ -86,8 +101,7 @@ class App extends Component {
                         handleChangeMessage={this.handleChangeMessage}
                         messages={this.messages}
                         sendMessage={this.sendMessage}
-                        loginUser={this.loginUser}
-/>
+                        loginUser={this.loginUser}/>
                 </MuiThemeProvider>
             </div>
         );

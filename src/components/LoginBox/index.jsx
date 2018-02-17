@@ -16,38 +16,45 @@ class LoginBox extends React.Component {
         this.placeholder = "Enter username...";
         this.errorText = "A username is required";
         this.state = {
-            tmpUsername: ""
+            open: true
         };
+        this.handleClose = this
+            .handleClose
+            .bind(this)
+    }
+
+    handleClose() {
+        this.setState({open: false});        
+        this.props.loginUser()
     }
 
     // handleChange(e) {    const name = e.target.value;
     // this.props.nameHandler(name); }
 
-    /*componentWillUpdate() {
-        if (this.props.username === '') {
-            this.setState({hidden : false});
-        }
-        else {
-            this.setState({hidden : true});
-        }
-    }*/
-
     render() {
-        if (!this.props.loggedIn) {
-            return (
-                <div className="login-box popup">
-                    <Dialog title="Select a username" modal={false} open={!this.props.loggedIn}>
-                        <TextField
-                            hintText={this.placeholder}
-                            onChange={this.props.handleChangeUsername}></TextField>
-                        <FlatButton label="Submit" onClick={this.props.loginUser}/>
-                    </Dialog>
-                </div>
-            );
-        } else {
-            return <div></div>;
-        }
-
+        const actions = [< FlatButton label = "Submit" primary = {
+                true
+            }
+            keyboardFocused = {
+                true
+            }
+            onClick = {
+                this.handleClose
+            } />];
+        return (
+            <Dialog
+                title="Select a username"
+                modal={false}
+                open={this.state.open}
+                actions={actions}
+                onRequestClose={this.handleClose}>
+                <p>User login status: {this.state.open}</p>
+                <TextField
+                    hintText={this.placeholder}
+                    onChange={this.props.handleChangeUsername}
+                    />
+            </Dialog>
+        );
     }
 };
 

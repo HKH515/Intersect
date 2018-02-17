@@ -16,10 +16,6 @@ class SideNav extends React.Component {
         };
     }
 
-    componentDidMount() {
-        this.forceUpdate();
-    }
-
     handleToggle = () => this.setState({
         open: !this.state.open
     });

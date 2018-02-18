@@ -11,7 +11,8 @@ import TextField from 'material-ui/TextField';
 
 class Chat extends React.Component {
     componentWillReceiveProps(newProps) {
-        const { messages, registeredForRoom } = newProps;
+        const {registeredForRoom, loggedIn, roomName} = newProps;
+        this.setState({registeredForRoom, loggedIn, roomName});
     }
 
     constructor(props) {
@@ -19,66 +20,56 @@ class Chat extends React.Component {
         this.state = {
             errorOpen: false,
             messages: [],
-            registeredForRoom: false
+            registeredForRoom: false,
+            loggedIn: false,
+            roomName: ''
         };
     }
 
-    /*componentDidUpdate() {
-        // If we are not in a room, we join the current room selected (lobby by default)
-        if (this.props.loggedIn) {
-            console.log("trying to join room");
+    componentDidMount() {
             this
                 .props
                 .socket
-                .emit('joinroom', {
-                    room: this.props.roomName,
-                    pass: ""
-                }, function (success, reason) {
-                    console.log(reason);
-                    if (success) {
-                        this.props.registeredForRoom = true;
-                        console.log("successfully joined room '" + this.props.roomName + "'");
-                    } else {
-                        console.log("failed to join room: " + reason);
-                    }
-
-                }.bind(this));
-        }
-
-        if (this.props.registeredForRoom) {
-            this
-                .props
-                .socket
-                .on('updatechat', (room, msgs) => {
+                .on('updatechat', function (room, msgs) {
                     console.log("updating chat...");
-                    this.setState({messages: msgs});
-                    // let messagesTmp = Object.assign({}, this.state.messages);
-                    // messagesTmp.push(msg); messagesTmp.push('${(new Date()).toLocaleTimeString()}
+                    console.log(msgs);
+                    console.log("room:");
+                    console.log(room);
+                    console.log("this.state.roomName:");
+                    console.log(this.state.roomName);
+                    if (this.state.roomName == room) {
+                        this.setState({
+                            messages: msgs
+                        }, () => {
+                            this.props.propagateToParent({messages: msgs})
+                        });
+                    }
+                    // this.setState({messages: msgs}); let messagesTmp = Object.assign({},
+                    // this.state.messages); messagesTmp.push(msg); messagesTmp.push('${(new
+                    // Date()).toLocaleTimeString()}
                     // - ${msg}'); this.setState({messages: messagesTmp}); console.log("Messages: "
                     // + this.state.messagesTmp);
-                });
-        }
-
-    }*/
+                }.bind(this));
+    }
 
     render() {
-        /*
+        //const errorDialog = this.state.loggedIn && this.state.registeredForRoom;
+        console.log("inside chat/render");
+        console.log("messages:");
+        console.log(this.state.messages);
         return (
             <div>
-                    <Dialog title="Not authorized" modal={false} open={!this.state.registeredForRoom} onRequestClose={() => (this.setState({errorOpen: false}))}>
-                    </Dialog>
-                    <List>
-                        {this
-                            .props
-                            .messages
-                            .map(item => (
-                                <ListItem key={item}>{item}</ListItem>
-                            ))}
-
-                    </List>
+                
+                Number of messages: {this.state.messages.length}
+                {this
+                    .state
+                    .messages
+                    .map(item => {
+                        return <p key={item.timestamp+item.nick}>{item.nick}: {item.message}</p>
+                    })}
+                
             </div>
-        );*/
-        return null;
+        );
     }
 };
 

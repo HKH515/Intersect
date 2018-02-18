@@ -20,6 +20,7 @@ class Chat extends React.Component {
         this.state = {
             errorOpen: false,
             messages: [],
+            privmsg: [],
             registeredForRoom: false,
             loggedIn: false,
             roomName: ''
@@ -50,6 +51,16 @@ class Chat extends React.Component {
                     // - ${msg}'); this.setState({messages: messagesTmp}); console.log("Messages: "
                     // + this.state.messagesTmp);
                 }.bind(this));
+
+            this.props.socket.on('recv_privatemsg', function(messageObj) {
+                if(this.state.username === messageObj.nick) {
+                    this.setState({
+                        privmsg: messageObj
+                    }, () => {
+                        this.props.propagateToParent({privmsg: messageObj})
+                    });
+                }
+            }.bind(this));
     }
 
     render() {
@@ -57,12 +68,12 @@ class Chat extends React.Component {
         console.log("inside chat/render");
         console.log("messages:");
         console.log(this.state.messages);
+        const allMsg = Object.assign({},this.state.messages,this.state.privmsg);
+        console.log(allMsg);
         return (
             <div className="chatbox">
                 <List>
-                {this
-                    .state
-                    .messages
+                {this.state.messages
                     .map(item => {
                         return <ListItem key={item.timestamp+item.nick}>{item.timestamp}        {item.nick}: {item.message}</ListItem>
                     })}
@@ -79,6 +90,7 @@ Chat.propTypes = {
     username: PropTypes.string,
     loggedIn: PropTypes.bool,
     messages: PropTypes.array,
+    privmsg: PropTypes.array,
     handleChangeMessage: PropTypes.func,
     propagateToParent: PropTypes.func
 };

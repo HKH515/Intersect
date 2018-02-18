@@ -25,6 +25,7 @@ class App extends Component {
             roomName: "",
             registeredForRoom: false,
             messages: [],
+            privmsg: [],
             servers: []
         };
         this.propagateToParent = this.propagateToParent.bind(this);
@@ -56,6 +57,7 @@ class App extends Component {
                         loggedIn={this.state.loggedIn}
                         registeredForRoom={true}
                         messages={this.state.messages}
+                        privmsg={this.state.privmsg}
                         servers={this.state.servers}
                         propagateToParent={this.propagateToParent}/>
                 </MuiThemeProvider>
@@ -71,6 +73,7 @@ App.propTypes = {
     registeredForRoom: PropTypes.bool,
     loggedIn: PropTypes.bool,
     messages: PropTypes.array,
+    privmsg: PropTypes.array,
     propagateToParent: PropTypes.func,
     servers: PropTypes.array
 };

@@ -41,7 +41,8 @@ class Home extends React.Component {
             roomName: '',
             registeredForRoom: false,
             servers: [],
-            messages: []
+            messages: [],
+            privmsg: []
         };
     }
 
@@ -88,6 +89,7 @@ class Home extends React.Component {
                     loggedIn={this.state.loggedIn}
                     registeredForRoom={this.state.registeredForRoom}
                     messages={this.state.messages}
+                    privmsg={this.state.privmsg}
                     propagateToParent={this.props.propagateToParent}/>
                 <ChatBox
                     socket={this.props.socket}
@@ -96,6 +98,7 @@ class Home extends React.Component {
                     loggedIn={this.state.loggedIn}
                     registeredForRoom={this.state.registeredForRoom}
                     messages={this.state.messages}
+                    privmsg={this.state.privmsg}
                     propagateToParent={this.props.propagateToParent}/>
                 <p>username: {this.state.username}</p>
                 <p>roomName: {this.state.roomName}</p>
@@ -116,6 +119,7 @@ Home.propTypes = {
     registeredForRoom: PropTypes.bool,
     loggedIn: PropTypes.bool,
     messages: PropTypes.array,
+    privmsg: PropTypes.array,
     servers: PropTypes.array,
     propagateToParent: PropTypes.func
 };

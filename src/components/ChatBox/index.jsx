@@ -41,7 +41,16 @@ class ChatBox extends React.Component {
                 break;
             case '/msg':
                 var target = this.state.msg.split(' ')[1];
-                var msg = this.state.msg;
+                var message = this.state.msg.split(' ').splice(2,this.state.msg.length).join(' ');
+                this.props.socket.emit('users');
+                this.props.socket.on('userlist', (users) => {
+                    if(users.indexOf(target)>-1){
+                        this.props.socket.emit('privatemsg',{nick:target,message:message});
+                    }
+                });
+                /*var msg = this.state.msg.split(' ').splice(2,this.state.msg.length).join(' ');
+                this.props.socket.emit('privatemsg',{nick:target,message:msg});*/
+                this.state.msg = '';
                 break;
         }
     }

@@ -17,19 +17,42 @@ class ChatBox extends React.Component {
         this.state = {
             msg: '',
             registeredForRoom: false,
-            roomName: ''
+            roomName: '',
+            commands: ['/kick','/leave','/join','/ban','/msg']
         };
         this.handleChangeMessage = this.handleChangeMessage.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
+        this.handleCommand = this.handleCommand.bind(this);
     }
 
     handleChangeMessage(e) {
         this.setState({msg: e.target.value});
     }
+
+    handleCommand(command) {
+        switch(command){
+            case '/kick':
+                break;
+            case '/leave':
+                break;
+            case '/join':
+                break;
+            case '/ban':
+                break;
+            case '/msg':
+                var target = this.state.msg.split(' ')[1];
+                var msg = this.state.msg;
+                break;
+        }
+    }
     
     sendMessage() {
         console.log("inside sendMessage");
-        if (this.state.registeredForRoom && this.state.msg.length > 0) {
+        var command = this.state.msg.split(' ')[0];
+        if (this.state.commands.indexOf(command)>-1) {
+            this.handleCommand(command);
+        }
+        else if (this.state.registeredForRoom && this.state.msg.length > 0) {
             console.log("inside inner sendMessage");
             this.props
                 .socket

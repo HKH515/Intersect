@@ -20,6 +20,7 @@ class ServerList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            username: '',
             roomName: '',
             registeredForRoom: false,
             loggedIn: false,
@@ -27,6 +28,7 @@ class ServerList extends React.Component {
         };
         this.loadServers = this.loadServers.bind(this);
         this.joinServer = this.joinServer.bind(this);
+        this.addServer = this.addServer.bind(this);
     }
 
     componentDidMount() {
@@ -81,6 +83,15 @@ class ServerList extends React.Component {
             }.bind(this));
             //this.props.propagateToParent({servers: this.state.servers});
         }
+
+    addServer() {
+        var newRoom = 'newRoom';
+        console.log("adding server");
+        this.props.socket.emit('joinroom',{room:newRoom},() => {
+            this.props.socket.emit('op',{user:this.state.username, room:newRoom},() => {
+                this.loadServers();});});
+    }
+
     render() {
         console.log("objects.keys(servers) : " + Object.keys(this.state.servers));
         return (
@@ -92,7 +103,7 @@ class ServerList extends React.Component {
                         .map(item => (
                             <ListItem divider="true" onClick={this.joinServer} key={item} classes={this.state.roomName == item ? ["currentServer"] : []}>{item}</ListItem>
                         ))}
-                        <ListItem>
+                        <ListItem onClick={this.addServer}>
                     <FlatButton className="addRoom">
                         <FontIcon className="material-icons">add</FontIcon>
                     </FlatButton></ListItem>
@@ -105,6 +116,7 @@ class ServerList extends React.Component {
 ServerList.propTypes = {
     socket: PropTypes.object.isRequired,
     loggedIn: PropTypes.bool,
+    username: PropTypes.string,
     roomName: PropTypes.string,
     servers: PropTypes.array,
     loadServers: PropTypes.func,

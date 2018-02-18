@@ -38,6 +38,7 @@ class SideNav extends React.Component {
                     <ServerList
                         socket={this.props.socket}
                         loggedIn={this.state.loggedIn}
+                        username={this.state.username}
                         servers={this.state.servers}
                         propagateToParent={this.props.propagateToParent}
                         roomName={this.state.roomName}

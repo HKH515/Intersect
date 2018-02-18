@@ -58,16 +58,15 @@ class Chat extends React.Component {
         console.log("messages:");
         console.log(this.state.messages);
         return (
-            <div>
-                
-                Number of messages: {this.state.messages.length}
+            <div className="chatbox">
+                <List>
                 {this
                     .state
                     .messages
                     .map(item => {
-                        return <p key={item.timestamp+item.nick}>{item.nick}: {item.message}</p>
+                        return <ListItem key={item.timestamp+item.nick}>{item.timestamp}        {item.nick}: {item.message}</ListItem>
                     })}
-                
+                </List>
             </div>
         );
     }

@@ -29,7 +29,7 @@ class ChatBox extends React.Component {
     
     sendMessage() {
         console.log("inside sendMessage");
-        if (this.state.registeredForRoom) {
+        if (this.state.registeredForRoom && this.state.msg.length > 0) {
             console.log("inside inner sendMessage");
             this.props
                 .socket
@@ -49,7 +49,6 @@ class ChatBox extends React.Component {
                     onChange={this.handleChangeMessage}
                     value={this.state.msg}></TextField>
                 <RaisedButton onClick={this.sendMessage} disabled={!this.state.registeredForRoom}>send</RaisedButton>
-                <p>registeredForRoom: {this.state.registeredForRoom}</p>
             </div>
         );
     }

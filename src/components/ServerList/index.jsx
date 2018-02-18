@@ -11,7 +11,6 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-
 class ServerList extends React.Component {
     componentWillReceiveProps(newProps) {
         const {roomName, registeredForRoom,loggedIn} = newProps;
@@ -92,6 +91,13 @@ class ServerList extends React.Component {
                 this.loadServers();});});
     }
 
+    serverColor(item) {
+        if (this.state.roomName == item) {
+            return "#80DEEA";
+        }
+        return "#FFF";
+    }
+
     render() {
         console.log("objects.keys(servers) : " + Object.keys(this.state.servers));
         return (
@@ -101,7 +107,7 @@ class ServerList extends React.Component {
                         .state
                         .servers
                         .map(item => (
-                            <ListItem divider="true" onClick={this.joinServer} key={item} classes={this.state.roomName == item ? ["currentServer"] : []}>{item}</ListItem>
+                            <ListItem divider="true" onClick={this.joinServer} key={item} style={{backgroundColor: this.serverColor(item)}}>{item}</ListItem>
                         ))}
                         <ListItem onClick={this.addServer}>
                     <FlatButton className="addRoom">

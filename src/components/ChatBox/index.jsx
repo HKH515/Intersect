@@ -2,9 +2,14 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import CSSModules from 'react-css-modules';
 import {PropTypes} from 'prop-types';
+
+// UI
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import ContentSend from 'material-ui/svg-icons/content/send';
+import IconButton from 'material-ui/IconButton';
+
 
 class ChatBox extends React.Component {
     componentWillReceiveProps(newProps) {
@@ -71,7 +76,7 @@ class ChatBox extends React.Component {
                     hintText={this.placeholder}
                     onChange={this.handleChangeMessage}
                     value={this.state.msg}></TextField>
-                <RaisedButton onClick={this.sendMessage} disabled={!this.state.registeredForRoom}>send</RaisedButton>
+                <IconButton onClick={this.sendMessage} disabled={!this.state.registeredForRoom} tooltip="Send message"><ContentSend/></IconButton>
             </div>
         );
     }

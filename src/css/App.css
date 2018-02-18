@@ -37,3 +37,11 @@
   overflow:auto;
   height: 400px;
 }
+
+.selectedServer {
+  background-color: cyan;
+}
+
+.input-box {
+  width: 100%;
+}

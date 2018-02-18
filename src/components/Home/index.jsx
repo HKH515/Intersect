@@ -1,13 +1,8 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import CSSModules from 'react-css-modules';
+import React from 'react';
 import {PropTypes} from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 import ChatBox from '../ChatBox';
 import Chat from '../Chat';
-import ServerList from '../ServerList';
 import SideNav from '../SideNav';
 import LoginBox from '../LoginBox';
 
@@ -70,11 +65,6 @@ class Home extends React.Component {
                     propagateToParent={this.props.propagateToParent}
                     roomName={this.state.roomName}
                     registeredForRoom={this.state.registeredForRoom}/>
-                <header className="App-header">
-                    <h1 className="App-title">
-                        Intersect
-                    </h1>
-                </header >
                 <LoginBox
                     socket={this.props.socket}
                     username={this.state.username}
@@ -82,6 +72,7 @@ class Home extends React.Component {
                     loggedIn={this.state.loggedIn}
                     loginUser={this.state.loginUser}
                     propagateToParent={this.props.propagateToParent}/>
+                    <div className="chat">
                 <Chat
                     socket={this.props.socket}
                     username={this.state.username}
@@ -100,6 +91,7 @@ class Home extends React.Component {
                     messages={this.state.messages}
                     privmsg={this.state.privmsg}
                     propagateToParent={this.props.propagateToParent}/>
+                    </div>
                 <p>username: {this.state.username}</p>
                 <p>roomName: {this.state.roomName}</p>
                 <p>loggedIn: {(this.state.loggedIn ? "true" : "false")}</p>

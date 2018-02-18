@@ -27,7 +27,21 @@
   to { transform: rotate(360deg); }
 }
 
-.chatbox {
+.chat {
   padding-left: 20%;
+  width: 70%;
   text-align:left;
+}
+
+.chatView {
+  overflow:auto;
+  height: 400px;
+}
+
+.selectedServer {
+  background-color: cyan;
+}
+
+.input-box {
+  width: 100%;
 }

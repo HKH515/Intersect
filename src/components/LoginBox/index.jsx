@@ -1,13 +1,9 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import CSSModules from 'react-css-modules';
+import React from 'react';
 import {PropTypes} from 'prop-types';
-import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
 
 // UI
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 class LoginBox extends React.Component {
@@ -33,7 +29,6 @@ class LoginBox extends React.Component {
     }
 
     loginUser() {
-        var successfulLogin = false;
         console.log("trying to login with username '" + this.state.username + "'");
         this
             .props
@@ -68,7 +63,7 @@ class LoginBox extends React.Component {
         console.log("this should be true if login succeeded: " + this.state.loggedIn);
     }
     handleChangeUsername = (e) => {
-        this.state.username = e.target.value;
+        this.setState({username: e.target.value});
     }
 
     render() {
@@ -86,8 +81,7 @@ class LoginBox extends React.Component {
                 title="Select a username"
                 modal={false}
                 open={this.state.open}
-                actions={actions}
-                onRequestClose={this.loginUser}>
+                actions={actions}>
                 <p>User login status: {this.state.loggedIn}</p>
                 <TextField hintText={this.placeholder} onChange={this.handleChangeUsername}/>
             </Dialog>

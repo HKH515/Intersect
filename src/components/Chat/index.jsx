@@ -1,13 +1,9 @@
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import {PropTypes} from 'prop-types';
 
 // UI
-import {List, ListItem} from 'material-ui/List';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import List, {ListItem} from 'material-ui/List';
+import Autoscroll from 'autoscroll-react'
 
 class Chat extends React.Component {
     componentWillReceiveProps(newProps) {
@@ -68,6 +64,7 @@ class Chat extends React.Component {
         console.log("inside chat/render");
         console.log("messages:");
         console.log(this.state.messages);
+<<<<<<< HEAD
         const allMsg = Object.assign({},this.state.messages,this.state.privmsg);
         console.log(allMsg);
         return (
@@ -80,6 +77,32 @@ class Chat extends React.Component {
                 </List>
             </div>
         );
+=======
+        if (this.state.roomName !== '') {
+            return (
+                <div className="chatView">
+                    <List>
+                        {this
+                            .state
+                            .messages
+                            .map(item => {
+                                return <ListItem
+                                    key={item.timestamp + item.nick}
+                                    primaryText={item.message}
+                                    secondaryText={item.nick + " @ " + item.timestamp}></ListItem>
+                            })}
+                    </List>
+                </div>
+            );
+        } else {
+            return (
+                <div className="chatView">
+                    <List></List>
+                </div>
+            )
+        }
+
+>>>>>>> ff85c12749fad6d3f0e0fa53b66765e1655d951d
     }
 };
 
@@ -95,4 +118,4 @@ Chat.propTypes = {
     propagateToParent: PropTypes.func
 };
 
-export default Chat;
+export default Autoscroll(Chat);

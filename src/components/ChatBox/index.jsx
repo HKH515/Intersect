@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import CSSModules from 'react-css-modules';
+import React from 'react';
 import {PropTypes} from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+
+// UI
 import TextField from 'material-ui/TextField';
+import ContentSend from 'material-ui/svg-icons/content/send';
+import IconButton from 'material-ui/IconButton';
 
 class ChatBox extends React.Component {
     componentWillReceiveProps(newProps) {
@@ -18,11 +18,17 @@ class ChatBox extends React.Component {
             msg: '',
             registeredForRoom: false,
             roomName: '',
-            commands: ['/kick','/leave','/join','/ban','/msg']
+            commands: ['/kick', '/leave', '/join', '/ban', '/msg']
         };
-        this.handleChangeMessage = this.handleChangeMessage.bind(this);
-        this.sendMessage = this.sendMessage.bind(this);
-        this.handleCommand = this.handleCommand.bind(this);
+        this.handleChangeMessage = this
+            .handleChangeMessage
+            .bind(this);
+        this.sendMessage = this
+            .sendMessage
+            .bind(this);
+        this.handleCommand = this
+            .handleCommand
+            .bind(this);
     }
 
     handleChangeMessage(e) {
@@ -30,7 +36,7 @@ class ChatBox extends React.Component {
     }
 
     handleCommand(command) {
-        switch(command){
+        switch (command) {
             case '/kick':
                 break;
             case '/leave':
@@ -52,36 +58,46 @@ class ChatBox extends React.Component {
                 this.props.socket.emit('privatemsg',{nick:target,message:msg});*/
                 this.state.msg = '';
                 break;
+            default:
+                
         }
     }
-    
+
     sendMessage() {
         console.log("inside sendMessage");
-        var command = this.state.msg.split(' ')[0];
-        if (this.state.commands.indexOf(command)>-1) {
+        var command = this
+            .state
+            .msg
+            .split(' ')[0];
+        if (this.state.commands.indexOf(command) > -1) {
             this.handleCommand(command);
-        }
-        else if (this.state.registeredForRoom) {
+        } else if (this.state.registeredForRoom && this.state.msg.length > 0) {
             console.log("inside inner sendMessage");
-            this.props
+            this
+                .props
                 .socket
                 .emit('sendmsg', {
                     roomName: this.state.roomName,
                     msg: this.state.msg
                 });
-            this.state.msg = '';
+            this.setState({msg: ''});
         }
     }
-    
+
     render() {
         return (
             <div className="input-box">
                 <TextField
                     hintText={this.placeholder}
                     onChange={this.handleChangeMessage}
-                    value={this.state.msg}></TextField>
-                <RaisedButton onClick={this.sendMessage} disabled={!this.state.registeredForRoom}>send</RaisedButton>
-                <p>registeredForRoom: {this.state.registeredForRoom}</p>
+                    value={this.state.msg}
+                    style={{
+                    width: 1200
+                }}></TextField>
+                <IconButton
+                    onClick={this.sendMessage}
+                    disabled={!this.state.registeredForRoom}
+                    tooltip="Send message"><ContentSend/></IconButton>
             </div>
         );
     }

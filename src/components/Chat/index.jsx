@@ -61,19 +61,30 @@ class Chat extends React.Component {
         console.log("inside chat/render");
         console.log("messages:");
         console.log(this.state.messages);
-        return (
-            <div className="chatView">
-                <List>
-                    {this.state.messages
-                        .map(item => {
-                            return <ListItem
-                                key={item.timestamp + item.nick}
-                                primaryText={item.message}
-                                secondaryText={item.nick + " @ " + item.timestamp}></ListItem>
-                        })}
-                </List>
-            </div>
-        );
+        if (this.state.roomName != '') {
+            return (
+                <div className="chatView">
+                    <List>
+                        {this
+                            .state
+                            .messages
+                            .map(item => {
+                                return <ListItem
+                                    key={item.timestamp + item.nick}
+                                    primaryText={item.message}
+                                    secondaryText={item.nick + " @ " + item.timestamp}></ListItem>
+                            })}
+                    </List>
+                </div>
+            );
+        } else {
+            return (
+                <div className="chatView">
+                    <List></List>
+                </div>
+            )
+        }
+
     }
 };
 

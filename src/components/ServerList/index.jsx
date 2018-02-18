@@ -13,8 +13,8 @@ import TextField from 'material-ui/TextField';
 
 class ServerList extends React.Component {
     componentWillReceiveProps(newProps) {
-        const {roomName, registeredForRoom,loggedIn} = newProps;
-        this.setState({roomName, registeredForRoom,loggedIn});
+        const {roomName, registeredForRoom, loggedIn} = newProps;
+        this.setState({roomName, registeredForRoom, loggedIn});
     }
     constructor(props) {
         super(props);
@@ -25,9 +25,15 @@ class ServerList extends React.Component {
             loggedIn: false,
             servers: []
         };
-        this.loadServers = this.loadServers.bind(this);
-        this.joinServer = this.joinServer.bind(this);
-        this.addServer = this.addServer.bind(this);
+        this.loadServers = this
+            .loadServers
+            .bind(this);
+        this.joinServer = this
+            .joinServer
+            .bind(this);
+        this.addServer = this
+            .addServer
+            .bind(this);
     }
 
     componentDidMount() {
@@ -40,25 +46,36 @@ class ServerList extends React.Component {
         var roomToJoin = item.target.innerHTML;
         console.log("login status: " + this.state.loggedIn);
         if (this.state.loggedIn) {
-            console.log("trying to join room");
-            this.props
-                .socket
-                .emit('joinroom', {
-                    room: roomToJoin,
-                }, function (success, reason) {
-                    console.log(reason);
-                    if (success) {
-                        this.setState({registeredForRoom: true, roomName: roomToJoin});
-                        this.props.propagateToParent({registeredForRoom: this.state.registeredForRoom, roomName: this.state.roomName});
-                        console.log("successfully joined room '" + this.state.roomName + "'");
-                    } else {
-                        console.log("failed to join room: " + reason);
-                    }
+            // If we are already joined, we want to leave
+            if (this.state.roomName == roomToJoin) {
+                console.log("we want to leave this!");
+                this.props.socket.emit('partroom', roomToJoin);
+                this.setState({roomName: '', registeredForRoom: false}, () => {this.props.propagateToParent({roomName: this.state.roomName, registeredForRoom: this.state.registeredForRoom})});
+            }
+            // Otherwise, we join the server)
+            else {
+                console.log("trying to join room");
+                this
+                    .props
+                    .socket
+                    .emit('joinroom', {
+                        room: roomToJoin
+                    }, function (success, reason) {
+                        console.log(reason);
+                        if (success) {
+                            this.setState({registeredForRoom: true, roomName: roomToJoin});
+                            this
+                                .props
+                                .propagateToParent({registeredForRoom: this.state.registeredForRoom, roomName: this.state.roomName});
+                            console.log("successfully joined room '" + this.state.roomName + "'");
+                        } else {
+                            console.log("failed to join room: " + reason);
+                        }
 
-                }.bind(this));
+                    }.bind(this));
+            }
         }
     }
-
 
     loadServers() {
         console.log("inside loadServers...");
@@ -77,18 +94,37 @@ class ServerList extends React.Component {
                     tmpServers.push(room);
                     console.log("printing name of room: " + room);
                 }
-                this.setState({servers: tmpServers}, () => {this.props.propagateToParent({servers: this.state.servers})});                
+                this.setState({
+                    servers: tmpServers
+                }, () => {
+                    this
+                        .props
+                        .propagateToParent({servers: this.state.servers})
+                });
                 //console.log("rooms: " + servers); this.setState({servers});
             }.bind(this));
-            //this.props.propagateToParent({servers: this.state.servers});
-        }
+        //this.props.propagateToParent({servers: this.state.servers});
+    }
 
     addServer() {
         var newRoom = 'newRoom';
         console.log("adding server");
-        this.props.socket.emit('joinroom',{room:newRoom},() => {
-            this.props.socket.emit('op',{user:this.state.username, room:newRoom},() => {
-                this.loadServers();});});
+        this
+            .props
+            .socket
+            .emit('joinroom', {
+                room: newRoom
+            }, () => {
+                this
+                    .props
+                    .socket
+                    .emit('op', {
+                        user: this.state.username,
+                        room: newRoom
+                    }, () => {
+                        this.loadServers();
+                    });
+            });
     }
 
     serverColor(item) {
@@ -107,12 +143,19 @@ class ServerList extends React.Component {
                         .state
                         .servers
                         .map(item => (
-                            <ListItem divider="true" onClick={this.joinServer} key={item} style={{backgroundColor: this.serverColor(item)}}>{item}</ListItem>
+                            <ListItem
+                                divider="true"
+                                onClick={this.joinServer}
+                                key={item}
+                                style={{
+                                backgroundColor: this.serverColor(item)
+                            }}>{item}</ListItem>
                         ))}
-                        <ListItem onClick={this.addServer}>
-                    <FlatButton className="addRoom">
-                        <FontIcon className="material-icons">add</FontIcon>
-                    </FlatButton></ListItem>
+                    <ListItem onClick={this.addServer}>
+                        <FlatButton className="addRoom">
+                            <FontIcon className="material-icons">add</FontIcon>
+                        </FlatButton>
+                    </ListItem>
                 </List>
             </div>
         );

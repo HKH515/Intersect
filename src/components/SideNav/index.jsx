@@ -32,11 +32,12 @@ class SideNav extends React.Component {
     render() {
         return (
             <div>
-                {this.state.loggedIn == true && <p> Welcome {this.props.username}!</p>}
+                {this.state.loggedIn === true && <p> Welcome {this.props.username}!</p>}
                 <RaisedButton label="Server list" onClick={this.handleToggle}/>
                 <Drawer open={this.state.open}>
                     <ServerList
                         socket={this.props.socket}
+                        loggedIn={this.state.loggedIn}
                         servers={this.state.servers}
                         propagateToParent={this.props.propagateToParent}
                         roomName={this.state.roomName}

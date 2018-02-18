@@ -13,14 +13,15 @@ import TextField from 'material-ui/TextField';
 
 class ServerList extends React.Component {
     componentWillReceiveProps(newProps) {
-        const {roomName, registeredForRoom} = newProps;
-        this.setState({roomName, registeredForRoom});
+        const {roomName, registeredForRoom,loggedIn} = newProps;
+        this.setState({roomName, registeredForRoom,loggedIn});
     }
     constructor(props) {
         super(props);
         this.state = {
             roomName: '',
             registeredForRoom: false,
+            loggedIn: false,
             servers: []
         };
         this.loadServers = this.loadServers.bind(this);

@@ -1,13 +1,8 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import CSSModules from 'react-css-modules';
+import React from 'react';
 import {PropTypes} from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 import ChatBox from '../ChatBox';
 import Chat from '../Chat';
-import ServerList from '../ServerList';
 import SideNav from '../SideNav';
 import LoginBox from '../LoginBox';
 

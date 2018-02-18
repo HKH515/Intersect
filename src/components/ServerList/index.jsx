@@ -1,15 +1,10 @@
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import {PropTypes} from 'prop-types';
 import FontIcon from 'material-ui/FontIcon';
 
 // UI
 import {List, ListItem} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 
 class ServerList extends React.Component {
     componentWillReceiveProps(newProps) {
@@ -47,7 +42,7 @@ class ServerList extends React.Component {
         console.log("login status: " + this.state.loggedIn);
         if (this.state.loggedIn) {
             // If we are already joined, we want to leave
-            if (this.state.roomName == roomToJoin) {
+            if (this.state.roomName === roomToJoin) {
                 console.log("we want to leave this!");
                 this.props.socket.emit('partroom', roomToJoin);
                 this.setState({roomName: '', registeredForRoom: false}, () => {this.props.propagateToParent({roomName: this.state.roomName, registeredForRoom: this.state.registeredForRoom})});
@@ -128,7 +123,7 @@ class ServerList extends React.Component {
     }
 
     serverColor(item) {
-        if (this.state.roomName == item) {
+        if (this.state.roomName === item) {
             return "#80DEEA";
         }
         return "#FFF";

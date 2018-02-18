@@ -1,14 +1,8 @@
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import {PropTypes} from 'prop-types';
 
 // UI
-import List, {ListItem, ListItemText} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import List, {ListItem} from 'material-ui/List';
 import Autoscroll from 'autoscroll-react'
 
 class Chat extends React.Component {
@@ -39,7 +33,7 @@ class Chat extends React.Component {
                 console.log(room);
                 console.log("this.state.roomName:");
                 console.log(this.state.roomName);
-                if (this.state.roomName == room) {
+                if (this.state.roomName === room) {
                     this.setState({
                         messages: msgs
                     }, () => {
@@ -61,7 +55,7 @@ class Chat extends React.Component {
         console.log("inside chat/render");
         console.log("messages:");
         console.log(this.state.messages);
-        if (this.state.roomName != '') {
+        if (this.state.roomName !== '') {
             return (
                 <div className="chatView">
                     <List>

@@ -9,10 +9,19 @@ import ServerList from '../ServerList';
 import {PropTypes} from 'prop-types';
 
 class SideNav extends React.Component {
+    componentWillReceiveProps(newProps) {
+        const { servers, roomName, registeredForRoom, username, loggedIn} = newProps;
+        this.setState({servers, roomName, registeredForRoom, username, loggedIn});
+    }
     constructor(props) {
         super(props);
         this.state = {
-            open: false
+            open: false,
+            servers: [],
+            roomName: '',
+            registeredForRoom: false,
+            username: '',
+            loggedIn: false
         };
     }
 
@@ -23,17 +32,15 @@ class SideNav extends React.Component {
     render() {
         return (
             <div>
-                <p>Welcome {this.props.username}!</p>
-                {this.props.loggedIn == true && < p > You appear to be logged in !</p>
-}
+                {this.state.loggedIn == true && <p> Welcome {this.props.username}!</p>}
                 <RaisedButton label="Server list" onClick={this.handleToggle}/>
                 <Drawer open={this.state.open}>
                     <ServerList
                         socket={this.props.socket}
-                        servers={this.props.servers}
+                        servers={this.state.servers}
                         propagateToParent={this.props.propagateToParent}
-                        roomName={this.props.roomName}
-                        registeredForRoom={this.props.registeredForRoom}/>
+                        roomName={this.state.roomName}
+                        registeredForRoom={this.state.registeredForRoom}/>
                 </Drawer>
             </div>
         );

@@ -11,13 +11,17 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 class LoginBox extends React.Component {
+    componentWillReceiveProps(newProps) {
+        const {username, loggedIn} = newProps;
+        this.setState({username, loggedIn});
+    }
     constructor(props) {
         super(props);
         this.placeholder = "Enter username...";
         this.errorText = "A username is required";
         this.state = {
-            username: props.username,
-            loggedIn: props.loggedIn,
+            username: '',
+            loggedIn: '',
             open: true
         };
         this.loginUser = this
@@ -29,25 +33,39 @@ class LoginBox extends React.Component {
     }
 
     loginUser() {
+        var successfulLogin = false;
         console.log("trying to login with username '" + this.state.username + "'");
         this
             .props
             .socket
-            .emit('adduser', this.state.username, function (available) {
+            .emit('adduser', this.state.username, (available) => {
+                if (available) {
+                    console.log("username is available!");
+                    this.setState({
+                        open: false,
+                        loggedIn: true
+                    }, () => {
+                        this
+                            .props
+                            .propagateToParent({username: this.state.username, loggedIn: this.state.loggedIn});
+                    });
+                    console.log("loggedIn : " + this.state.loggedIn);
+                } else {
+                    console.log("username is taken!")
+                }
+            });
+
+        /*function (available) {
                 console.log("inside addUser callback...");
                 if (available) {
                     console.log("username is available!");
-                    this.setState({open: false, loggedIn: true});
                     console.log("loggedIn : " + this.state.loggedIn);
-
-                    this
-                        .props
-                        .propagateToParent({username: this.state.username, loggedIn: this.state.loggedIn});
-                    //return <Redirect to='/rooms/:roomID' />
+                    this.setState({open: false, loggedIn: true});
                 } else {
                     console.log("username is taken!");
                 }
-            }.bind(this));
+            }.bind(this));*/
+        console.log("this should be true if login succeeded: " + this.state.loggedIn);
     }
     handleChangeUsername = (e) => {
         this.state.username = e.target.value;

@@ -57,9 +57,7 @@ class App extends Component {
                         registeredForRoom={true}
                         messages={this.state.messages}
                         servers={this.state.servers}
-                        loadServers={this.loadServers}
                         propagateToParent={this.propagateToParent}/>
- 
                 </MuiThemeProvider>
             </div>
         );

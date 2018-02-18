@@ -10,11 +10,16 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 class Chat extends React.Component {
+    componentWillReceiveProps(newProps) {
+        const { messages, registeredForRoom } = newProps;
+    }
+
     constructor(props) {
         super(props);
         this.state = {
             errorOpen: false,
-            messages: []
+            messages: [],
+            registeredForRoom: false
         };
     }
 
@@ -57,9 +62,10 @@ class Chat extends React.Component {
     }*/
 
     render() {
+        /*
         return (
             <div>
-                    <Dialog title="Not authorized" modal={false} open={!this.props.registeredForRoom} onRequestClose={() => (this.setState({errorOpen: false}))}>
+                    <Dialog title="Not authorized" modal={false} open={!this.state.registeredForRoom} onRequestClose={() => (this.setState({errorOpen: false}))}>
                     </Dialog>
                     <List>
                         {this
@@ -71,7 +77,8 @@ class Chat extends React.Component {
 
                     </List>
             </div>
-        );
+        );*/
+        return null;
     }
 };
 

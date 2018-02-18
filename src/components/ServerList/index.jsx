@@ -12,26 +12,31 @@ import TextField from 'material-ui/TextField';
 
 
 class ServerList extends React.Component {
+    componentWillReceiveProps(newProps) {
+        const {roomName, registeredForRoom} = newProps;
+        this.setState({roomName, registeredForRoom});
+    }
     constructor(props) {
         super(props);
         this.state = {
-            roomName: this.props.roomName,
-            registeredForRoom: this.props.registeredForRoom,
-            servers: this.props.servers
+            roomName: '',
+            registeredForRoom: false,
+            servers: []
         };
         this.loadServers = this.loadServers.bind(this);
         this.joinServer = this.joinServer.bind(this);
     }
 
     componentDidMount() {
+        console.log("serverlist did mount");
         this.loadServers();
     }
 
     joinServer(item) {
         console.log("inside joinServer");
         var roomToJoin = item.target.innerHTML;
-        console.log("login status: " + this.props.loggedIn);
-        if (this.props.loggedIn) {
+        console.log("login status: " + this.state.loggedIn);
+        if (this.state.loggedIn) {
             console.log("trying to join room");
             this.props
                 .socket
@@ -40,7 +45,7 @@ class ServerList extends React.Component {
                 }, function (success, reason) {
                     console.log(reason);
                     if (success) {
-                        this.setState({registeredForRoom: true, roomName: item});
+                        this.setState({registeredForRoom: true, roomName: roomToJoin});
                         this.props.propagateToParent({registeredForRoom: this.state.registeredForRoom, roomName: this.state.roomName});
                         console.log("successfully joined room '" + this.state.roomName + "'");
                     } else {
@@ -53,6 +58,7 @@ class ServerList extends React.Component {
 
 
     loadServers() {
+        console.log("inside loadServers...");
         this
             .props
             .socket
@@ -62,14 +68,13 @@ class ServerList extends React.Component {
             .socket
             .on('roomlist', function (rooms) {
                 //let servers = Object.assign([], this.state.servers);
-                this.state.servers = [];
+                console.log("inside roomlist callback...");
+                const tmpServers = [];
                 for (var room in rooms) {
-                    this
-                        .state
-                        .servers
-                        .push(room);
+                    tmpServers.push(room);
                     console.log("printing name of room: " + room);
                 }
+                this.setState({servers: tmpServers});                
                 //console.log("rooms: " + servers); this.setState({servers});
             }.bind(this));
             this.props.propagateToParent({servers: this.state.servers});

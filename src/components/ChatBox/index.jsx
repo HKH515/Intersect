@@ -7,11 +7,17 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 class ChatBox extends React.Component {
+    componentWillReceiveProps(newProps) {
+        const {registeredForRoom, roomName} = newProps;
+        this.setState({registeredForRoom, roomName});
+    }
     constructor(props) {
         super(props);
         this.placeholder = "Type a message...";
         this.state = {
-            msg: ''
+            msg: '',
+            registeredForRoom: false,
+            roomName: ''
         };
         this.handleChangeMessage = this.handleChangeMessage.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
@@ -23,12 +29,12 @@ class ChatBox extends React.Component {
     
     sendMessage() {
         console.log("inside sendMessage");
-        if (this.props.registeredForRoom) {
+        if (this.state.registeredForRoom) {
             console.log("inside inner sendMessage");
             this.props
                 .socket
                 .emit('sendmsg', {
-                    roomName: this.props.roomName,
+                    roomName: this.state.roomName,
                     msg: this.state.msg
                 });
             this.state.msg = '';
@@ -42,8 +48,8 @@ class ChatBox extends React.Component {
                     hintText={this.placeholder}
                     onChange={this.handleChangeMessage}
                     value={this.state.msg}></TextField>
-                <RaisedButton onClick={this.sendMessage} disabled={!this.props.registeredForRoom}>send</RaisedButton>
-                <p>registeredForRoom: {this.props.registeredForRoom}</p>
+                <RaisedButton onClick={this.sendMessage} disabled={!this.state.registeredForRoom}>send</RaisedButton>
+                <p>registeredForRoom: {this.state.registeredForRoom}</p>
             </div>
         );
     }

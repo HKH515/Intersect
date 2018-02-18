@@ -12,8 +12,37 @@ import SideNav from '../SideNav';
 import LoginBox from '../LoginBox';
 
 class Home extends React.Component {
+    componentWillReceiveProps(newProps) {
+        console.log("Home component is getting new props!");
+        console.log("Home's new props are the following:");
+        console.log(newProps);
+        var {
+            username,
+            loggedIn,
+            roomName,
+            registeredForRoom,
+            servers,
+            messages
+        } = newProps;
+        this.setState({
+            username,
+            loggedIn,
+            roomName,
+            registeredForRoom,
+            servers,
+            messages
+        });
+    }
     constructor(props) {
         super(props);
+        this.state = {
+            username: '',
+            loggedIn: null,
+            roomName: '',
+            registeredForRoom: false,
+            servers: [],
+            messages: []
+        };
     }
 
     componentDidMount() {
@@ -33,13 +62,13 @@ class Home extends React.Component {
             <div>
 
                 <SideNav
-                    username={this.props.username}
+                    username={this.state.username}
                     socket={this.props.socket}
-                    loggedIn={this.props.loggedIn}
-                    servers={this.props.servers}
+                    loggedIn={this.state.loggedIn}
+                    servers={this.state.servers}
                     propagateToParent={this.props.propagateToParent}
-                    roomName={this.props.roomName}
-                    registeredForRoom={this.props.registeredForRoom}/>
+                    roomName={this.state.roomName}
+                    registeredForRoom={this.state.registeredForRoom}/>
                 <header className="App-header">
                     <h1 className="App-title">
                         Intersect
@@ -47,33 +76,34 @@ class Home extends React.Component {
                 </header >
                 <LoginBox
                     socket={this.props.socket}
-                    username={this.props.username}
-                    roomName={this.props.roomName}
-                    loggedIn={this.props.loggedIn}
-                    loginUser={this.props.loginUser}
+                    username={this.state.username}
+                    roomName={this.state.roomName}
+                    loggedIn={this.state.loggedIn}
+                    loginUser={this.state.loginUser}
                     propagateToParent={this.props.propagateToParent}/>
                 <Chat
                     socket={this.props.socket}
-                    username={this.props.username}
-                    roomName={this.props.roomName}
-                    loggedIn={this.props.loggedIn}
-                    registeredForRoom={this.props.registeredForRoom}
-                    messages={this.props.messages}
+                    username={this.state.username}
+                    roomName={this.state.roomName}
+                    loggedIn={this.state.loggedIn}
+                    registeredForRoom={this.state.registeredForRoom}
+                    messages={this.state.messages}
                     propagateToParent={this.props.propagateToParent}/>
                 <ChatBox
                     socket={this.props.socket}
-                    username={this.props.username}
-                    roomName={this.props.roomName}
-                    loggedIn={this.props.loggedIn}
-                    registeredForRoom={this.props.registeredForRoom}
-                    messages={this.props.messages}
+                    username={this.state.username}
+                    roomName={this.state.roomName}
+                    loggedIn={this.state.loggedIn}
+                    registeredForRoom={this.state.registeredForRoom}
+                    messages={this.state.messages}
                     propagateToParent={this.props.propagateToParent}/>
-                                       <p>username: {this.props.username}</p> 
-                       <p>roomName: {this.props.roomName}</p> 
-                       <p>loggedIn: {this.props.loggedIn}</p> 
-                       <p>registeredForRoom: {this.props.registeredForRoom}</p> 
-                       <p>messages: {this.props.messages}</p> 
-                       <p>servers: {this.props.servers}</p>
+                <p>username: {this.state.username}</p>
+                <p>roomName: {this.state.roomName}</p>
+                <p>loggedIn: {(this.state.loggedIn ? "true" : "false")}</p>
+                <p>registeredForRoom: {(this.state.registeredForRoom ? "true" : "false")}</p>
+                <p>messages: {this.state.messages.length}</p>
+                <p>servers: {this.state.servers.length}</p>
+                <RaisedButton onClick={() => {this.forceUpdate();}}>Force re-render</RaisedButton>
             </div>
         );
     }

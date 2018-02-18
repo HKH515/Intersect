@@ -77,9 +77,10 @@ class ServerList extends React.Component {
                     tmpServers.push(room);
                     console.log("printing name of room: " + room);
                 }
-                this.setState({servers: tmpServers}, () => this.props.propagateToParent({servers: this.state.servers}));                
+                this.setState({servers: tmpServers}, () => {this.props.propagateToParent({servers: this.state.servers})});                
                 //console.log("rooms: " + servers); this.setState({servers});
             }.bind(this));
+            //this.props.propagateToParent({servers: this.state.servers});
         }
 
     addServer() {

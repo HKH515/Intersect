@@ -86,8 +86,7 @@ class LoginBox extends React.Component {
                 title="Select a username"
                 modal={false}
                 open={this.state.open}
-                actions={actions}
-                onRequestClose={this.loginUser}>
+                actions={actions}>
                 <p>User login status: {this.state.loggedIn}</p>
                 <TextField hintText={this.placeholder} onChange={this.handleChangeUsername}/>
             </Dialog>

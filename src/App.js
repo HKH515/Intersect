@@ -54,7 +54,7 @@ class App extends Component {
                         username={this.state.username}
                         roomName={this.state.roomName}
                         loggedIn={this.state.loggedIn}
-                        registeredForRoom={true}
+                        registeredForRoom={this.state.registeredForRoom}
                         messages={this.state.messages}
                         servers={this.state.servers}
                         propagateToParent={this.propagateToParent}/>

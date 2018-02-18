@@ -3,11 +3,13 @@ import CSSModules from 'react-css-modules';
 import {PropTypes} from 'prop-types';
 
 // UI
-import {List, ListItem} from 'material-ui/List';
+import List, {ListItem, ListItemText} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import Autoscroll from 'autoscroll-react'
 
 class Chat extends React.Component {
     componentWillReceiveProps(newProps) {
@@ -27,29 +29,31 @@ class Chat extends React.Component {
     }
 
     componentDidMount() {
-            this
-                .props
-                .socket
-                .on('updatechat', function (room, msgs) {
-                    console.log("updating chat...");
-                    console.log(msgs);
-                    console.log("room:");
-                    console.log(room);
-                    console.log("this.state.roomName:");
-                    console.log(this.state.roomName);
-                    if (this.state.roomName == room) {
-                        this.setState({
-                            messages: msgs
-                        }, () => {
-                            this.props.propagateToParent({messages: msgs})
-                        });
-                    }
-                    // this.setState({messages: msgs}); let messagesTmp = Object.assign({},
-                    // this.state.messages); messagesTmp.push(msg); messagesTmp.push('${(new
-                    // Date()).toLocaleTimeString()}
-                    // - ${msg}'); this.setState({messages: messagesTmp}); console.log("Messages: "
-                    // + this.state.messagesTmp);
-                }.bind(this));
+        this
+            .props
+            .socket
+            .on('updatechat', function (room, msgs) {
+                console.log("updating chat...");
+                console.log(msgs);
+                console.log("room:");
+                console.log(room);
+                console.log("this.state.roomName:");
+                console.log(this.state.roomName);
+                if (this.state.roomName == room) {
+                    this.setState({
+                        messages: msgs
+                    }, () => {
+                        this
+                            .props
+                            .propagateToParent({messages: msgs})
+                    });
+                }
+                // this.setState({messages: msgs}); let messagesTmp = Object.assign({},
+                // this.state.messages); messagesTmp.push(msg); messagesTmp.push('${(new
+                // Date()).toLocaleTimeString()}
+                // - ${msg}'); this.setState({messages: messagesTmp}); console.log("Messages: "
+                // + this.state.messagesTmp);
+            }.bind(this));
     }
 
     render() {
@@ -58,14 +62,15 @@ class Chat extends React.Component {
         console.log("messages:");
         console.log(this.state.messages);
         return (
-            <div className="chatbox">
+            <div className="chatView">
                 <List>
-                {this
-                    .state
-                    .messages
-                    .map(item => {
-                        return <ListItem key={item.timestamp+item.nick}>{item.timestamp}        {item.nick}: {item.message}</ListItem>
-                    })}
+                    {this.state.messages
+                        .map(item => {
+                            return <ListItem
+                                key={item.timestamp + item.nick}
+                                primaryText={item.message}
+                                secondaryText={item.nick + " @ " + item.timestamp}></ListItem>
+                        })}
                 </List>
             </div>
         );
@@ -83,4 +88,4 @@ Chat.propTypes = {
     propagateToParent: PropTypes.func
 };
 
-export default Chat;
+export default Autoscroll(Chat);

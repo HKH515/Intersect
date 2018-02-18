@@ -5,6 +5,7 @@ import FontIcon from 'material-ui/FontIcon';
 
 // UI
 import {List, ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -89,7 +90,7 @@ class ServerList extends React.Component {
                         .state
                         .servers
                         .map(item => (
-                            <ListItem onClick={this.joinServer} key={item}>{item}</ListItem>
+                            <ListItem divider="true" onClick={this.joinServer} key={item} classes={this.state.roomName == item ? ["currentServer"] : []}>{item}</ListItem>
                         ))}
                         <ListItem>
                     <FlatButton className="addRoom">

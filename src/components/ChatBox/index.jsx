@@ -57,18 +57,23 @@ class ChatBox extends React.Component {
 
                 }.bind(this));
             this.props.loadServers();
-        }
+    }
 
 
     handleCommand(line) {
         var command = line.split(' ')[0];
         switch (command) {
             case '/kick':
+                var target = line.split(' ').splice(1,line.length).join(' ');
+                this.props.socket.emit('kick', {room:this.props.roomName,user:target}, (success) => {});
                 break;
             case '/leave':
+                this.props.socket.emit('partroom',this.props.roomName);
+                this.setState({roomName: '', registeredForRoom: false}, () => {this.props.propagateToParent({roomName: this.state.roomName, registeredForRoom: this.state.registeredForRoom})});
                 break;
             case '/join':
-                this.joinServer(line);
+                this.joinServer(line);//Hackcity
+                this.joinServer(line);//Because servers doesnt update chat if the server doesn't exist
                 break;
             case '/help':
                 this.setState({helpDialog: true}, () => {this.props.propagateToParent({helpDialog: this.state.helpDialog})});
@@ -135,10 +140,12 @@ class ChatBox extends React.Component {
 };
 
 ChatBox.propTypes = {
+    username: PropTypes.string,
     socket: PropTypes.object.isRequired,
     handleChangeMessage: PropTypes.func,
     propagateToParent: PropTypes.func,
     loadServers: PropTypes.func,
+    userList: PropTypes.func,
     roomName: PropTypes.string,
     registeredForRoom: PropTypes.bool,
     helpDialog: PropTypes.bool

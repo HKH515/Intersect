@@ -6,7 +6,7 @@ import Chat from '../Chat';
 import SideNav from '../SideNav';
 import LoginBox from '../LoginBox';
 import HelpDialog from '../HelpDialog';
-
+import UserNav from '../UserNav';
 class Home extends React.Component {
     componentWillReceiveProps(newProps) {
         console.log("Home component is getting new props!");
@@ -19,7 +19,8 @@ class Home extends React.Component {
             registeredForRoom,
             servers,
             messages,
-            helpDialog
+            helpDialog,
+            users
         } = newProps;
         this.setState({
             username,
@@ -28,7 +29,8 @@ class Home extends React.Component {
             registeredForRoom,
             servers,
             messages,
-            helpDialog
+            helpDialog,
+            users
         });
     }
     constructor(props) {
@@ -41,7 +43,8 @@ class Home extends React.Component {
             servers: [],
             messages: [],
             privmsg: [],
-            helpDialog: false
+            helpDialog: false,
+            users: []
         };
     }
 
@@ -69,6 +72,12 @@ class Home extends React.Component {
                     propagateToParent={this.props.propagateToParent}
                     roomName={this.state.roomName}
                     registeredForRoom={this.state.registeredForRoom}/>
+                <UserNav users={this.state.users}
+                username={this.state.username}
+                socket={this.props.socket}
+                roomName={this.state.roomName}
+                users={this.state.users}
+                loadUsers={this.props.loadUsers}/>
                 <LoginBox
                     socket={this.props.socket}
                     username={this.state.username}
@@ -120,7 +129,8 @@ Home.propTypes = {
     privmsg: PropTypes.array,
     servers: PropTypes.array,
     propagateToParent: PropTypes.func,
-    helpDialog: PropTypes.bool
+    helpDialog: PropTypes.bool,
+    loadUsers: PropTypes.func
 };
 
 export default Home;

@@ -19,9 +19,11 @@ class App extends React.Component {
             messages: [],
             privmsg: [],
             servers: [],
-            helpDialog: false
+            helpDialog: false,
+            users: []
         };
         this.propagateToParent = this.propagateToParent.bind(this);
+        this.loadUsers = this.loadUsers.bind(this);
     }
 
     /*
@@ -39,6 +41,17 @@ class App extends React.Component {
         return {socket: socketClient('http://localhost:8080'), username: "", loggedIn: false, roomName: "lobby", registeredForRoom: false};
     }*/
 
+    loadUsers() {
+        this.socket.on('updateusers', function (room, users, ops) {
+           //if (this.state.roomName === room) {
+               var userArray = Object.keys(users);
+               this.setState({users: userArray});
+               console.log("logging users...");
+               console.log(users);
+           //}
+        }.bind(this));
+    }
+
     render() {
         return (
             <div className="App">
@@ -53,7 +66,9 @@ class App extends React.Component {
                         privmsg={this.state.privmsg}
                         servers={this.state.servers}
                         propagateToParent={this.propagateToParent}
-                        helpDialog={this.state.helpDialog}/>
+                        helpDialog={this.state.helpDialog}
+                        users={this.state.users}
+                        loadUsers={this.loadUsers}/>
                 </MuiThemeProvider>
             </div>
         );

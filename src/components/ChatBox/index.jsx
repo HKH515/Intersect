@@ -47,10 +47,11 @@ class ChatBox extends React.Component {
                 var newRoomName = line.split(' ')[1];
                 this.props.socket.emit('joinroom');
                 console.log("creating new room")
+                break;
             case '/help':
                 this.setState({helpDialog: true}, () => {this.props.propagateToParent({helpDialog: this.state.helpDialog})});
                 console.log("set helpdialog to true");
-                break
+                break;
             case '/ban':
                 break;
             case '/msg':

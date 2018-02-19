@@ -6,7 +6,7 @@ import Chat from '../Chat';
 import SideNav from '../SideNav';
 import LoginBox from '../LoginBox';
 import HelpDialog from '../HelpDialog';
-
+import UserNav from '../UserNav';
 class Home extends React.Component {
     componentWillReceiveProps(newProps) {
         console.log("Home component is getting new props!");
@@ -19,7 +19,8 @@ class Home extends React.Component {
             registeredForRoom,
             servers,
             messages,
-            helpDialog
+            helpDialog,
+            users
         } = newProps;
         this.setState({
             username,
@@ -28,7 +29,8 @@ class Home extends React.Component {
             registeredForRoom,
             servers,
             messages,
-            helpDialog
+            helpDialog,
+            users
         });
     }
     constructor(props) {
@@ -41,7 +43,8 @@ class Home extends React.Component {
             servers: [],
             messages: [],
             privmsg: [],
-            helpDialog: false
+            helpDialog: false,
+            users: []
         };
     }
 
@@ -70,6 +73,15 @@ class Home extends React.Component {
                     roomName={this.state.roomName}
                     registeredForRoom={this.state.registeredForRoom}
                     loadServers={this.props.loadServers}/>
+                <UserNav
+                    users={this.state.users}
+                    username={this.state.username}
+                    socket={this.props.socket}
+                    roomName={this.state.roomName}
+                    users={this.state.users}
+                    loadUsers={this.props.loadUsers}
+                    registeredForRoom={this.state.registeredForRoom}
+                    loadServers={this.props.loadServers}/>
                 <LoginBox
                     socket={this.props.socket}
                     username={this.state.username}
@@ -77,36 +89,47 @@ class Home extends React.Component {
                     loggedIn={this.state.loggedIn}
                     loginUser={this.state.loginUser}
                     propagateToParent={this.props.propagateToParent}/>
-                    <HelpDialog helpDialog={this.props.helpDialog} propagateToParent={this.props.propagateToParent}/>
-                    <div className="chat">
-                <Chat
-                    socket={this.props.socket}
-                    username={this.state.username}
-                    roomName={this.state.roomName}
-                    loggedIn={this.state.loggedIn}
-                    registeredForRoom={this.state.registeredForRoom}
-                    messages={this.state.messages}
-                    privmsg={this.state.privmsg}
+                <HelpDialog
+                    helpDialog={this.props.helpDialog}
                     propagateToParent={this.props.propagateToParent}/>
-                <ChatBox
-                    socket={this.props.socket}
-                    username={this.state.username}
-                    roomName={this.state.roomName}
-                    loggedIn={this.state.loggedIn}
-                    registeredForRoom={this.state.registeredForRoom}
-                    messages={this.state.messages}
-                    privmsg={this.state.privmsg}
-                    propagateToParent={this.props.propagateToParent}
-                    loadServers={this.props.loadServers}/>
-                    </div>
+                <div className="chat">
+                    <Chat
+                        socket={this.props.socket}
+                        username={this.state.username}
+                        roomName={this.state.roomName}
+                        loggedIn={this.state.loggedIn}
+                        registeredForRoom={this.state.registeredForRoom}
+                        messages={this.state.messages}
+                        privmsg={this.state.privmsg}
+                        propagateToParent={this.props.propagateToParent}/>
+                    <ChatBox
+                        socket={this.props.socket}
+                        username={this.state.username}
+                        roomName={this.state.roomName}
+                        loggedIn={this.state.loggedIn}
+                        registeredForRoom={this.state.registeredForRoom}
+                        messages={this.state.messages}
+                        privmsg={this.state.privmsg}
+                        propagateToParent={this.props.propagateToParent}
+                        loadServers={this.props.loadServers}/>
+                </div>
                 <p>username: {this.state.username}</p>
                 <p>roomName: {this.state.roomName}</p>
-                <p>loggedIn: {(this.state.loggedIn ? "true" : "false")}</p>
-                <p>registeredForRoom: {(this.state.registeredForRoom ? "true" : "false")}</p>
+                <p>loggedIn: {(this.state.loggedIn
+                        ? "true"
+                        : "false")}</p>
+                <p>registeredForRoom: {(this.state.registeredForRoom
+                        ? "true"
+                        : "false")}</p>
                 <p>messages: {this.state.messages.length}</p>
                 <p>servers: {this.state.servers.length}</p>
-                <p>helpDialog: {(this.state.helpDialog ? "true" : "false")}</p>
-                <RaisedButton onClick={() => {this.forceUpdate();}}>Force re-render</RaisedButton>
+                <p>helpDialog: {(this.state.helpDialog
+                        ? "true"
+                        : "false")}</p>
+                <RaisedButton
+                    onClick={() => {
+                    this.forceUpdate();
+                }}>Force re-render</RaisedButton>
             </div>
         );
     }
@@ -122,8 +145,9 @@ Home.propTypes = {
     privmsg: PropTypes.array,
     servers: PropTypes.array,
     propagateToParent: PropTypes.func,
-    loadServers: PropTypes.func,
-    helpDialog: PropTypes.bool
+    helpDialog: PropTypes.bool,
+    loadUsers: PropTypes.func,
+    loadServers: PropTypes.func
 };
 
 export default Home;

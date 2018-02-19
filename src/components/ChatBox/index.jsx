@@ -71,6 +71,10 @@ class ChatBox extends React.Component {
                 this.props.socket.emit('partroom',this.props.roomName);
                 this.setState({roomName: '', registeredForRoom: false}, () => {this.props.propagateToParent({roomName: this.state.roomName, registeredForRoom: this.state.registeredForRoom})});
                 break;
+            case '/create':
+                var newRoomName = line.split(' ')[1];
+                this.props.socket.emit('joinroom');
+                console.log("creating new room")
             case '/join':
                 this.joinServer(line);//Hackcity
                 this.joinServer(line);//Because servers doesnt update chat if the server doesn't exist
@@ -78,7 +82,7 @@ class ChatBox extends React.Component {
             case '/help':
                 this.setState({helpDialog: true}, () => {this.props.propagateToParent({helpDialog: this.state.helpDialog})});
                 console.log("set helpdialog to true");
-                break
+                break;
             case '/ban':
                 break;
             case '/msg':

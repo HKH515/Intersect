@@ -66,7 +66,6 @@ class Home extends React.Component {
 };
 
 Home.propTypes = {
-    socket: PropTypes.object.isRequired,
     username: PropTypes.string,
     roomName: PropTypes.string,
     registeredForRoom: PropTypes.bool,

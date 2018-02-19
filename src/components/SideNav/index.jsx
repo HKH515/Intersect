@@ -3,6 +3,7 @@ import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
 import ServerList from '../ServerList';
 import {PropTypes} from 'prop-types';
+import AppBar from 'material-ui/AppBar';
 
 class SideNav extends React.Component {
     componentWillReceiveProps(newProps) {
@@ -31,6 +32,7 @@ class SideNav extends React.Component {
                 {this.state.loggedIn === true && <p> Welcome {this.props.username}!</p>}
                 <RaisedButton label="Server list" onClick={this.handleToggle}/>
                 <Drawer open={this.state.open}>
+                    <AppBar title="Rooms" showMenuIconButton={false}/>
                     <ServerList
                         socket={this.props.socket}
                         loggedIn={this.state.loggedIn}

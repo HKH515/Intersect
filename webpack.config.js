@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   // set this to your entry point
@@ -31,7 +32,10 @@ module.exports = {
   },
   resolve: {
     extensions: [".jsx", ".js"]    
-  }
+  },
+  plugins: [
+    new UglifyJsPlugin()
+  ],
 
   ///////////  uncomment this for production ////////////////
   // plugins: [

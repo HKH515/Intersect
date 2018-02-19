@@ -82,8 +82,7 @@ class LoginBox extends React.Component {
                 modal={false}
                 open={this.state.open}
                 actions={actions}>
-                <p>User login status: {this.state.loggedIn}</p>
-                <TextField hintText={this.placeholder} onChange={this.handleChangeUsername}/>
+                <TextField style={{width:700}} hintText={this.placeholder} onChange={this.handleChangeUsername}/>
             </Dialog>
         );
     }

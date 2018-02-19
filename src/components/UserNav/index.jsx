@@ -11,34 +11,42 @@ import {PropTypes} from 'prop-types';
 
 class UserNav extends React.Component {
     componentWillReceiveProps(newProps) {
-        const {users, username, roomName} = newProps;
-        this.setState({users, username, roomName});
+        const {users, username, roomName, ops} = newProps;
+        this.setState({users, username, roomName, ops});
     }
     constructor(props) {
         super(props);
         this.state = {
             open: false,
-            position:'right',
+            position: 'right',
             users: [],
             username: '',
-            roomName: ''
+            roomName: '',
+            ops: []
         };
     }
 
     handleToggle() {
         this.setState({
-            position : "right",
-            open: !this.state.open  });
+            position: "right",
+            open: !this.state.open
+        });
         console.log(this.state.position);
     }
 
     render() {
         return (
             <div>
-                <RaisedButton label="Users" onClick={this.handleToggle.bind(this)}/>
-                <Drawer openSecondary={true} open={this.state.open} position={this.state.position}>
+                <Drawer openSecondary={true} open={true} position={this.state.position}>
                     <AppBar title={this.state.roomName} showMenuIconButton={false}/>
-                    <UserList socket={this.props.socket} username={this.state.username} roomName={this.state.roomName} users={this.state.users} loadUsers={this.props.loadUsers}/>
+                    <UserList
+                        socket={this.props.socket}
+                        username={this.state.username}
+                        roomName={this.state.roomName}
+                        users={this.state.users}
+                        loadUsers={this.props.loadUsers}
+                        ops={this.state.ops}/>
+
                 </Drawer>
             </div>
         );
@@ -55,7 +63,8 @@ UserNav.propTypes = {
     propagateToParent: PropTypes.func,
     registeredForRoom: PropTypes.bool,
     users: PropTypes.array,
-    loadUsers: PropTypes.func
+    loadUsers: PropTypes.func,
+    ops: PropTypes.array
 };
 
 export default UserNav;

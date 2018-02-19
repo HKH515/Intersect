@@ -7,6 +7,11 @@ import SideNav from '../SideNav';
 import LoginBox from '../LoginBox';
 import HelpDialog from '../HelpDialog';
 import UserNav from '../UserNav';
+import AppBar from 'material-ui/AppBar';
+import AccountCircle from 'material-ui-icons/AccountCircle';
+import IconButton from 'material-ui/IconButton';
+import Toolbar from 'material-ui/Toolbar';
+
 class Home extends React.Component {
     componentWillReceiveProps(newProps) {
         console.log("Home component is getting new props!");
@@ -20,7 +25,8 @@ class Home extends React.Component {
             servers,
             messages,
             helpDialog,
-            users
+            users,
+            ops
         } = newProps;
         this.setState({
             username,
@@ -30,7 +36,8 @@ class Home extends React.Component {
             servers,
             messages,
             helpDialog,
-            users
+            users,
+            ops
         });
     }
     constructor(props) {
@@ -44,7 +51,8 @@ class Home extends React.Component {
             messages: [],
             privmsg: [],
             helpDialog: false,
-            users: []
+            users: [],
+            ops: []
         };
     }
 
@@ -63,7 +71,8 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-
+                <AppBar position="static" title="Intersect">
+                </AppBar>
                 <SideNav
                     username={this.state.username}
                     socket={this.props.socket}
@@ -82,7 +91,8 @@ class Home extends React.Component {
                     users={this.state.users}
                     loadUsers={this.props.loadUsers}
                     registeredForRoom={this.state.registeredForRoom}
-                    loadServers={this.props.loadServers}/>
+                    loadServers={this.props.loadServers}
+                    ops={this.state.ops}/>
                 <LoginBox
                     socket={this.props.socket}
                     username={this.state.username}
@@ -150,7 +160,8 @@ Home.propTypes = {
     helpDialog: PropTypes.bool,
     loadUsers: PropTypes.func,
     loadServers: PropTypes.func,
-    joinServer: PropTypes.func
+    joinServer: PropTypes.func,
+    ops: PropTypes.array
 };
 
 export default Home;

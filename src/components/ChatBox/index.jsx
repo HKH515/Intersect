@@ -36,30 +36,6 @@ class ChatBox extends React.Component {
         this.setState({msg: e.target.value});
     }
 
-
-    joinServer(message) {
-            var roomToJoin = message.split(' ').splice(1,message.length).join(' ');
-            this
-                .props
-                .socket
-                .emit('joinroom', {
-                    room: roomToJoin
-                }, function (success, reason) {
-                    if (success) {
-                        this.setState({registeredForRoom: true, roomName: roomToJoin});
-                        this
-                            .props
-                            .propagateToParent({registeredForRoom: this.state.registeredForRoom, roomName: this.state.roomName});
-                        console.log("successfully joined room '" + this.state.roomName + "'");
-                    } else {
-                        console.log("failed to join room: " + reason);
-                    }
-
-                }.bind(this));
-            this.props.loadServers();
-    }
-
-
     handleCommand(line) {
         var command = line.split(' ')[0];
         switch (command) {
@@ -71,11 +47,8 @@ class ChatBox extends React.Component {
                 this.props.socket.emit('partroom',this.props.roomName);
                 this.setState({roomName: '', registeredForRoom: false}, () => {this.props.propagateToParent({roomName: this.state.roomName, registeredForRoom: this.state.registeredForRoom})});
                 break;
-            case '/create':
-                var newRoomName = line.split(' ')[1];
-                this.props.socket.emit('joinroom');
-                console.log("creating new room")
             case '/join':
+                var roomToJoin = line.split(' ').splice(1,line.length).join(' ');
                 this.joinServer(line);//Hackcity
                 this.joinServer(line);//Because servers doesnt update chat if the server doesn't exist
                 break;
@@ -84,6 +57,8 @@ class ChatBox extends React.Component {
                 console.log("set helpdialog to true");
                 break;
             case '/ban':
+                var target = line.split(' ').splice(1,line.length).join(' ');
+                this.props.socket.emit('ban',{room:this.props.roomName,user:target}, (success) => {});
                 break;
             case '/msg':
                 var target = this.state.msg.split(' ')[1];

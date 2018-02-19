@@ -40,21 +40,25 @@ class ChatBox extends React.Component {
         var command = line.split(' ')[0];
         switch (command) {
             case '/kick':
+                var target = line.split(' ').splice(1,line.length).join(' ');
+                this.props.socket.emit('kick', {room:this.props.roomName,user:target}, (success) => {});
                 break;
             case '/leave':
+                this.props.socket.emit('partroom',this.props.roomName);
+                this.setState({roomName: '', registeredForRoom: false}, () => {this.props.propagateToParent({roomName: this.state.roomName, registeredForRoom: this.state.registeredForRoom})});
                 break;
-            case '/create':
-                var newRoomName = line.split(' ')[1];
-                this.props.socket.emit('joinroom');
-                console.log("creating new room")
             case '/join':
-                this.props.joinServer(line);
+                var roomToJoin = line.split(' ').splice(1,line.length).join(' ');
+                this.props.joinServer(roomToJoin);//Hackcity
+                this.props.joinServer(roomToJoin);//Because servers doesnt update chat if the server doesn't exist
                 break;
             case '/help':
                 this.setState({helpDialog: true}, () => {this.props.propagateToParent({helpDialog: this.state.helpDialog})});
                 console.log("set helpdialog to true");
                 break;
             case '/ban':
+                var target = line.split(' ').splice(1,line.length).join(' ');
+                this.props.socket.emit('ban',{room:this.props.roomName,user:target}, (success) => {});
                 break;
             case '/msg':
                 var target = this.state.msg.split(' ')[1];
@@ -116,10 +120,12 @@ class ChatBox extends React.Component {
 };
 
 ChatBox.propTypes = {
+    username: PropTypes.string,
     socket: PropTypes.object.isRequired,
     handleChangeMessage: PropTypes.func,
     propagateToParent: PropTypes.func,
     loadServers: PropTypes.func,
+    userList: PropTypes.func,
     roomName: PropTypes.string,
     registeredForRoom: PropTypes.bool,
     helpDialog: PropTypes.bool,

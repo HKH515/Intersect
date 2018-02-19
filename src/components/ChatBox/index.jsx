@@ -36,30 +36,6 @@ class ChatBox extends React.Component {
         this.setState({msg: e.target.value});
     }
 
-
-    joinServer(message) {
-            var roomToJoin = message.split(' ').splice(1,message.length).join(' ');
-            this
-                .props
-                .socket
-                .emit('joinroom', {
-                    room: roomToJoin
-                }, function (success, reason) {
-                    if (success) {
-                        this.setState({registeredForRoom: true, roomName: roomToJoin});
-                        this
-                            .props
-                            .propagateToParent({registeredForRoom: this.state.registeredForRoom, roomName: this.state.roomName});
-                        console.log("successfully joined room '" + this.state.roomName + "'");
-                    } else {
-                        console.log("failed to join room: " + reason);
-                    }
-
-                }.bind(this));
-            this.props.loadServers();
-        }
-
-
     handleCommand(line) {
         var command = line.split(' ')[0];
         switch (command) {
@@ -72,7 +48,7 @@ class ChatBox extends React.Component {
                 this.props.socket.emit('joinroom');
                 console.log("creating new room")
             case '/join':
-                this.joinServer(line);
+                this.props.joinServer(line);
                 break;
             case '/help':
                 this.setState({helpDialog: true}, () => {this.props.propagateToParent({helpDialog: this.state.helpDialog})});
@@ -145,7 +121,8 @@ ChatBox.propTypes = {
     loadServers: PropTypes.func,
     roomName: PropTypes.string,
     registeredForRoom: PropTypes.bool,
-    helpDialog: PropTypes.bool
+    helpDialog: PropTypes.bool,
+    joinServer: PropTypes.func
 };
 
 export default ChatBox;

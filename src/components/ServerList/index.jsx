@@ -20,20 +20,14 @@ class ServerList extends React.Component {
             loggedIn: false,
             servers: []
         };
-        this.loadServers = this
-            .loadServers
-            .bind(this);
         this.joinServer = this
             .joinServer
-            .bind(this);
-        this.addServer = this
-            .addServer
             .bind(this);
     }
 
     componentDidMount() {
         console.log("serverlist did mount");
-        this.loadServers();
+        this.props.loadServers();
     }
 
     joinServer(item) {
@@ -72,56 +66,6 @@ class ServerList extends React.Component {
         }
     }
 
-    loadServers() {
-        console.log("inside loadServers...");
-        this
-            .props
-            .socket
-            .emit('rooms');
-        this
-            .props
-            .socket
-            .on('roomlist', function (rooms) {
-                //let servers = Object.assign([], this.state.servers);
-                console.log("inside roomlist callback...");
-                const tmpServers = [];
-                for (var room in rooms) {
-                    tmpServers.push(room);
-                    console.log("printing name of room: " + room);
-                }
-                this.setState({
-                    servers: tmpServers
-                }, () => {
-                    this
-                        .props
-                        .propagateToParent({servers: this.state.servers})
-                });
-                //console.log("rooms: " + servers); this.setState({servers});
-            }.bind(this));
-        //this.props.propagateToParent({servers: this.state.servers});
-    }
-
-    addServer() {
-        var newRoom = 'newRoom';
-        console.log("adding server");
-        this
-            .props
-            .socket
-            .emit('joinroom', {
-                room: newRoom
-            }, () => {
-                this
-                    .props
-                    .socket
-                    .emit('op', {
-                        user: this.state.username,
-                        room: newRoom
-                    }, () => {
-                        this.loadServers();
-                    });
-            });
-    }
-
     serverColor(item) {
         if (this.state.roomName === item) {
             return "#80DEEA";
@@ -135,7 +79,7 @@ class ServerList extends React.Component {
             <div>
                 <List>
                     {this
-                        .state
+                        .props
                         .servers
                         .map(item => (
                             <ListItem
@@ -146,11 +90,6 @@ class ServerList extends React.Component {
                                 backgroundColor: this.serverColor(item)
                             }}>{item}</ListItem>
                         ))}
-                    <ListItem onClick={this.addServer}>
-                        <FlatButton className="addRoom">
-                            <FontIcon className="material-icons">add</FontIcon>
-                        </FlatButton>
-                    </ListItem>
                 </List>
             </div>
         );

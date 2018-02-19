@@ -24,6 +24,7 @@ class App extends React.Component {
         };
         this.propagateToParent = this.propagateToParent.bind(this);
         this.loadUsers = this.loadUsers.bind(this);
+        this.loadServers = this.loadServers.bind(this);
     }
 
     /*
@@ -35,6 +36,25 @@ class App extends React.Component {
 
     componentDidCatch(error, info) {
         console.log(error);
+    }
+
+
+    loadServers() {
+        console.log("inside loadServers...");
+        this
+            .socket
+            .emit('rooms');
+        this
+            .socket
+            .on('roomlist', function(rooms) {
+                console.log("inside roomlist callback...");
+                const tmpServers = [];
+                for (var room in rooms) {
+                    tmpServers.push(room);
+                    console.log("printing name of room: " + room);
+                }
+                this.setState({servers: tmpServers});
+            }.bind(this));
     }
 
     /*getChildContext() {
@@ -68,7 +88,8 @@ class App extends React.Component {
                         propagateToParent={this.propagateToParent}
                         helpDialog={this.state.helpDialog}
                         users={this.state.users}
-                        loadUsers={this.loadUsers}/>
+                        loadUsers={this.loadUsers}
+                        loadServers={this.loadServers}/>
                 </MuiThemeProvider>
             </div>
         );
@@ -84,7 +105,8 @@ App.propTypes = {
     messages: PropTypes.array,
     privmsg: PropTypes.array,
     propagateToParent: PropTypes.func,
-    servers: PropTypes.array
+    servers: PropTypes.array,
+    loadServers: PropTypes.func
 };
 
 export default App;

@@ -18,7 +18,10 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
     "react-tap-event-plugin": "^3.0.2",
-    "socket.io-client": "^2.0.4"
+    "socket.io-client": "^2.0.4",
+    "uglify-js": "^3.3.11",
+    "uglifyjs-webpack-plugin": "^1.2.0",
+    "unminified-webpack-plugin": "^1.4.2"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -18,7 +18,8 @@ class ChatBox extends React.Component {
             msg: '',
             registeredForRoom: false,
             roomName: '',
-            commands: ['/kick', '/leave', '/join', '/ban', '/msg']
+            helpDialog: false,
+            commands: ['/kick', '/leave', '/join', '/ban', '/msg', '/help']
         };
         this.handleChangeMessage = this
             .handleChangeMessage
@@ -35,14 +36,21 @@ class ChatBox extends React.Component {
         this.setState({msg: e.target.value});
     }
 
-    handleCommand(command) {
+    handleCommand(line) {
+        var command = line.split(' ')[0];
         switch (command) {
             case '/kick':
                 break;
             case '/leave':
                 break;
-            case '/join':
-                break;
+            case '/create':
+                var newRoomName = line.split(' ')[1];
+                this.props.socket.emit('joinroom');
+                console.log("creating new room")
+            case '/help':
+                this.setState({helpDialog: true}, () => {this.props.propagateToParent({helpDialog: this.state.helpDialog})});
+                console.log("set helpdialog to true");
+                break
             case '/ban':
                 break;
             case '/msg':
@@ -70,7 +78,7 @@ class ChatBox extends React.Component {
             .msg
             .split(' ')[0];
         if (this.state.commands.indexOf(command) > -1) {
-            this.handleCommand(command);
+            this.handleCommand(this.state.msg);
         } else if (this.state.registeredForRoom && this.state.msg.length > 0) {
             console.log("inside inner sendMessage");
             this
@@ -108,7 +116,8 @@ ChatBox.propTypes = {
     handleChangeMessage: PropTypes.func,
     propagateToParent: PropTypes.func,
     roomName: PropTypes.string,
-    registeredForRoom: PropTypes.bool
+    registeredForRoom: PropTypes.bool,
+    helpDialog: PropTypes.bool
 };
 
 export default ChatBox;

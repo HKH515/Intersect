@@ -18,7 +18,8 @@ class App extends React.Component {
             registeredForRoom: false,
             messages: [],
             privmsg: [],
-            servers: []
+            servers: [],
+            helpDialog: false
         };
         this.propagateToParent = this.propagateToParent.bind(this);
     }
@@ -51,7 +52,8 @@ class App extends React.Component {
                         messages={this.state.messages}
                         privmsg={this.state.privmsg}
                         servers={this.state.servers}
-                        propagateToParent={this.propagateToParent}/>
+                        propagateToParent={this.propagateToParent}
+                        helpDialog={this.state.helpDialog}/>
                 </MuiThemeProvider>
             </div>
         );

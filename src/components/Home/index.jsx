@@ -5,6 +5,7 @@ import ChatBox from '../ChatBox';
 import Chat from '../Chat';
 import SideNav from '../SideNav';
 import LoginBox from '../LoginBox';
+import HelpDialog from '../HelpDialog';
 
 class Home extends React.Component {
     componentWillReceiveProps(newProps) {
@@ -17,7 +18,8 @@ class Home extends React.Component {
             roomName,
             registeredForRoom,
             servers,
-            messages
+            messages,
+            helpDialog
         } = newProps;
         this.setState({
             username,
@@ -25,7 +27,8 @@ class Home extends React.Component {
             roomName,
             registeredForRoom,
             servers,
-            messages
+            messages,
+            helpDialog
         });
     }
     constructor(props) {
@@ -37,7 +40,8 @@ class Home extends React.Component {
             registeredForRoom: false,
             servers: [],
             messages: [],
-            privmsg: []
+            privmsg: [],
+            helpDialog: false
         };
     }
 
@@ -72,6 +76,7 @@ class Home extends React.Component {
                     loggedIn={this.state.loggedIn}
                     loginUser={this.state.loginUser}
                     propagateToParent={this.props.propagateToParent}/>
+                    <HelpDialog helpDialog={this.props.helpDialog} propagateToParent={this.props.propagateToParent}/>
                     <div className="chat">
                 <Chat
                     socket={this.props.socket}
@@ -98,6 +103,7 @@ class Home extends React.Component {
                 <p>registeredForRoom: {(this.state.registeredForRoom ? "true" : "false")}</p>
                 <p>messages: {this.state.messages.length}</p>
                 <p>servers: {this.state.servers.length}</p>
+                <p>helpDialog: {(this.state.helpDialog ? "true" : "false")}</p>
                 <RaisedButton onClick={() => {this.forceUpdate();}}>Force re-render</RaisedButton>
             </div>
         );
@@ -113,7 +119,8 @@ Home.propTypes = {
     messages: PropTypes.array,
     privmsg: PropTypes.array,
     servers: PropTypes.array,
-    propagateToParent: PropTypes.func
+    propagateToParent: PropTypes.func,
+    helpDialog: PropTypes.bool
 };
 
 export default Home;

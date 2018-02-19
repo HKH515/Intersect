@@ -64,20 +64,6 @@ class Chat extends React.Component {
         console.log("inside chat/render");
         console.log("messages:");
         console.log(this.state.messages);
-<<<<<<< HEAD
-        const allMsg = Object.assign({},this.state.messages,this.state.privmsg);
-        console.log(allMsg);
-        return (
-            <div className="chatbox">
-                <List>
-                {this.state.messages
-                    .map(item => {
-                        return <ListItem key={item.timestamp+item.nick}>{item.timestamp}        {item.nick}: {item.message}</ListItem>
-                    })}
-                </List>
-            </div>
-        );
-=======
         if (this.state.roomName !== '') {
             return (
                 <div className="chatView">
@@ -102,7 +88,6 @@ class Chat extends React.Component {
             )
         }
 
->>>>>>> ff85c12749fad6d3f0e0fa53b66765e1655d951d
     }
 };
 

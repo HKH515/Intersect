@@ -72,7 +72,8 @@ class Home extends React.Component {
                     propagateToParent={this.props.propagateToParent}
                     roomName={this.state.roomName}
                     registeredForRoom={this.state.registeredForRoom}
-                    loadServers={this.props.loadServers}/>
+                    loadServers={this.props.loadServers}
+                    joinServer={this.props.joinServer}/>
                 <UserNav
                     users={this.state.users}
                     username={this.state.username}
@@ -111,7 +112,8 @@ class Home extends React.Component {
                         messages={this.state.messages}
                         privmsg={this.state.privmsg}
                         propagateToParent={this.props.propagateToParent}
-                        loadServers={this.props.loadServers}/>
+                        loadServers={this.props.loadServers}
+                        joinServer={this.props.joinServer}/>
                 </div>
                 <p>username: {this.state.username}</p>
                 <p>roomName: {this.state.roomName}</p>
@@ -147,7 +149,8 @@ Home.propTypes = {
     propagateToParent: PropTypes.func,
     helpDialog: PropTypes.bool,
     loadUsers: PropTypes.func,
-    loadServers: PropTypes.func
+    loadServers: PropTypes.func,
+    joinServer: PropTypes.func
 };
 
 export default Home;

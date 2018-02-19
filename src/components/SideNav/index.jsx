@@ -41,7 +41,8 @@ class SideNav extends React.Component {
                         propagateToParent={this.props.propagateToParent}
                         roomName={this.state.roomName}
                         registeredForRoom={this.state.registeredForRoom}
-                        loadServers={this.props.loadServers}/>
+                        loadServers={this.props.loadServers}
+                        joinServer={this.props.joinServer}/>
 
                 </Drawer>
             </div>
@@ -57,7 +58,8 @@ SideNav.propTypes = {
     loggedIn: PropTypes.bool,
     roomName: PropTypes.string,
     registeredForRoom: PropTypes.bool,
-    loadServers: PropTypes.func
+    loadServers: PropTypes.func,
+    joinServer: PropTypes.func
 };
 
 export default SideNav;

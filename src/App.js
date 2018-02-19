@@ -25,6 +25,7 @@ class App extends React.Component {
         this.propagateToParent = this.propagateToParent.bind(this);
         this.loadUsers = this.loadUsers.bind(this);
         this.loadServers = this.loadServers.bind(this);
+        this.joinServer = this.joinServer.bind(this);
     }
 
     /*
@@ -56,6 +57,23 @@ class App extends React.Component {
                 this.setState({servers: tmpServers});
             }.bind(this));
     }
+        joinServer(roomToJoin) {
+            this
+                .socket
+                .emit('joinroom', {
+                    room: roomToJoin
+                }, function (success, reason) {
+                    if (success) {
+                        this.setState({registeredForRoom: true, roomName: roomToJoin});
+                        console.log("successfully joined room '" + this.roomName + "'");
+                    } else {
+                        console.log("failed to join room: " + reason);
+                    }
+
+                }.bind(this));
+            this.loadServers();
+        }
+
 
     /*getChildContext() {
         return {socket: socketClient('http://localhost:8080'), username: "", loggedIn: false, roomName: "lobby", registeredForRoom: false};
@@ -89,7 +107,8 @@ class App extends React.Component {
                         helpDialog={this.state.helpDialog}
                         users={this.state.users}
                         loadUsers={this.loadUsers}
-                        loadServers={this.loadServers}/>
+                        loadServers={this.loadServers}
+                        joinServer={this.joinServer}/>
                 </MuiThemeProvider>
             </div>
         );

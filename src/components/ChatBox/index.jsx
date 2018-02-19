@@ -49,8 +49,8 @@ class ChatBox extends React.Component {
                 break;
             case '/join':
                 var roomToJoin = line.split(' ').splice(1,line.length).join(' ');
-                this.joinServer(line);//Hackcity
-                this.joinServer(line);//Because servers doesnt update chat if the server doesn't exist
+                this.props.joinServer(roomToJoin);//Hackcity
+                this.props.joinServer(roomToJoin);//Because servers doesnt update chat if the server doesn't exist
                 break;
             case '/help':
                 this.setState({helpDialog: true}, () => {this.props.propagateToParent({helpDialog: this.state.helpDialog})});
@@ -127,7 +127,8 @@ ChatBox.propTypes = {
     userList: PropTypes.func,
     roomName: PropTypes.string,
     registeredForRoom: PropTypes.bool,
-    helpDialog: PropTypes.bool
+    helpDialog: PropTypes.bool,
+    joinServer: PropTypes.func
 };
 
 export default ChatBox;

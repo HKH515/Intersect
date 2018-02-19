@@ -36,6 +36,30 @@ class ChatBox extends React.Component {
         this.setState({msg: e.target.value});
     }
 
+
+    joinServer(message) {
+            var roomToJoin = message.split(' ').splice(1,message.length).join(' ');
+            this
+                .props
+                .socket
+                .emit('joinroom', {
+                    room: roomToJoin
+                }, function (success, reason) {
+                    if (success) {
+                        this.setState({registeredForRoom: true, roomName: roomToJoin});
+                        this
+                            .props
+                            .propagateToParent({registeredForRoom: this.state.registeredForRoom, roomName: this.state.roomName});
+                        console.log("successfully joined room '" + this.state.roomName + "'");
+                    } else {
+                        console.log("failed to join room: " + reason);
+                    }
+
+                }.bind(this));
+            this.props.loadServers();
+        }
+
+
     handleCommand(line) {
         var command = line.split(' ')[0];
         switch (command) {
@@ -43,10 +67,9 @@ class ChatBox extends React.Component {
                 break;
             case '/leave':
                 break;
-            case '/create':
-                var newRoomName = line.split(' ')[1];
-                this.props.socket.emit('joinroom');
-                console.log("creating new room")
+            case '/join':
+                this.joinServer(line);
+                break;
             case '/help':
                 this.setState({helpDialog: true}, () => {this.props.propagateToParent({helpDialog: this.state.helpDialog})});
                 console.log("set helpdialog to true");
@@ -64,7 +87,7 @@ class ChatBox extends React.Component {
                 });
                 /*var msg = this.state.msg.split(' ').splice(2,this.state.msg.length).join(' ');
                 this.props.socket.emit('privatemsg',{nick:target,message:msg});*/
-                this.state.msg = '';
+                this.setState({msg:''});
                 break;
             default:
                 
@@ -115,6 +138,7 @@ ChatBox.propTypes = {
     socket: PropTypes.object.isRequired,
     handleChangeMessage: PropTypes.func,
     propagateToParent: PropTypes.func,
+    loadServers: PropTypes.func,
     roomName: PropTypes.string,
     registeredForRoom: PropTypes.bool,
     helpDialog: PropTypes.bool

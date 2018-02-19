@@ -68,7 +68,8 @@ class Home extends React.Component {
                     servers={this.state.servers}
                     propagateToParent={this.props.propagateToParent}
                     roomName={this.state.roomName}
-                    registeredForRoom={this.state.registeredForRoom}/>
+                    registeredForRoom={this.state.registeredForRoom}
+                    loadServers={this.props.loadServers}/>
                 <LoginBox
                     socket={this.props.socket}
                     username={this.state.username}
@@ -95,7 +96,8 @@ class Home extends React.Component {
                     registeredForRoom={this.state.registeredForRoom}
                     messages={this.state.messages}
                     privmsg={this.state.privmsg}
-                    propagateToParent={this.props.propagateToParent}/>
+                    propagateToParent={this.props.propagateToParent}
+                    loadServers={this.props.loadServers}/>
                     </div>
                 <p>username: {this.state.username}</p>
                 <p>roomName: {this.state.roomName}</p>
@@ -120,6 +122,7 @@ Home.propTypes = {
     privmsg: PropTypes.array,
     servers: PropTypes.array,
     propagateToParent: PropTypes.func,
+    loadServers: PropTypes.func,
     helpDialog: PropTypes.bool
 };
 

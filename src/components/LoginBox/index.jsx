@@ -14,8 +14,8 @@ class LoginBox extends React.Component {
     constructor(props) {
         super(props);
         this.placeholder = "Enter username...";
-        this.errorText = "A username is required";
         this.state = {
+            errorText: "",
             username: '',
             loggedIn: '',
             open: true
@@ -26,10 +26,16 @@ class LoginBox extends React.Component {
         this.handleChangeUsername = this
             .handleChangeUsername
             .bind(this);
-        this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.handleKeyDown = this
+            .handleKeyDown
+            .bind(this);
     }
 
     loginUser() {
+        if (this.state.username == '') {
+            this.setState({errorText: "A username is required!"});
+            return;
+        }
         console.log("trying to login with username '" + this.state.username + "'");
         this
             .props
@@ -47,22 +53,13 @@ class LoginBox extends React.Component {
                     });
                     console.log("loggedIn : " + this.state.loggedIn);
                 } else {
+                    this.setState({errorText: "Username is taken!"});
                     console.log("username is taken!")
                 }
             });
-
-        /*function (available) {
-                console.log("inside addUser callback...");
-                if (available) {
-                    console.log("username is available!");
-                    console.log("loggedIn : " + this.state.loggedIn);
-                    this.setState({open: false, loggedIn: true});
-                } else {
-                    console.log("username is taken!");
-                }
-            }.bind(this));*/
         console.log("this should be true if login succeeded: " + this.state.loggedIn);
     }
+
     handleChangeUsername(e) {
         this.setState({username: e.target.value});
     }
@@ -89,7 +86,14 @@ class LoginBox extends React.Component {
                 modal={false}
                 open={this.state.open}
                 actions={actions}>
-                <TextField style={{width:700}} hintText={this.placeholder} onChange={this.handleChangeUsername} onKeyDown={this.handleKeyDown}/>
+                <TextField
+                    style={{
+                    width: 700
+                }}
+                    hintText={this.placeholder}
+                    onChange={this.handleChangeUsername}
+                    onKeyDown={this.handleKeyDown}
+                    errorText={this.state.errorText}/>
             </Dialog>
         );
     }

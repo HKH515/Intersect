@@ -26,6 +26,7 @@ class LoginBox extends React.Component {
         this.handleChangeUsername = this
             .handleChangeUsername
             .bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
     }
 
     loginUser() {
@@ -66,6 +67,12 @@ class LoginBox extends React.Component {
         this.setState({username: e.target.value});
     }
 
+    handleKeyDown(e) {
+        if (e.keyCode === 13) {
+            this.loginUser();
+        }
+    }
+
     render() {
         const actions = [< FlatButton label = "Submit" primary = {
                 true
@@ -82,7 +89,7 @@ class LoginBox extends React.Component {
                 modal={false}
                 open={this.state.open}
                 actions={actions}>
-                <TextField style={{width:700}} hintText={this.placeholder} onChange={this.handleChangeUsername}/>
+                <TextField style={{width:700}} hintText={this.placeholder} onChange={this.handleChangeUsername} onKeyDown={this.handleKeyDown}/>
             </Dialog>
         );
     }

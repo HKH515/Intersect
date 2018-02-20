@@ -73,11 +73,6 @@ class Home extends React.Component {
         return (
             <div>
                 <AppBar position="static" title="Intersect">
-                    <Toolbar>
-                        <IconButton>
-                            <Help />
-                        </IconButton>
-                    </Toolbar>
                 </AppBar>
                 <SideNav
                     username={this.state.username}

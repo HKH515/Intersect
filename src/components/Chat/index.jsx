@@ -7,8 +7,8 @@ import Autoscroll from 'autoscroll-react'
 
 class Chat extends React.Component {
     componentWillReceiveProps(newProps) {
-        const {registeredForRoom, loggedIn, roomName} = newProps;
-        this.setState({registeredForRoom, loggedIn, roomName});
+        const {registeredForRoom, loggedIn, roomName, messages} = newProps;
+        this.setState({registeredForRoom, loggedIn, roomName,messages});
     }
 
     constructor(props) {
@@ -16,7 +16,6 @@ class Chat extends React.Component {
         this.state = {
             errorOpen: false,
             messages: [],
-            privmsg: [],
             registeredForRoom: false,
             loggedIn: false,
             roomName: ''
@@ -49,11 +48,12 @@ class Chat extends React.Component {
                 }.bind(this));
 
             this.props.socket.on('recv_privatemsg', function(messageObj) {
-                if(this.state.username === messageObj.nick) {
+                console.log("inside recv_privatemsg");
+                if(this.props.username === messageObj.target) {
                     this.setState({
-                        privmsg: messageObj
+                        messages: messageObj
                     }, () => {
-                        this.props.propagateToParent({privmsg: messageObj})
+                        this.props.propagateToParent({messages: messageObj})
                     });
                 }
             }.bind(this));
@@ -72,10 +72,19 @@ class Chat extends React.Component {
                             .state
                             .messages
                             .map(item => {
-                                return <ListItem
-                                    key={item.timestamp + item.nick}
-                                    primaryText={item.message}
-                                    secondaryText={item.nick + " @ " + item.timestamp}></ListItem>
+                                if (item.target === undefined) {
+                                    return <ListItem
+                                        key={item.timestamp + item.nick}
+                                        primaryText={item.message}
+                                        secondaryText={item.nick + " @ " + item.timestamp}></ListItem>
+                                }
+                                else if (item.target !== undefined && (item.target === this.props.username || item.nick === this.props.username)) {
+                                    return <ListItem style={{color:'#D50000'}}
+                                        key={item.timestamp + item.nick}
+                                        primaryText={item.message}
+                                        secondaryText={item.nick + "  -->  " +item.target + "@" + item.timestamp }></ListItem>
+                                }
+
                             })}
                     </List>
                 </div>
@@ -98,7 +107,6 @@ Chat.propTypes = {
     username: PropTypes.string,
     loggedIn: PropTypes.bool,
     messages: PropTypes.array,
-    privmsg: PropTypes.array,
     handleChangeMessage: PropTypes.func,
     propagateToParent: PropTypes.func
 };

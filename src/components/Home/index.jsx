@@ -1,6 +1,5 @@
 import React from 'react';
 import {PropTypes} from 'prop-types';
-import RaisedButton from 'material-ui/RaisedButton';
 import ChatBox from '../ChatBox';
 import Chat from '../Chat';
 import SideNav from '../SideNav';
@@ -123,23 +122,6 @@ class Home extends React.Component {
                         loadServers={this.props.loadServers}
                         joinServer={this.props.joinServer}/>
                 </div>
-                <p>username: {this.state.username}</p>
-                <p>roomName: {this.state.roomName}</p>
-                <p>loggedIn: {(this.state.loggedIn
-                        ? "true"
-                        : "false")}</p>
-                <p>registeredForRoom: {(this.state.registeredForRoom
-                        ? "true"
-                        : "false")}</p>
-                <p>messages: {this.state.messages.length}</p>
-                <p>servers: {this.state.servers.length}</p>
-                <p>helpDialog: {(this.state.helpDialog
-                        ? "true"
-                        : "false")}</p>
-                <RaisedButton
-                    onClick={() => {
-                    this.forceUpdate();
-                }}>Force re-render</RaisedButton>
             </div>
         );
     }

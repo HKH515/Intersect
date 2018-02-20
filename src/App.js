@@ -115,7 +115,8 @@ class App extends React.Component {
                         loadServers={this.loadServers}
                         joinServer={this.joinServer}
                         bannedFrom={this.state.bannedFrom}
-                        checkIfBanned={this.checkIfBanned}/>
+                        checkIfBanned={this.checkIfBanned}
+                        ops ={this.state.ops}/>
                 </MuiThemeProvider>
             </div>
         );

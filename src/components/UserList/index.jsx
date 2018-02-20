@@ -40,7 +40,7 @@ class UserList extends React.Component {
     }
 
     textcolor(item) {
-        if (item === this.state.ops) {
+        if (this.state.ops.indexOf(item.nick)> -1) {
             return "#F9A825";
         }
         return "#000";

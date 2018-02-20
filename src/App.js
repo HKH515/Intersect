@@ -67,6 +67,7 @@ class App extends React.Component {
                     if (success) {
                         this.setState({registeredForRoom: true, roomName: roomToJoin});
                         console.log("successfully joined room '" + this.roomName + "'");
+                        this.loadUsers();
                     } else {
                         console.log("failed to join room: " + reason);
                     }
@@ -87,6 +88,15 @@ class App extends React.Component {
                var opsArray = Object.keys(users);
                this.setState({users: userArray});
                this.setState({ops: opsArray})
+               // If the room we are in updated the userlist is without us, we are either kicked or banned
+               console.log("users:");
+               console.log(userArray);
+               console.log("username:");
+               console.log(this.state.username);
+
+               if (userArray.indexOf(this.state.username) == -1) {
+                   this.setState({registeredForRoom: false, roomName: ''});
+               }
            }
         }.bind(this));
     }

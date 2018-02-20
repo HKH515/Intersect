@@ -37,6 +37,9 @@ class ChatBox extends React.Component {
         this.handleCommand = this
             .handleCommand
             .bind(this);
+        this.handleKeyDown = this
+            .handleKeyDown
+            .bind(this);
     }
 
     handleChangeMessage(e) {
@@ -168,6 +171,12 @@ class ChatBox extends React.Component {
         }
     }
 
+    handleKeyDown(e) {
+        if (e.keyCode == 13) {
+            this.sendMessage();
+        }
+    }
+
     render() {
         if (this.state.registeredForRoom) {
             return (
@@ -176,6 +185,7 @@ class ChatBox extends React.Component {
                         hintText={this.placeholder}
                         onChange={this.handleChangeMessage}
                         value={this.state.msg}
+                        onKeyDown={this.handleKeyDown}
                         style={{
                         width: 1200
                     }}></TextField>
@@ -185,8 +195,7 @@ class ChatBox extends React.Component {
                         tooltip="Send message"><ContentSend/></IconButton>
                 </div>
             );
-        }
-        else {
+        } else {
             return null;
         }
     }

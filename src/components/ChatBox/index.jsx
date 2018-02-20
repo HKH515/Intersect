@@ -53,17 +53,8 @@ class ChatBox extends React.Component {
         var command = line.split(' ')[0];
         switch (command) {
             case '/kick':
-                var target = line
-                    .split(' ')
-                    .splice(1, line.length)
-                    .join(' ');
-                this
-                    .props
-                    .socket
-                    .emit('kick', {
-                        room: this.props.roomName,
-                        user: target
-                    }, (success) => {});
+                var toBeKicked = line.split(' ').splice(1,line.length).join(' ');
+                this.props.socket.emit('kick', {room:this.props.roomName,user:toBeKicked}, (success) => {});
                 break;
             case '/leave':
                 this
@@ -95,47 +86,18 @@ class ChatBox extends React.Component {
                 this.showHelpDialog();
                 break;
             case '/ban':
-                var target = line
-                    .split(' ')
-                    .splice(1, line.length)
-                    .join(' ');
-                this
-                    .props
-                    .socket
-                    .emit('ban', {
-                        room: this.props.roomName,
-                        user: target
-                    }, (success) => {});
+                var toBeBanned = line.split(' ').splice(1,line.length).join(' ');
+                this.props.socket.emit('ban',{room:this.props.roomName,user:toBeBanned}, (success) => {});
                 break;
             case '/msg':
-                var target = this
-                    .state
-                    .msg
-                    .split(' ')[1];
-                var message = this
-                    .state
-                    .msg
-                    .split(' ')
-                    .splice(2, this.state.msg.length)
-                    .join(' ');
-                this
-                    .props
-                    .socket
-                    .emit('users');
-                this
-                    .props
-                    .socket
-                    .on('userlist', (users) => {
-                        if (users.indexOf(target) > -1) {
-                            this
-                                .props
-                                .socket
-                                .emit('privatemsg', {
-                                    nick: target,
-                                    message: message
-                                });
-                        }
-                    });
+                var target = this.state.msg.split(' ')[1];
+                var message = this.state.msg.split(' ').splice(2,this.state.msg.length).join(' ');
+                this.props.socket.emit('users');
+                this.props.socket.on('userlist', (users) => {
+                    if(users.indexOf(target)>-1){
+                        this.props.socket.emit('privatemsg',{nick:target,message:message,roomName:this.state.roomName}, (success) => {});
+                    }
+                });
                 /*var msg = this.state.msg.split(' ').splice(2,this.state.msg.length).join(' ');
                 this.props.socket.emit('privatemsg',{nick:target,message:msg});*/
                 this.setState({msg: ''});

@@ -20,12 +20,12 @@ class SideNav extends React.Component {
             username: '',
             loggedIn: false
         };
+        this.handleToggle = this.handleToggle.bind(this);
     }
 
-    handleToggle = () => this.setState({
-        open: !this.state.open
-    });
-
+    handleToggle() {   
+        this.setState({open: !this.state.open});
+    }
     render() {
         return (
             <div>

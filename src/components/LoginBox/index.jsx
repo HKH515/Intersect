@@ -62,7 +62,7 @@ class LoginBox extends React.Component {
             }.bind(this));*/
         console.log("this should be true if login succeeded: " + this.state.loggedIn);
     }
-    handleChangeUsername = (e) => {
+    handleChangeUsername(e) {
         this.setState({username: e.target.value});
     }
 

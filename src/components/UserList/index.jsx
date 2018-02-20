@@ -34,7 +34,7 @@ class UserList extends React.Component {
     }
 
     textcolor(item) {
-        if (item === this.state.ops) {
+        if (this.state.ops.indexOf(item.nick)> -1) {
             return "#F9A825";
         }
         return "#000";
@@ -42,22 +42,22 @@ class UserList extends React.Component {
     
 
     render() {
-        console.log(this.state.ops);
+        console.log(this.state.ops, 'ops');
         return (
             <div>
                 <List>
                     {this
                         .props
                         .users
-                        .map(item => (
-                            <ListItem
-                                divider="true"
-                                key={item}
-                                style={{
-                                backgroundColor: this.bgcolor(item),
-                                textColor: this.textcolor(item)
-                            }}>{item}</ListItem>
-                        ))}
+                        .map( item => (
+                                <ListItem
+                                    divider="true"
+                                    key={item}
+                                    style={{
+                                    backgroundColor: this.bgcolor(item),
+                                    textColor: this.textcolor(item)
+                                }}>{item}</ListItem>
+                    ))}
                 </List>
             </div>
         );

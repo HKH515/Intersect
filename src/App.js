@@ -119,7 +119,8 @@ class App extends React.Component {
                         users={this.state.users}
                         loadUsers={this.loadUsers}
                         loadServers={this.loadServers}
-                        joinServer={this.joinServer}/>
+                        joinServer={this.joinServer}
+                        ops ={this.state.ops}/>
                 </MuiThemeProvider>
             </div>
         );

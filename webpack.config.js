@@ -6,11 +6,10 @@ module.exports = {
   // set this to your entry point
   entry: "./src/index.js",
   // change this to your output path
-  output: {
-    path: path.resolve(__dirname,'/dist/js/'),
-    filename: "bundle.js",
-    publicPath: "/assets/"
-  },
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js'
+    }, 
 
   // create a map file for debugging
   devtool: 'source-map',
@@ -42,7 +41,6 @@ module.exports = {
   plugins: [
     new UglifyJsPlugin()
   ],
-
   ///////////  uncomment this for production ////////////////
   // plugins: [
   //   new webpack.optimize.UglifyJsPlugin({

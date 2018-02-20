@@ -92,7 +92,7 @@ class Chat extends React.Component {
         } else {
             return (
                 <div className="chatView">
-                    <h2>Not registered for room!</h2>
+                    <h2 className="heading">Not registered for room!</h2>
                 </div>
             )
         }

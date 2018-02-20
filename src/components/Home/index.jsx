@@ -11,6 +11,7 @@ import AppBar from 'material-ui/AppBar';
 import AccountCircle from 'material-ui-icons/AccountCircle';
 import IconButton from 'material-ui/IconButton';
 import Toolbar from 'material-ui/Toolbar';
+import Help from 'material-ui-icons/Help';
 
 class Home extends React.Component {
     componentWillReceiveProps(newProps) {
@@ -72,6 +73,11 @@ class Home extends React.Component {
         return (
             <div>
                 <AppBar position="static" title="Intersect">
+                    <Toolbar>
+                        <IconButton>
+                            <Help />
+                        </IconButton>
+                    </Toolbar>
                 </AppBar>
                 <SideNav
                     username={this.state.username}

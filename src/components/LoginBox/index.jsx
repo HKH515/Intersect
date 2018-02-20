@@ -32,7 +32,7 @@ class LoginBox extends React.Component {
     }
 
     loginUser() {
-        if (this.state.username == '') {
+        if (this.state.username === '') {
             this.setState({errorText: "A username is required!"});
             return;
         }
@@ -66,7 +66,7 @@ class LoginBox extends React.Component {
     }
 
     render() {
-        const actions = [< FlatButton label = "Submit" primary = {
+        const actions = [< FlatButton key="loginUserButton" label = "Submit" primary = {
                 true
             }
             keyboardFocused = {
@@ -92,7 +92,7 @@ class LoginBox extends React.Component {
             </Dialog>
         );
     }
-};
+}
 
 LoginBox.propTypes = {
     socket: PropTypes.object.isRequired,

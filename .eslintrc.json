@@ -1,4 +1,5 @@
 {
+    "extends": ["eslint:recommended", "plugin:react/recommended"],    
     "env": {
         "browser": true,
         "commonjs": true,
@@ -12,6 +13,7 @@
         "sourceType": "module"
     },
     "rules": {
+        "no-console": "off",
         "no-const-assign": "warn",
         "no-this-before-super": "warn",
         "no-undef": "warn",

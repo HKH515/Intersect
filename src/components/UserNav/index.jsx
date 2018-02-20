@@ -1,18 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import CSSModules from 'react-css-modules';
 import Drawer from 'material-ui/Drawer';
-import RaisedButton from 'material-ui/RaisedButton';
-import MenuItem from 'material-ui/MenuItem';
 import UserList from '../UserList';
 import AppBar from 'material-ui/AppBar';
 import {PropTypes} from 'prop-types';
 
 class UserNav extends React.Component {
     componentWillReceiveProps(newProps) {
-        const {users, username, roomName, ops} = newProps;
-        this.setState({users, username, roomName, ops});
+        const {users, username, roomName, ops, registeredForRoom} = newProps;
+        this.setState({users, username, roomName, ops, registeredForRoom});
     }
     constructor(props) {
         super(props);
@@ -22,7 +17,8 @@ class UserNav extends React.Component {
             users: [],
             username: '',
             roomName: '',
-            ops: []
+            ops: [],
+            registeredForRoom: false
         };
     }
 
@@ -44,13 +40,14 @@ class UserNav extends React.Component {
                         roomName={this.state.roomName}
                         users={this.state.users}
                         loadUsers={this.props.loadUsers}
-                        ops={this.state.ops}/>
+                        ops={this.state.ops}
+                        registeredForRoom={this.state.registeredForRoom}/>
 
                 </Drawer>
             </div>
         );
     }
-};
+}
 
 UserNav.propTypes = {
     socket: PropTypes.object.isRequired,
@@ -63,7 +60,7 @@ UserNav.propTypes = {
     registeredForRoom: PropTypes.bool,
     users: PropTypes.array,
     loadUsers: PropTypes.func,
-    ops: PropTypes.array
+    ops: PropTypes.array,
 };
 
 export default UserNav;

@@ -5,13 +5,12 @@ import {PropTypes} from 'prop-types';
 import TextField from 'material-ui/TextField';
 import ContentSend from 'material-ui/svg-icons/content/send';
 import IconButton from 'material-ui/IconButton';
-import Toolbar from 'material-ui/Toolbar';
 import Help from 'material-ui-icons/Help';
 
 class ChatBox extends React.Component {
     componentWillReceiveProps(newProps) {
-        const {registeredForRoom, roomName,msg,users} = newProps;
-        this.setState({registeredForRoom, roomName,msg,users});
+        const {registeredForRoom, roomName, msg, users} = newProps;
+        this.setState({registeredForRoom, roomName, msg, users});
     }
     constructor(props) {
         super(props);
@@ -55,7 +54,7 @@ class ChatBox extends React.Component {
         switch (command) {
             case '/kick':
                 var toBeKicked = line.split(' ').splice(1,line.length).join(' ');
-                this.props.socket.emit('kick', {room:this.props.roomName,user:toBeKicked}, (success) => {});
+                this.props.socket.emit('kick', {room:this.props.roomName,user:toBeKicked}, () => {});
                 break;
             case '/leave':
                 this
@@ -82,13 +81,14 @@ class ChatBox extends React.Component {
                 this
                     .props
                     .joinServer(roomToJoin); //Because servers doesnt update chat if the server doesn't exist
+
                 break;
             case '/help':
                 this.showHelpDialog();
                 break;
             case '/ban':
                 var toBeBanned = line.split(' ').splice(1,line.length).join(' ');
-                this.props.socket.emit('ban',{room:this.props.roomName,user:toBeBanned}, (success) => {});
+                this.props.socket.emit('ban',{room:this.state.roomName,user:toBeBanned}, () => {});
                 break;
             case '/msg':
                 var target = this.state.msg.split(' ')[1];
@@ -158,14 +158,14 @@ class ChatBox extends React.Component {
                         tooltip="Send message"><ContentSend/></IconButton>
                     <IconButton
                     onClick={this.showHelpDialog}
-                    tooltop="Show help dialog">
+                    tooltip="Show help dialog">
                     <Help />
                     </IconButton>
                     
                 </div>
             );
     }
-};
+}
 
 ChatBox.propTypes = {
     username: PropTypes.string,

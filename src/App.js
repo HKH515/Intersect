@@ -21,12 +21,14 @@ class App extends React.Component {
             servers: [],
             helpDialog: false,
             users: [],
-            ops: []
+            ops: [],
+            bannedFrom: []
         };
         this.propagateToParent = this.propagateToParent.bind(this);
         this.loadUsers = this.loadUsers.bind(this);
         this.loadServers = this.loadServers.bind(this);
         this.joinServer = this.joinServer.bind(this);
+        this.checkIfBanned = this.checkIfBanned.bind(this);
     }
 
     /*
@@ -36,10 +38,13 @@ class App extends React.Component {
         this.setState(changedProps);
     }
 
-    componentDidCatch(error, info) {
-        console.log(error);
+    checkIfBanned() {
+        this.socket.on('banned', () => {
+            var tmpBanned = this.state.bannedFrom;
+            tmpBanned.push(this.state.roomName);
+            this.setState({bannedFrom: tmpBanned});
+        });
     }
-
 
     loadServers() {
         this
@@ -60,11 +65,10 @@ class App extends React.Component {
                 .socket
                 .emit('joinroom', {
                     room: roomToJoin
-                }, function (success, reason) {
+                }, function (success) {
                     if (success) {
                         this.setState({registeredForRoom: true, roomName: roomToJoin});
                         this.loadUsers();
-                    } else {
                     }
 
                 }.bind(this));
@@ -77,15 +81,14 @@ class App extends React.Component {
     }*/
 
     loadUsers() {
-        this.socket.on('updateusers', function (room, users, ops) {
+        this.socket.on('updateusers', function (room, users) {
            if (this.state.roomName === room) {
                var userArray = Object.keys(users);
                var opsArray = Object.keys(users);
                this.setState({users: userArray});
                this.setState({ops: opsArray})
                // If the room we are in updated the userlist is without us, we are either kicked or banned
-
-               if (userArray.indexOf(this.state.username) == -1) {
+               if (userArray.indexOf(this.state.username) === -1) {
                    this.setState({registeredForRoom: false, roomName: ''});
                }
            }
@@ -111,6 +114,8 @@ class App extends React.Component {
                         loadUsers={this.loadUsers}
                         loadServers={this.loadServers}
                         joinServer={this.joinServer}
+                        bannedFrom={this.state.bannedFrom}
+                        checkIfBanned={this.checkIfBanned}
                         ops ={this.state.ops}/>
                 </MuiThemeProvider>
             </div>
@@ -129,7 +134,8 @@ App.propTypes = {
     propagateToParent: PropTypes.func,
     servers: PropTypes.array,
     loadServers: PropTypes.func,
-    ops: PropTypes.array
+    ops: PropTypes.array,
+    checkIfBanned: PropTypes.func
 };
 
 export default App;

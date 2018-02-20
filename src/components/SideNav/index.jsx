@@ -29,9 +29,7 @@ class SideNav extends React.Component {
     render() {
         return (
             <div>
-                {this.state.loggedIn === true && <p> Welcome {this.props.username}!</p>}
-                <RaisedButton label="Server list" onClick={this.handleToggle}/>
-                <Drawer open={this.state.open}>
+                <Drawer open={true}>
                     <AppBar title="Rooms" showMenuIconButton={false}/>
                     <ServerList
                         socket={this.props.socket}
@@ -43,7 +41,6 @@ class SideNav extends React.Component {
                         registeredForRoom={this.state.registeredForRoom}
                         loadServers={this.props.loadServers}
                         joinServer={this.props.joinServer}/>
-
                 </Drawer>
             </div>
         );

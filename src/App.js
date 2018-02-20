@@ -20,7 +20,8 @@ class App extends React.Component {
             privmsg: [],
             servers: [],
             helpDialog: false,
-            users: []
+            users: [],
+            ops: []
         };
         this.propagateToParent = this.propagateToParent.bind(this);
         this.loadUsers = this.loadUsers.bind(this);
@@ -81,12 +82,12 @@ class App extends React.Component {
 
     loadUsers() {
         this.socket.on('updateusers', function (room, users, ops) {
-           //if (this.state.roomName === room) {
+           if (this.state.roomName === room) {
                var userArray = Object.keys(users);
+               var opsArray = Object.keys(users);
                this.setState({users: userArray});
-               console.log("logging users...");
-               console.log(users);
-           //}
+               this.setState({ops: opsArray})
+           }
         }.bind(this));
     }
 
@@ -125,7 +126,8 @@ App.propTypes = {
     privmsg: PropTypes.array,
     propagateToParent: PropTypes.func,
     servers: PropTypes.array,
-    loadServers: PropTypes.func
+    loadServers: PropTypes.func,
+    ops: PropTypes.array
 };
 
 export default App;

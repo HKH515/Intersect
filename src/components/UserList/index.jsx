@@ -5,33 +5,44 @@ import {PropTypes} from 'prop-types';
 
 class UserList extends React.Component {
     componentWillReceiveProps(newProps) {
-        const {username, users} = newProps;
+        const {username, users, ops} = newProps;
         console.log("users: " + newProps.users);
-        this.setState({username, users});
+        this.setState({username, users, ops});
     }
 
     constructor(props) {
         super(props);
-        this.usercolor = this.usercolor.bind(this);
+        this.bgcolor = this.bgcolor.bind(this);
+        this.textcolor = this.textcolor.bind(this);
         this.state = {
             username: '',
-            users: []
+            users: [],
+            ops: []
         };
-        this.usercolor = this.usercolor.bind(this);
+        this.bgcolor = this.bgcolor.bind(this);
     }
     componentDidMount() {
         console.log("serverlist did mount");
         this.props.loadUsers();
     }
 
-    usercolor(item) {
+    bgcolor(item) {
         if (item === this.state.username) {
             return "#80DEEA";
         }
         return "#FFF";
     }
 
+    textcolor(item) {
+        if (item === this.state.ops) {
+            return "#F9A825";
+        }
+        return "#000";
+    }
+    
+
     render() {
+        console.log(this.state.ops);
         return (
             <div>
                 <List>
@@ -43,7 +54,8 @@ class UserList extends React.Component {
                                 divider="true"
                                 key={item}
                                 style={{
-                                backgroundColor: this.usercolor(item)
+                                backgroundColor: this.bgcolor(item),
+                                textColor: this.textcolor(item)
                             }}>{item}</ListItem>
                         ))}
                 </List>
@@ -62,7 +74,8 @@ UserList.propTypes = {
     propagateToParent: PropTypes.func,
     registeredForRoom: PropTypes.bool,
     users: PropTypes.array,
-    loadUsers: PropTypes.func
+    loadUsers: PropTypes.func,
+    ops: PropTypes.array
 };
 
 export default UserList;

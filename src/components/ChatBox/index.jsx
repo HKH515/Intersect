@@ -76,6 +76,7 @@ class ChatBox extends React.Component {
             default:
                 
         }
+        this.setState({msg: ''});
     }
 
     sendMessage() {

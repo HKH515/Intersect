@@ -21,12 +21,14 @@ class App extends React.Component {
             servers: [],
             helpDialog: false,
             users: [],
-            ops: []
+            ops: [],
+            bannedFrom: []
         };
         this.propagateToParent = this.propagateToParent.bind(this);
         this.loadUsers = this.loadUsers.bind(this);
         this.loadServers = this.loadServers.bind(this);
         this.joinServer = this.joinServer.bind(this);
+        this.checkIfBanned = this.checkIfBanned.bind(this);
     }
 
     /*
@@ -36,24 +38,24 @@ class App extends React.Component {
         this.setState(changedProps);
     }
 
-    componentDidCatch(error, info) {
-        console.log(error);
+    checkIfBanned() {
+        this.socket.on('banned', () => {
+            var tmpBanned = this.state.bannedFrom;
+            tmpBanned.push(this.state.roomName);
+            this.setState({bannedFrom: tmpBanned});
+        });
     }
 
-
     loadServers() {
-        console.log("inside loadServers...");
         this
             .socket
             .emit('rooms');
         this
             .socket
             .on('roomlist', function(rooms) {
-                console.log("inside roomlist callback...");
                 const tmpServers = [];
                 for (var room in rooms) {
                     tmpServers.push(room);
-                    console.log("printing name of room: " + room);
                 }
                 this.setState({servers: tmpServers});
             }.bind(this));
@@ -63,13 +65,10 @@ class App extends React.Component {
                 .socket
                 .emit('joinroom', {
                     room: roomToJoin
-                }, function (success, reason) {
+                }, function (success) {
                     if (success) {
                         this.setState({registeredForRoom: true, roomName: roomToJoin});
-                        console.log("successfully joined room '" + this.roomName + "'");
                         this.loadUsers();
-                    } else {
-                        console.log("failed to join room: " + reason);
                     }
 
                 }.bind(this));
@@ -82,19 +81,14 @@ class App extends React.Component {
     }*/
 
     loadUsers() {
-        this.socket.on('updateusers', function (room, users, ops) {
+        this.socket.on('updateusers', function (room, users) {
            if (this.state.roomName === room) {
                var userArray = Object.keys(users);
                var opsArray = Object.keys(users);
                this.setState({users: userArray});
                this.setState({ops: opsArray})
                // If the room we are in updated the userlist is without us, we are either kicked or banned
-               console.log("users:");
-               console.log(userArray);
-               console.log("username:");
-               console.log(this.state.username);
-
-               if (userArray.indexOf(this.state.username) == -1) {
+               if (userArray.indexOf(this.state.username) === -1) {
                    this.setState({registeredForRoom: false, roomName: ''});
                }
            }
@@ -119,7 +113,9 @@ class App extends React.Component {
                         users={this.state.users}
                         loadUsers={this.loadUsers}
                         loadServers={this.loadServers}
-                        joinServer={this.joinServer}/>
+                        joinServer={this.joinServer}
+                        bannedFrom={this.state.bannedFrom}
+                        checkIfBanned={this.checkIfBanned}/>
                 </MuiThemeProvider>
             </div>
         );
@@ -137,7 +133,8 @@ App.propTypes = {
     propagateToParent: PropTypes.func,
     servers: PropTypes.array,
     loadServers: PropTypes.func,
-    ops: PropTypes.array
+    ops: PropTypes.array,
+    checkIfBanned: PropTypes.func
 };
 
 export default App;

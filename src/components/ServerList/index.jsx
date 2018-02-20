@@ -1,15 +1,13 @@
 import React from 'react';
 import {PropTypes} from 'prop-types';
-import FontIcon from 'material-ui/FontIcon';
 
 // UI
 import {List, ListItem} from 'material-ui/List';
-import FlatButton from 'material-ui/FlatButton';
 
 class ServerList extends React.Component {
     componentWillReceiveProps(newProps) {
-        const {roomName, registeredForRoom, loggedIn} = newProps;
-        this.setState({roomName, registeredForRoom, loggedIn});
+        const {roomName, registeredForRoom, loggedIn, bannedFrom} = newProps;
+        this.setState({roomName, registeredForRoom, loggedIn, bannedFrom});
     }
     constructor(props) {
         super(props);
@@ -18,7 +16,8 @@ class ServerList extends React.Component {
             roomName: '',
             registeredForRoom: false,
             loggedIn: false,
-            servers: []
+            servers: [],
+            bannedFrom: []
         };
         this.joinServer = this
             .joinServer
@@ -26,8 +25,8 @@ class ServerList extends React.Component {
     }
 
     componentDidMount() {
-        console.log("serverlist did mount");
         this.props.loadServers();
+        this.props.checkIfBanned();
     }
 
     joinServer(item) {
@@ -39,11 +38,13 @@ class ServerList extends React.Component {
         if (this.state.roomName === item) {
             return "#80DEEA";
         }
+        else if (this.state.bannedFrom.indexOf(item) > -1) {
+            return "#F44336";
+        }
         return "#FFF";
     }
 
     render() {
-        console.log("objects.keys(servers) : " + Object.keys(this.state.servers));
         return (
             <div>
                 <List>
@@ -63,7 +64,7 @@ class ServerList extends React.Component {
             </div>
         );
     }
-};
+}
 
 ServerList.propTypes = {
     socket: PropTypes.object.isRequired,
@@ -74,7 +75,9 @@ ServerList.propTypes = {
     loadServers: PropTypes.func,
     propagateToParent: PropTypes.func,
     registeredForRoom: PropTypes.bool,
-    joinServer: PropTypes.func
+    joinServer: PropTypes.func,
+    bannedFrom: PropTypes.array,
+    checkIfBanned: PropTypes.func
 };
 
 export default ServerList;

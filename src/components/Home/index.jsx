@@ -8,16 +8,9 @@ import LoginBox from '../LoginBox';
 import HelpDialog from '../HelpDialog';
 import UserNav from '../UserNav';
 import AppBar from 'material-ui/AppBar';
-import AccountCircle from 'material-ui-icons/AccountCircle';
-import IconButton from 'material-ui/IconButton';
-import Toolbar from 'material-ui/Toolbar';
-import Help from 'material-ui-icons/Help';
 
 class Home extends React.Component {
     componentWillReceiveProps(newProps) {
-        console.log("Home component is getting new props!");
-        console.log("Home's new props are the following:");
-        console.log(newProps);
         var {
             username,
             loggedIn,
@@ -27,7 +20,8 @@ class Home extends React.Component {
             messages,
             helpDialog,
             users,
-            ops
+            ops,
+            bannedFrom
         } = newProps;
         this.setState({
             username,
@@ -38,7 +32,8 @@ class Home extends React.Component {
             messages,
             helpDialog,
             users,
-            ops
+            ops,
+            bannedFrom
         });
     }
     constructor(props) {
@@ -53,7 +48,8 @@ class Home extends React.Component {
             privmsg: [],
             helpDialog: false,
             users: [],
-            ops: []
+            ops: [],
+            bannedFrom: []
         };
     }
 
@@ -83,13 +79,14 @@ class Home extends React.Component {
                     roomName={this.state.roomName}
                     registeredForRoom={this.state.registeredForRoom}
                     loadServers={this.props.loadServers}
-                    joinServer={this.props.joinServer}/>
+                    joinServer={this.props.joinServer}
+                    bannedFrom={this.state.bannedFrom}
+                    checkIfBanned={this.props.checkIfBanned}/>
                 <UserNav
                     users={this.state.users}
                     username={this.state.username}
                     socket={this.props.socket}
                     roomName={this.state.roomName}
-                    users={this.state.users}
                     loadUsers={this.props.loadUsers}
                     registeredForRoom={this.state.registeredForRoom}
                     loadServers={this.props.loadServers}
@@ -146,7 +143,7 @@ class Home extends React.Component {
             </div>
         );
     }
-};
+}
 
 Home.propTypes = {
     socket: PropTypes.object.isRequired,
@@ -162,7 +159,9 @@ Home.propTypes = {
     loadUsers: PropTypes.func,
     loadServers: PropTypes.func,
     joinServer: PropTypes.func,
-    ops: PropTypes.array
+    ops: PropTypes.array,
+    bannedFrom: PropTypes.array,
+    checkIfBanned: PropTypes.func
 };
 
 export default Home;

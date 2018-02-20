@@ -5,7 +5,6 @@ import {PropTypes} from 'prop-types';
 import TextField from 'material-ui/TextField';
 import ContentSend from 'material-ui/svg-icons/content/send';
 import IconButton from 'material-ui/IconButton';
-import Toolbar from 'material-ui/Toolbar';
 import Help from 'material-ui-icons/Help';
 
 class ChatBox extends React.Component {
@@ -54,7 +53,7 @@ class ChatBox extends React.Component {
         switch (command) {
             case '/kick':
                 var toBeKicked = line.split(' ').splice(1,line.length).join(' ');
-                this.props.socket.emit('kick', {room:this.props.roomName,user:toBeKicked}, (success) => {});
+                this.props.socket.emit('kick', {room:this.props.roomName,user:toBeKicked}, () => {});
                 break;
             case '/leave':
                 this
@@ -81,13 +80,14 @@ class ChatBox extends React.Component {
                 this
                     .props
                     .joinServer(roomToJoin); //Because servers doesnt update chat if the server doesn't exist
+
                 break;
             case '/help':
                 this.showHelpDialog();
                 break;
             case '/ban':
                 var toBeBanned = line.split(' ').splice(1,line.length).join(' ');
-                this.props.socket.emit('ban',{room:this.props.roomName,user:toBeBanned}, (success) => {});
+                this.props.socket.emit('ban',{room:this.state.roomName,user:toBeBanned}, () => {});
                 break;
             case '/msg':
                 var target = this.state.msg.split(' ')[1];
@@ -95,7 +95,7 @@ class ChatBox extends React.Component {
                 this.props.socket.emit('users');
                 this.props.socket.on('userlist', (users) => {
                     if(users.indexOf(target)>-1){
-                        this.props.socket.emit('privatemsg',{nick:target,message:message,roomName:this.state.roomName}, (success) => {});
+                        this.props.socket.emit('privatemsg',{nick:target,message:message,roomName:this.state.roomName}, () => {});
                     }
                 });
                 /*var msg = this.state.msg.split(' ').splice(2,this.state.msg.length).join(' ');
@@ -109,7 +109,6 @@ class ChatBox extends React.Component {
     }
 
     sendMessage() {
-        console.log("inside sendMessage");
         var command = this
             .state
             .msg
@@ -117,7 +116,6 @@ class ChatBox extends React.Component {
         if (this.state.commands.indexOf(command) > -1) {
             this.handleCommand(this.state.msg);
         } else if (this.state.registeredForRoom && this.state.msg.length > 0) {
-            console.log("inside inner sendMessage");
             this
                 .props
                 .socket
@@ -137,7 +135,6 @@ class ChatBox extends React.Component {
     }
 
     showHelpDialog() {
-        console.log("inside showhelpdialog");
                 this.setState({
                     helpDialog: true
                 }, () => {
@@ -165,14 +162,14 @@ class ChatBox extends React.Component {
                         tooltip="Send message"><ContentSend/></IconButton>
                     <IconButton
                     onClick={this.showHelpDialog}
-                    tooltop="Show help dialog">
+                    tooltip="Show help dialog">
                     <Help />
                     </IconButton>
                     
                 </div>
             );
     }
-};
+}
 
 ChatBox.propTypes = {
     username: PropTypes.string,

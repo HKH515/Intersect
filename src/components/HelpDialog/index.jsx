@@ -1,10 +1,5 @@
 import React from 'react';
 import {PropTypes} from 'prop-types';
-import RaisedButton from 'material-ui/RaisedButton';
-import ChatBox from '../ChatBox';
-import Chat from '../Chat';
-import SideNav from '../SideNav';
-import LoginBox from '../LoginBox';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
@@ -42,7 +37,7 @@ class Home extends React.Component {
     }
 
     render() {
-        const actions = [< FlatButton label = "Close" primary = {
+        const actions = [< FlatButton key="handleCloseButton" label = "Close" primary = {
                 true
             }
             keyboardFocused = {
@@ -63,7 +58,7 @@ class Home extends React.Component {
             </Dialog>
         );
     }
-};
+}
 
 Home.propTypes = {
     username: PropTypes.string,
@@ -71,7 +66,6 @@ Home.propTypes = {
     registeredForRoom: PropTypes.bool,
     loggedIn: PropTypes.bool,
     messages: PropTypes.array,
-    privmsg: PropTypes.array,
     servers: PropTypes.array,
     propagateToParent: PropTypes.func,
     helpDialog: PropTypes.bool

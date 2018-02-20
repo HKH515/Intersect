@@ -27,6 +27,15 @@ module.exports = {
         }
       },
       {
+        test: /.jsx?$/,
+        exclude: /node_modules/,
+        loader: "eslint-loader",
+        query: {
+          presets: ['es2015', 'react'],
+          compact: false
+        } 
+      },
+      {
         test: /.css?$/,
         loader: "ignore-loader",
         query: {

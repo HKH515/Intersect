@@ -1,29 +1,35 @@
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import {List, ListItem} from 'material-ui/List';
 import {PropTypes} from 'prop-types';
 
 class UserList extends React.Component {
     componentWillReceiveProps(newProps) {
-        const {username, users, ops} = newProps;
-        console.log("users: " + newProps.users);
-        this.setState({username, users, ops});
+        const {username, users, ops, registeredForRoom} = newProps;
+        this.setState({username, users, ops, registeredForRoom});
     }
 
     constructor(props) {
         super(props);
-        this.bgcolor = this.bgcolor.bind(this);
-        this.textcolor = this.textcolor.bind(this);
+        this.bgcolor = this
+            .bgcolor
+            .bind(this);
+        this.textcolor = this
+            .textcolor
+            .bind(this);
         this.state = {
             username: '',
             users: [],
-            ops: []
+            ops: [],
+            registeredForRoom: false
         };
-        this.bgcolor = this.bgcolor.bind(this);
+        this.bgcolor = this
+            .bgcolor
+            .bind(this);
     }
     componentDidMount() {
-        console.log("serverlist did mount");
-        this.props.loadUsers();
+        this
+            .props
+            .loadUsers();
     }
 
     bgcolor(item) {
@@ -39,28 +45,30 @@ class UserList extends React.Component {
         }
         return "#000";
     }
-    
 
     render() {
-        console.log(this.state.ops);
-        return (
-            <div>
-                <List>
-                    {this
-                        .props
-                        .users
-                        .map(item => (
-                            <ListItem
-                                divider="true"
-                                key={item}
-                                style={{
-                                backgroundColor: this.bgcolor(item),
-                                textColor: this.textcolor(item)
-                            }}>{item}</ListItem>
-                        ))}
-                </List>
-            </div>
-        );
+        if (this.state.registeredForRoom) {
+            return (
+                <div>
+                    <List>
+                        {this
+                            .props
+                            .users
+                            .map(item => (
+                                <ListItem
+                                    divider="true"
+                                    key={item}
+                                    style={{
+                                    backgroundColor: this.bgcolor(item),
+                                    textColor: this.textcolor(item)
+                                }}>{item}</ListItem>
+                            ))}
+                    </List>
+                </div>
+            );
+        } else {
+            return null;
+        }
     }
 }
 
@@ -75,7 +83,7 @@ UserList.propTypes = {
     registeredForRoom: PropTypes.bool,
     users: PropTypes.array,
     loadUsers: PropTypes.func,
-    ops: PropTypes.array
+    ops: PropTypes.array,
 };
 
 export default UserList;

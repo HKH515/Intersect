@@ -32,17 +32,15 @@ class LoginBox extends React.Component {
     }
 
     loginUser() {
-        if (this.state.username == '') {
+        if (this.state.username === '') {
             this.setState({errorText: "A username is required!"});
             return;
         }
-        console.log("trying to login with username '" + this.state.username + "'");
         this
             .props
             .socket
             .emit('adduser', this.state.username, (available) => {
                 if (available) {
-                    console.log("username is available!");
                     this.setState({
                         open: false,
                         loggedIn: true
@@ -51,13 +49,10 @@ class LoginBox extends React.Component {
                             .props
                             .propagateToParent({username: this.state.username, loggedIn: this.state.loggedIn});
                     });
-                    console.log("loggedIn : " + this.state.loggedIn);
                 } else {
                     this.setState({errorText: "Username is taken!"});
-                    console.log("username is taken!")
                 }
             });
-        console.log("this should be true if login succeeded: " + this.state.loggedIn);
     }
 
     handleChangeUsername(e) {
@@ -71,7 +66,7 @@ class LoginBox extends React.Component {
     }
 
     render() {
-        const actions = [< FlatButton label = "Submit" primary = {
+        const actions = [< FlatButton key="loginUserButton" label = "Submit" primary = {
                 true
             }
             keyboardFocused = {
@@ -97,7 +92,7 @@ class LoginBox extends React.Component {
             </Dialog>
         );
     }
-};
+}
 
 LoginBox.propTypes = {
     socket: PropTypes.object.isRequired,

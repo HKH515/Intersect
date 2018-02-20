@@ -7,8 +7,8 @@ import Autoscroll from 'autoscroll-react'
 
 class Chat extends React.Component {
     componentWillReceiveProps(newProps) {
-        const {registeredForRoom, loggedIn, roomName, messages} = newProps;
-        this.setState({registeredForRoom, loggedIn, roomName,messages});
+        const {registeredForRoom, loggedIn, roomName, username} = newProps;
+        this.setState({registeredForRoom, loggedIn, roomName, username});
     }
 
     constructor(props) {
@@ -18,7 +18,8 @@ class Chat extends React.Component {
             messages: [],
             registeredForRoom: false,
             loggedIn: false,
-            roomName: ''
+            roomName: '',
+            username: ''
         };
     }
 
@@ -27,13 +28,7 @@ class Chat extends React.Component {
                 .props
                 .socket
                 .on('updatechat', function (room, msgs) {
-                    console.log("updating chat...");
-                    console.log(msgs);
-                    console.log("room:");
-                    console.log(room);
-                    console.log("this.state.roomName:");
-                    console.log(this.state.roomName);
-                    if (this.state.roomName == room) {
+                    if (this.state.roomName === room) {
                         this.setState({
                             messages: msgs
                         }, () => {
@@ -48,7 +43,6 @@ class Chat extends React.Component {
                 }.bind(this));
 
             this.props.socket.on('recv_privatemsg', function(messageObj) {
-                console.log("inside recv_privatemsg");
                 if(this.props.username === messageObj.target) {
                     this.setState({
                         messages: messageObj
@@ -60,10 +54,6 @@ class Chat extends React.Component {
     }
 
     render() {
-        //const errorDialog = this.state.loggedIn && this.state.registeredForRoom;
-        console.log("inside chat/render");
-        console.log("messages:");
-        console.log(this.state.messages);
         if (this.state.registeredForRoom) {
             return (
                 <div className="chatView">
@@ -79,12 +69,12 @@ class Chat extends React.Component {
                                         secondaryText={item.nick + " @ " + item.timestamp}></ListItem>
                                 }
                                 else if (item.target !== undefined && (item.target === this.props.username || item.nick === this.props.username)) {
-                                    return <ListItem style={{color:'#D50000'}}
+                                    return <ListItem style={{color:'#F44336'}}
                                         key={item.timestamp + item.nick}
                                         primaryText={item.message}
                                         secondaryText={item.nick + "  -->  " +item.target + "@" + item.timestamp }></ListItem>
                                 }
-
+                                return null;
                             })}
                     </List>
                 </div>
@@ -98,7 +88,7 @@ class Chat extends React.Component {
         }
 
     }
-};
+}
 
 Chat.propTypes = {
     socket: PropTypes.object.isRequired,

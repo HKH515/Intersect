@@ -64,7 +64,7 @@ class Chat extends React.Component {
         console.log("inside chat/render");
         console.log("messages:");
         console.log(this.state.messages);
-        if (this.state.roomName !== '') {
+        if (this.state.registeredForRoom) {
             return (
                 <div className="chatView">
                     <List>
@@ -92,7 +92,7 @@ class Chat extends React.Component {
         } else {
             return (
                 <div className="chatView">
-                    <List></List>
+                    <h2>Not registered for room!</h2>
                 </div>
             )
         }

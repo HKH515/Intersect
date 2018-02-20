@@ -19,7 +19,14 @@ class ChatBox extends React.Component {
             registeredForRoom: false,
             roomName: '',
             helpDialog: false,
-            commands: ['/kick', '/leave', '/join', '/ban', '/msg', '/help']
+            commands: [
+                '/kick',
+                '/leave',
+                '/join',
+                '/ban',
+                '/msg',
+                '/help'
+            ]
         };
         this.handleChangeMessage = this
             .handleChangeMessage
@@ -29,6 +36,9 @@ class ChatBox extends React.Component {
             .bind(this);
         this.handleCommand = this
             .handleCommand
+            .bind(this);
+        this.handleKeyDown = this
+            .handleKeyDown
             .bind(this);
     }
 
@@ -44,16 +54,39 @@ class ChatBox extends React.Component {
                 this.props.socket.emit('kick', {room:this.props.roomName,user:toBeKicked}, (success) => {});
                 break;
             case '/leave':
-                this.props.socket.emit('partroom',this.props.roomName);
-                this.setState({roomName: '', registeredForRoom: false}, () => {this.props.propagateToParent({roomName: this.state.roomName, registeredForRoom: this.state.registeredForRoom})});
+                this
+                    .props
+                    .socket
+                    .emit('partroom', this.props.roomName);
+                this.setState({
+                    roomName: '',
+                    registeredForRoom: false
+                }, () => {
+                    this
+                        .props
+                        .propagateToParent({roomName: this.state.roomName, registeredForRoom: this.state.registeredForRoom})
+                });
                 break;
             case '/join':
-                var roomToJoin = line.split(' ').splice(1,line.length).join(' ');
-                this.props.joinServer(roomToJoin);//Hackcity
-                this.props.joinServer(roomToJoin);//Because servers doesnt update chat if the server doesn't exist
+                var roomToJoin = line
+                    .split(' ')
+                    .splice(1, line.length)
+                    .join(' ');
+                this
+                    .props
+                    .joinServer(roomToJoin); //Hackcity
+                this
+                    .props
+                    .joinServer(roomToJoin); //Because servers doesnt update chat if the server doesn't exist
                 break;
             case '/help':
-                this.setState({helpDialog: true}, () => {this.props.propagateToParent({helpDialog: this.state.helpDialog})});
+                this.setState({
+                    helpDialog: true
+                }, () => {
+                    this
+                        .props
+                        .propagateToParent({helpDialog: this.state.helpDialog})
+                });
                 console.log("set helpdialog to true");
                 break;
             case '/ban':
@@ -71,10 +104,10 @@ class ChatBox extends React.Component {
                 });
                 /*var msg = this.state.msg.split(' ').splice(2,this.state.msg.length).join(' ');
                 this.props.socket.emit('privatemsg',{nick:target,message:msg});*/
-                this.setState({msg:''});
+                this.setState({msg: ''});
                 break;
             default:
-                
+
         }
         this.setState({msg: ''});
     }
@@ -100,22 +133,33 @@ class ChatBox extends React.Component {
         }
     }
 
+    handleKeyDown(e) {
+        if (e.keyCode === 13) {
+            this.sendMessage();
+        }
+    }
+
     render() {
-        return (
-            <div className="input-box">
-                <TextField
-                    hintText={this.placeholder}
-                    onChange={this.handleChangeMessage}
-                    value={this.state.msg}
-                    style={{
-                    width: 1200
-                }}></TextField>
-                <IconButton
-                    onClick={this.sendMessage}
-                    disabled={!this.state.registeredForRoom}
-                    tooltip="Send message"><ContentSend/></IconButton>
-            </div>
-        );
+        if (this.state.registeredForRoom) {
+            return (
+                <div className="input-box">
+                    <TextField
+                        hintText={this.placeholder}
+                        onChange={this.handleChangeMessage}
+                        value={this.state.msg}
+                        onKeyDown={this.handleKeyDown}
+                        style={{
+                        width: 1200
+                    }}></TextField>
+                    <IconButton
+                        onClick={this.sendMessage}
+                        disabled={!this.state.registeredForRoom}
+                        tooltip="Send message"><ContentSend/></IconButton>
+                </div>
+            );
+        } else {
+            return null;
+        }
     }
 };
 

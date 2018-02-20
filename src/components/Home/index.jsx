@@ -15,9 +15,6 @@ import Help from 'material-ui-icons/Help';
 
 class Home extends React.Component {
     componentWillReceiveProps(newProps) {
-        console.log("Home component is getting new props!");
-        console.log("Home's new props are the following:");
-        console.log(newProps);
         var {
             username,
             loggedIn,
@@ -124,7 +121,8 @@ class Home extends React.Component {
                         privmsg={this.state.privmsg}
                         propagateToParent={this.props.propagateToParent}
                         loadServers={this.props.loadServers}
-                        joinServer={this.props.joinServer}/>
+                        joinServer={this.props.joinServer}
+                        users={this.props.users}/>
                 </div>
             </div>
         );
@@ -145,7 +143,8 @@ Home.propTypes = {
     loadUsers: PropTypes.func,
     loadServers: PropTypes.func,
     joinServer: PropTypes.func,
-    ops: PropTypes.array
+    ops: PropTypes.array,
+    users: PropTypes.array
 };
 
 export default Home;

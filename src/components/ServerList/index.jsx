@@ -26,7 +26,6 @@ class ServerList extends React.Component {
     }
 
     componentDidMount() {
-        console.log("serverlist did mount");
         this.props.loadServers();
     }
 
@@ -43,7 +42,6 @@ class ServerList extends React.Component {
     }
 
     render() {
-        console.log("objects.keys(servers) : " + Object.keys(this.state.servers));
         return (
             <div>
                 <List>
@@ -74,7 +72,8 @@ ServerList.propTypes = {
     loadServers: PropTypes.func,
     propagateToParent: PropTypes.func,
     registeredForRoom: PropTypes.bool,
-    joinServer: PropTypes.func
+    joinServer: PropTypes.func,
+    users: PropTypes.array
 };
 
 export default ServerList;

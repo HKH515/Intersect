@@ -42,18 +42,15 @@ class App extends React.Component {
 
 
     loadServers() {
-        console.log("inside loadServers...");
         this
             .socket
             .emit('rooms');
         this
             .socket
             .on('roomlist', function(rooms) {
-                console.log("inside roomlist callback...");
                 const tmpServers = [];
                 for (var room in rooms) {
                     tmpServers.push(room);
-                    console.log("printing name of room: " + room);
                 }
                 this.setState({servers: tmpServers});
             }.bind(this));
@@ -66,10 +63,8 @@ class App extends React.Component {
                 }, function (success, reason) {
                     if (success) {
                         this.setState({registeredForRoom: true, roomName: roomToJoin});
-                        console.log("successfully joined room '" + this.roomName + "'");
                         this.loadUsers();
                     } else {
-                        console.log("failed to join room: " + reason);
                     }
 
                 }.bind(this));
@@ -89,10 +84,6 @@ class App extends React.Component {
                this.setState({users: userArray});
                this.setState({ops: opsArray})
                // If the room we are in updated the userlist is without us, we are either kicked or banned
-               console.log("users:");
-               console.log(userArray);
-               console.log("username:");
-               console.log(this.state.username);
 
                if (userArray.indexOf(this.state.username) == -1) {
                    this.setState({registeredForRoom: false, roomName: ''});

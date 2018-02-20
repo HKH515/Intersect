@@ -27,12 +27,6 @@ class Chat extends React.Component {
                 .props
                 .socket
                 .on('updatechat', function (room, msgs) {
-                    console.log("updating chat...");
-                    console.log(msgs);
-                    console.log("room:");
-                    console.log(room);
-                    console.log("this.state.roomName:");
-                    console.log(this.state.roomName);
                     if (this.state.roomName == room) {
                         this.setState({
                             messages: msgs
@@ -48,8 +42,7 @@ class Chat extends React.Component {
                 }.bind(this));
 
             this.props.socket.on('recv_privatemsg', function(messageObj) {
-                console.log("inside recv_privatemsg");
-                if(this.props.username === messageObj.target) {
+                if(this.state.username === messageObj.target) {
                     this.setState({
                         messages: messageObj
                     }, () => {
@@ -61,9 +54,6 @@ class Chat extends React.Component {
 
     render() {
         //const errorDialog = this.state.loggedIn && this.state.registeredForRoom;
-        console.log("inside chat/render");
-        console.log("messages:");
-        console.log(this.state.messages);
         if (this.state.registeredForRoom) {
             return (
                 <div className="chatView">

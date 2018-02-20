@@ -31,7 +31,6 @@ class UserNav extends React.Component {
             position: "right",
             open: !this.state.open
         });
-        console.log(this.state.position);
     }
 
     render() {

@@ -6,7 +6,6 @@ import {PropTypes} from 'prop-types';
 class UserList extends React.Component {
     componentWillReceiveProps(newProps) {
         const {username, users, ops} = newProps;
-        console.log("users: " + newProps.users);
         this.setState({username, users, ops});
     }
 
@@ -22,7 +21,6 @@ class UserList extends React.Component {
         this.bgcolor = this.bgcolor.bind(this);
     }
     componentDidMount() {
-        console.log("serverlist did mount");
         this.props.loadUsers();
     }
 
@@ -42,7 +40,6 @@ class UserList extends React.Component {
     
 
     render() {
-        console.log(this.state.ops, 'ops');
         return (
             <div>
                 <List>

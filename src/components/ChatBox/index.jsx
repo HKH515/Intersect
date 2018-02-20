@@ -5,6 +5,8 @@ import {PropTypes} from 'prop-types';
 import TextField from 'material-ui/TextField';
 import ContentSend from 'material-ui/svg-icons/content/send';
 import IconButton from 'material-ui/IconButton';
+import Toolbar from 'material-ui/Toolbar';
+import Help from 'material-ui-icons/Help';
 
 class ChatBox extends React.Component {
     componentWillReceiveProps(newProps) {
@@ -40,6 +42,7 @@ class ChatBox extends React.Component {
         this.handleKeyDown = this
             .handleKeyDown
             .bind(this);
+        this.showHelpDialog = this.showHelpDialog.bind(this);
     }
 
     handleChangeMessage(e) {
@@ -80,14 +83,7 @@ class ChatBox extends React.Component {
                     .joinServer(roomToJoin); //Because servers doesnt update chat if the server doesn't exist
                 break;
             case '/help':
-                this.setState({
-                    helpDialog: true
-                }, () => {
-                    this
-                        .props
-                        .propagateToParent({helpDialog: this.state.helpDialog})
-                });
-                console.log("set helpdialog to true");
+                this.showHelpDialog();
                 break;
             case '/ban':
                 var toBeBanned = line.split(' ').splice(1,line.length).join(' ');
@@ -136,11 +132,22 @@ class ChatBox extends React.Component {
     handleKeyDown(e) {
         if (e.keyCode === 13) {
             this.sendMessage();
+            e.preventDefault();            
         }
     }
 
+    showHelpDialog() {
+        console.log("inside showhelpdialog");
+                this.setState({
+                    helpDialog: true
+                }, () => {
+                    this
+                        .props
+                        .propagateToParent({helpDialog: this.state.helpDialog})
+                });
+    }
+
     render() {
-        if (this.state.registeredForRoom) {
             return (
                 <div className="input-box">
                     <TextField
@@ -148,18 +155,22 @@ class ChatBox extends React.Component {
                         onChange={this.handleChangeMessage}
                         value={this.state.msg}
                         onKeyDown={this.handleKeyDown}
+                        disabled={!this.state.registeredForRoom}
                         style={{
-                        width: 1200
+                        width: 1100
                     }}></TextField>
                     <IconButton
                         onClick={this.sendMessage}
                         disabled={!this.state.registeredForRoom}
                         tooltip="Send message"><ContentSend/></IconButton>
+                    <IconButton
+                    onClick={this.showHelpDialog}
+                    tooltop="Show help dialog">
+                    <Help />
+                    </IconButton>
+                    
                 </div>
             );
-        } else {
-            return null;
-        }
     }
 };
 

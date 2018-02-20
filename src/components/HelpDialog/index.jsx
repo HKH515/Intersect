@@ -53,8 +53,12 @@ class Home extends React.Component {
                 open={this.state.helpDialog}
                 actions={actions}
                 onRequestClose={this.handleClose}>
-                <p>To send a private message, type /msg recipient message</p>
-                <p>To send a private message, type /msg recipient message</p>
+                <p>To display this screen, type /help or click the help icon</p>
+                <p>To send a private message, type /msg username message</p>
+                <p>To join an existing room (or create one that does not exist), type /join room</p>
+                <p>To leave a room, type /leave</p>
+                <p>To kick a user from a room, type /kick user</p>
+                <p>To ban a user from a room, type /ban user</p>
             </Dialog>
         );
     }
